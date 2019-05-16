@@ -7,15 +7,10 @@ import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
 import rootReducer from "./store/reducers/index";
 
-declare global {
-  interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-  }
-}
-
 const composeEnhancers =
   process.env.NODE_ENV === "development"
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+    ? (window && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) ||
+      compose
     : null || compose;
 
 const store = createStore(
