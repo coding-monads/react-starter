@@ -9,13 +9,15 @@ import Test from './containers/Test/Test';
 
 const App: React.FC = () => (
   <BrowserRouter>
-    <GlobalStyle />
     <ThemeProvider theme={theme}>
-      <Layout>
-        <Switch>
-          <Route path="/" exact component={Test} />
-        </Switch>
-      </Layout>
+      <>
+        <GlobalStyle />
+        <Layout>
+          <Switch>
+            <Route path="/" exact component={Test} />
+          </Switch>
+        </Layout>
+      </>
     </ThemeProvider>
   </BrowserRouter>
 );
