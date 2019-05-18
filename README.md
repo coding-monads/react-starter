@@ -2,7 +2,12 @@
 
 ### to run project
 
-npm run dev // it will run at the same time server + react-app
+1. install dependencies inside root folder and client folder.
+2. npm run dev // it will run at the same time server + react-app
+
+### to run storybook
+
+cd client -> npm run storybook
 
 ### starter which contains
 
@@ -17,3 +22,8 @@ npm run dev // it will run at the same time server + react-app
 - react-pose for animating components (integration with styled-components)
 - styled-icons for icons (integration with two above)
 - styled-spinkit for loaders
+
+updated:
+
+- basic storybook library setup
+- example of reusable Button inside storybook
