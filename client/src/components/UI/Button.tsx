@@ -12,7 +12,7 @@ export const Button = styled.button<Props>`
   font-size: 0.9rem;
   padding: 10px 20px;
   margin: 10px;
-  border-radius: ${props => (props.rounded ? "10px" : "none")};
+  border-radius: ${({ rounded }) => (rounded ? "10px" : "none")};
   color: ${({ theme }) => theme.colors.grayDark};
   background-color: ${({ theme }) => theme.colors.grayLight};
   cursor: pointer;
@@ -21,31 +21,28 @@ export const Button = styled.button<Props>`
     background-color: ${({ theme }) => theme.colors.gray};
   }
 
-  ${props =>
-    props.size === "small"
-      ? css`
-          padding: 5px 10px;
-          font-size: 0.8rem;
-        `
-      : ""}
-  ${props =>
-    props.size === "large"
-      ? css`
-          padding: 15px 30px;
-          font-size: 1rem;
-        `
-      : ""}
-  ${props =>
-    props.primary
-      ? css`
-          color: ${({ theme }) => theme.colors.white};
-          background-color: ${({ theme }) => theme.colors.primaryDark};
+  ${({ size }) =>
+    size === "small" &&
+    css`
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    `}
+  ${({ size }) =>
+    size === "large" &&
+    css`
+      padding: 15px 30px;
+      font-size: 1rem;
+    `}
+  ${({ primary }) =>
+    primary &&
+    css`
+      color: ${({ theme }) => theme.colors.white};
+      background-color: ${({ theme }) => theme.colors.primaryDark};
 
-          &:hover {
-            background-color: ${({ theme }) => theme.colors.primary};
-          }
-        `
-      : ""}
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.primary};
+      }
+    `}
 `;
 
 export const ButtonA = posed(Button)({
