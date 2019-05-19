@@ -23,6 +23,11 @@
     "react/jsx-filename-extension": [
       1,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
+    "import/no-extraneous-dependencies": [
+      {
+        "devDependencies": [".storybook/**", "stories/**"]
+      }
     ]
   },
   "settings": {

@@ -1,5 +1,5 @@
-import React from "react";
-import { AnimatedH1 } from "./styled";
+import React from 'react';
+import { AnimatedH1 } from './styled';
 
 const Test = () => (
   <>
