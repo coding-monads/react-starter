@@ -1,8 +1,6 @@
 {
   "name": "coding-monads",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
   "scripts": {
     "start": "node server",
     "server": "nodemon server",
@@ -10,16 +8,20 @@
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "install-all": "npm install && cd client && npm install"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^4.1.0",
-    "nodemon": "^1.19.0"
-  },
   "dependencies": {
     "config": "^3.1.0",
     "express": "^4.16.4",
     "mongoose": "^5.5.8"
-  }
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.19.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coding-monads/react-starter.git"
+  },
+  "main": "index.js",
+  "keywords": [],
+  "license": "ISC"
 }
