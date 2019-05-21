@@ -2,7 +2,7 @@
 
 ### to run project
 
-1. install dependencies inside root folder and client folder.
+1. npm run install-all // it will install dependencies inside root and client folder
 2. npm run dev // it will run at the same time server + react-app
 
 ### to run storybook
