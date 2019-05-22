@@ -10,10 +10,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-//Connect Database
+// Connect Database
 connectDB();
 
-//Routes
+// Routes
 app.use("/api/test", test);
 app.use("/api/users", users);
 
