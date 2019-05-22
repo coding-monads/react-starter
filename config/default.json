@@ -1,3 +1,3 @@
 {
-  "mongoURI": ""
+  "mongoURI": "mongodb+srv://admin:admin@natripa-r2tud.mongodb.net/natripa?retryWrites=true"
 }
