@@ -1,8 +1,9 @@
 const { check } = require("express-validator/check");
+const { REGISTER_USER } = require("./methods");
 
 exports.validate = method => {
   switch (method) {
-    case "registerUser": {
+    case REGISTER_USER: {
       return [
         check("firstName", "First name field is required")
           .not()

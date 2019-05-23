@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../../models/User");
+const { SE, EAE, UR } = require("../messages");
 
 exports.registerUser = (req, res) => {
   const errors = validationResult(req);
@@ -17,14 +18,12 @@ exports.registerUser = (req, res) => {
 
   User.findOne({ email: email.toLowerCase() }).then(user => {
     if (user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Email already exists" }] });
+      return res.status(400).json({ errors: [{ msg: EAE }] });
     } else {
       const newUser = new User({
         firstName,
         lastName,
-        email,
+        email: email.toLowerCase(),
         password
       });
       bcrypt.genSalt(10, (err, salt) => {
@@ -49,11 +48,11 @@ exports.registerUser = (req, res) => {
                 },
                 (err, token) => {
                   if (err) throw err;
-                  res.json({ msg: "User registered", token });
+                  res.json({ msg: UR, token });
                 }
               );
             })
-            .catch(err => res.status(500).send("Server error"));
+            .catch(err => res.status(500).send(SE));
         });
       });
     }
