@@ -1,5 +1,5 @@
 const { check } = require("express-validator/check");
-const { REGISTER_USER } = require("./methods");
+const { REGISTER_USER, LOGIN_USER } = require("./methods");
 
 exports.validate = method => {
   switch (method) {
@@ -36,6 +36,17 @@ exports.validate = method => {
           "password",
           "Please enter a password with 6 or more characters"
         ).isLength({ min: 6 })
+      ];
+    }
+    case LOGIN_USER: {
+      return [
+        check("email", "Email field is required")
+          .not()
+          .isEmpty(),
+        check("email", "Please enter a valid email").isEmail(),
+        check("password", "Password field is required")
+          .not()
+          .isEmpty()
       ];
     }
   }
