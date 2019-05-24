@@ -14,11 +14,12 @@ module.exports = (req, res, next) => {
   }
 
   // Verify token
-  jwt
-    .verify(token, config.get("jwtSecret"))
-    .then(decoded => {
+  jwt.verify(token, config.get("jwtSecret"), (err, decoded) => {
+    if (err) {
+      res.status(401).json({ msg: messages.TOKEN_IS_INVALID });
+    } else {
       req.user = decoded.user;
       next();
-    })
-    .catch(err => res.status(401).json({ msg: messages.TOKEN_IS_INVALID }));
+    }
+  });
 };
