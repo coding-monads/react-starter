@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const messages = require("../controllers/messages");
 
 module.exports = (req, res, next) => {
   // Get token from header
@@ -7,7 +8,9 @@ module.exports = (req, res, next) => {
 
   // Check if not token
   if (!token) {
-    return res.status(401).json({ msg: "No token, authorization denied" });
+    return res
+      .status(401)
+      .json({ msg: messages.NO_TOKEN_AUTHORIZATION_DENIED });
   }
 
   // Verify token
@@ -17,5 +20,5 @@ module.exports = (req, res, next) => {
       req.user = decoded.user;
       next();
     })
-    .catch(err => res.status(401).json({ msg: "Token is not valid" }));
+    .catch(err => res.status(401).json({ msg: messages.TOKEN_IS_INVALID }));
 };
