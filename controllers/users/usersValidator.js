@@ -1,5 +1,6 @@
 const { check } = require("express-validator/check");
 const { REGISTER_USER, LOGIN_USER } = require("./methods");
+const messages = require("../messages");
 
 exports.validate = method => {
   switch (method) {
@@ -40,11 +41,11 @@ exports.validate = method => {
     }
     case LOGIN_USER: {
       return [
-        check("email", "Email field is required")
+        check("email", messages.EMAIL_IS_REQUIRED)
           .not()
           .isEmpty(),
-        check("email", "Please enter a valid email").isEmail(),
-        check("password", "Password field is required")
+        check("email", messages.PLEASE_ENTER_A_VALID_EMAIL).isEmail(),
+        check("password", messages.PASSWORD_IS_REQUIRED)
           .not()
           .isEmpty()
       ];
