@@ -60,3 +60,9 @@ exports.registerUser = (req, res) => {
     }
   });
 };
+
+exports.deleteUser = (req, res) => {
+  User.findOneAndRemove({ _id: req.user.id })
+    .then(() => res.json({ msg: messages.USER_DELETED }))
+    .catch(err => res.status(500).send(messages.SERVER_ERROR));
+};
