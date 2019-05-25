@@ -24,6 +24,9 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false
     },
+    activationKey: {
+      type: Number
+    },
     roles: [String]
   },
   { timestamps: true }

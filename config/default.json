@@ -1,4 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://admin:admin@natripa-r2tud.mongodb.net/natripa?retryWrites=true",
+  "mongoURI": "mongodb+srv://admin:admin@cluster0-eilzu.mongodb.net/natripa?retryWrites=true",
   "jwtSecret": "secret"
 }

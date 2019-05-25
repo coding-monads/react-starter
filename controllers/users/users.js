@@ -4,6 +4,43 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../../models/User");
 const messages = require("../messages");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+const sendVerificationEmail = user => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
+    }
+  })
+
+  const mailOptions = {
+    from: "natripareact <natripareact@gmail.com>",
+    to: user.email,
+    subject: "Account Activation",
+    html: `
+      To activate your account, click this link
+      <a href="http://localhost:5000/api/users/activate/${user._id}/${user.activationKey}">Activate Account</a>
+    `
+  }
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if(err) throw err;
+  })
+}
+
+exports.activateUser = async (req, res) => {
+  const { userId, activationKey } = req.params;
+  await User.findOneAndUpdate({ _id: userId, activationKey }, { emailVerified: true })
+  .then(() => {
+    res.status(200).json({ msg: messages.USER_ACTIVATED });
+  })
+  .catch(() => {
+    res.status(400).json({ msg: messages.SERVER_ERROR });
+  });
+}
 
 exports.registerUser = (req, res) => {
   const errors = validationResult(req);
@@ -33,6 +70,7 @@ exports.registerUser = (req, res) => {
           if (err) throw err;
           // Store hash in your password DB.
           newUser.password = hash;
+          newUser.activationKey = Math.floor(Math.random()*10000000);
           newUser
             .save()
             .then(user => {
@@ -50,6 +88,7 @@ exports.registerUser = (req, res) => {
                 },
                 (err, token) => {
                   if (err) throw err;
+                  sendVerificationEmail(newUser);
                   res.json({ msg: messages.USER_REGISTERED, token });
                 }
               );
