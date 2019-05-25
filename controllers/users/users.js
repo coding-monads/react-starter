@@ -50,7 +50,10 @@ exports.registerUser = (req, res) => {
                 },
                 (err, token) => {
                   if (err) throw err;
-                  res.json({ msg: messages.USER_REGISTERED, token });
+                  res.json({
+                    msg: messages.USER_REGISTERED,
+                    token
+                  });
                 }
               );
             })
