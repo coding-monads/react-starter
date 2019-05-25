@@ -1,0 +1,1 @@
+export { MadeWithLove as MadeWithLove } from './MadeWithLove';

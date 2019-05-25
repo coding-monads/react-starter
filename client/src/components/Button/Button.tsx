@@ -1,5 +1,7 @@
+import React from 'react';
 import styled, { css } from "styled-components";
 import posed from "react-pose";
+import ButtonMaterialUi from '@material-ui/core/Button';
 
 interface Props {
   readonly size?: string;
@@ -58,3 +60,13 @@ export const ButtonA = posed(Button)({
     scale: 0.8
   }
 });
+
+interface ButtonMUIProp {
+  children: string
+}
+
+export const ButtoMUI = ({children}: ButtonMUIProp) => {
+  return <ButtonMaterialUi variant="contained" color="primary">
+    { children }
+  </ButtonMaterialUi>
+}
