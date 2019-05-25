@@ -25,7 +25,7 @@ const UserSchema = new Schema(
       default: false
     },
     activationKey: {
-      type: Number
+      type: String
     },
     roles: [String]
   },

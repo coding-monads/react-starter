@@ -22,7 +22,7 @@ const sendVerificationEmail = user => {
     subject: "Account Activation",
     html: `
       To activate your account, click this link
-      <a href="http://localhost:5000/api/users/activate/${user._id}/${user.activationKey}">Activate Account</a>
+      <a href="http://localhost:5000/api/users/activate/${user.activationKey}">Activate Account</a>
     `
   }
 
@@ -32,8 +32,8 @@ const sendVerificationEmail = user => {
 }
 
 exports.activateUser = async (req, res) => {
-  const { userId, activationKey } = req.params;
-  await User.findOneAndUpdate({ _id: userId, activationKey }, { emailVerified: true })
+  const { activationKey } = req.params;
+  await User.findOneAndUpdate({ activationKey }, { emailVerified: true })
   .then(() => {
     res.status(200).json({ msg: messages.USER_ACTIVATED });
   })
@@ -53,7 +53,7 @@ exports.registerUser = (req, res) => {
 
   const { firstName, lastName, email, password } = req.body;
 
-  User.findOne({ email: email.toLowerCase() }).then(user => {
+  User.findOne({ email: email.toLowerCase() }).then(async (user) => {
     if (user) {
       return res
         .status(400)
@@ -65,12 +65,19 @@ exports.registerUser = (req, res) => {
         email: email.toLowerCase(),
         password
       });
+
+      await bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.email, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.activationKey = hash 
+        });
+      });
+
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
           // Store hash in your password DB.
           newUser.password = hash;
-          newUser.activationKey = Math.floor(Math.random()*10000000);
           newUser
             .save()
             .then(user => {
