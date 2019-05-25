@@ -3,7 +3,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 
-import { Button, ButtonA, ButtoMUI } from './Button';
+import { Button, ButtonA, ButtonMUI } from './Button';
 
 storiesOf('Button', module)
   .add('default', () => (
@@ -29,8 +29,8 @@ storiesOf('ButtonA', module).add('default', () => (
   <ButtonA onClick={action('clicked')}>Hello Button</ButtonA>
 ));
 
-storiesOf('ButtonMUi', module).add('default', () => (
-  <ButtoMUI>
+storiesOf('ButtonMUI', module).add('default', () => (
+  <ButtonMUI>
     Hello Material UI
-  </ButtoMUI>
+  </ButtonMUI>
 ))

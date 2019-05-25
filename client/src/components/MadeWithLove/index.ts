@@ -1,1 +1,1 @@
-export { MadeWithLove as MadeWithLove } from './MadeWithLove';
+export { MadeWithLove } from './MadeWithLove';
