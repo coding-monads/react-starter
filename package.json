@@ -7,7 +7,9 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "install-all": "npm install && cd client && npm install",
-    "storybook": "cd client && npm run storybook"
+    "storybook": "cd client && npm run storybook",
+    "mongo": "docker run --network=react-starter-backend -p 27017:27017 -t mongo",
+    "mail": "docker run --network=react-starter-backend -p 1025:1025 -p 8025:8025 mailhog/mailhog"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
