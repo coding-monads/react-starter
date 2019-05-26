@@ -96,7 +96,10 @@ exports.registerUser = (req, res) => {
                 (err, token) => {
                   if (err) throw err;
                   sendVerificationEmail(newUser);
-                  res.json({ msg: messages.USER_REGISTERED, token });
+                  res.json({
+                    msg: messages.USER_REGISTERED,
+                    token
+                  });
                 }
               );
             })
@@ -150,4 +153,10 @@ exports.loginUser = (req, res) => {
       });
     }
   });
+};
+
+exports.deleteUser = (req, res) => {
+  User.findOneAndRemove({ _id: req.user.id })
+    .then(() => res.json({ msg: messages.USER_DELETED }))
+    .catch(err => res.status(500).send(messages.SERVER_ERROR));
 };

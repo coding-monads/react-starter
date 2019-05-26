@@ -7,6 +7,7 @@ const {
   REGISTER_USER,
   LOGIN_USER
 } = require("../../controllers/users/methods");
+const auth = require("../../middleware/auth");
 
 // @route   POST api/users/register
 // @desc    Register user
@@ -25,6 +26,11 @@ router.post(
   usersValidator.validate(LOGIN_USER),
   usersController.loginUser
 );
+
+// @route   DELETE api/users
+// @desc    Delete user
+// @access  Private
+router.delete("/", auth, usersController.deleteUser);
 
 // @route   GET api/users/activate/:activationKey
 // @desc    Activate account
