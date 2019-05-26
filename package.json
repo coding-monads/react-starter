@@ -6,7 +6,8 @@
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "install-all": "npm install && cd client && npm install"
+    "install-all": "npm install && cd client && npm install",
+    "storybook": "cd client && npm run storybook"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -18,6 +19,8 @@
   },
   "devDependencies": {
     "concurrently": "^4.1.0",
+    "dotenv": "^8.0.0",
+    "nodemailer": "^6.2.1",
     "nodemon": "^1.19.0"
   },
   "repository": {
