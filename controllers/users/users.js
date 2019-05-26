@@ -5,7 +5,6 @@ const config = require("config");
 const User = require("../../models/User");
 const messages = require("../messages");
 const nodemailer = require("nodemailer");
-require("dotenv").config();
 
 exports.activateUser = async (req, res) => {
   const { activationKey } = req.params;

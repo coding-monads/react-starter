@@ -4,6 +4,8 @@ const test = require("./routes/api/test");
 
 const users = require("./routes/api/users");
 
+require("dotenv").config();
+
 const app = express();
 
 // Init Middleware
