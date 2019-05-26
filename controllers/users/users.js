@@ -26,87 +26,58 @@ const sendVerificationEmail = user => {
     `
   }
 
-  transporter.sendMail(mailOptions, (err, data) => {
+  transporter.sendMail(mailOptions, err => {
     if(err) throw err;
   })
 }
 
-exports.activateUser = async (req, res) => {
+exports.activateUser = (req, res) => {
   const { activationKey } = req.params;
-  await User.findOneAndUpdate({ activationKey }, { emailVerified: true })
-  .then(() => {
-    res.status(200).json({ msg: messages.USER_ACTIVATED });
-  })
-  .catch(() => {
-    res.status(400).json({ msg: messages.SERVER_ERROR });
-  });
+  User.findOneAndUpdate({ activationKey }, { emailVerified: true })
+    .then(() => {
+      res.status(200).json({ msg: messages.USER_ACTIVATED });
+    })
+    .catch(() => {
+      res.status(400).json({ msg: messages.SERVER_ERROR });
+    });
 }
 
 exports.registerUser = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res
-      .status(400)
-      .json({ errors: errors.array({ onlyFirstError: true }) });
+    return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
   }
 
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email = email.toLowerCase(), password } = req.body;
 
-  User.findOne({ email: email.toLowerCase() }).then(async (user) => {
+  User.findOne({ email }).then(user => {
     if (user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
+      return res.status(400).json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
     } else {
-      const newUser = new User({
-        firstName,
-        lastName,
-        email: email.toLowerCase(),
-        password
+      const newUser = new User({ 
+        firstName, 
+        lastName, 
+        email, 
+        password: bcrypt.hashSync(password), 
+        activationKey: bcrypt.hashSync(email).replace(/\//g, '') 
       });
 
-      await bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.email, salt, (err, hash) => {
-          if (err) throw err;
-          newUser.activationKey = hash 
-        });
-      });
-
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, (err, hash) => {
-          if (err) throw err;
-          // Store hash in your password DB.
-          newUser.password = hash;
-          newUser
-            .save()
-            .then(user => {
-              const payload = {
-                user: {
-                  id: user.id
-                }
-              };
-
-              jwt.sign(
-                payload,
-                config.get("jwtSecret"),
-                {
-                  expiresIn: 3600
-                },
-                (err, token) => {
-                  if (err) throw err;
-                  sendVerificationEmail(newUser);
-                  res.json({
-                    msg: messages.USER_REGISTERED,
-                    token
-                  });
-                }
-              );
-            })
-            .catch(err => res.status(500).send(messages.SERVER_ERROR));
-        });
-      });
-    }
+      newUser.save()
+        .then(user => {
+          const payload = { 
+            user: { 
+              id: user.id 
+            } 
+          };
+          jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 3600 }, (err, token) => {
+            if (err) throw err;
+            sendVerificationEmail(newUser);
+            res.json({ msg: messages.USER_REGISTERED, token });
+          });
+        })
+        .catch(err => res.status(500).send(messages.SERVER_ERROR));
+      }
   });
 };
 
@@ -114,17 +85,13 @@ exports.loginUser = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res
-      .status(400)
-      .json({ errors: errors.array({ onlyFirstError: true }) });
+    return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
   }
-  const { password, email } = req.body;
+  const { password, email = email.toLowerCase() } = req.body;
 
-  User.findOne({ email: email.toLowerCase() }).then(user => {
+  User.findOne({ email }).then(user => {
     if (!user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
+      return res.status(400).json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
     } else {
       bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {
@@ -134,21 +101,12 @@ exports.loginUser = (req, res) => {
             }
           };
 
-          jwt.sign(
-            payload,
-            config.get("jwtSecret"),
-            {
-              expiresIn: 3600
-            },
-            (err, token) => {
-              if (err) throw err;
-              res.json({ msg: messages.USER_LOGGEDIN, token });
-            }
-          );
+          jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 3600 }, (err, token) => {
+            if (err) throw err;
+            res.json({ msg: messages.USER_LOGGEDIN, token });
+          });
         } else {
-          return res
-            .status(400)
-            .json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
+          return res.status(400).json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
         }
       });
     }
