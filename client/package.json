@@ -12,6 +12,8 @@
     "build-storybook": "build-storybook"
   },
   "dependencies": {
+    "@material-ui/core": "^4.0.0",
+    "@material-ui/icons": "^4.0.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -24,6 +26,7 @@
     "styled-components": "^4.2.0",
     "styled-icons": "^7.14.0",
     "styled-spinkit": "^0.7.0",
+    "typeface-roboto": "0.0.54",
     "typescript": "3.4.5"
   },
   "devDependencies": {

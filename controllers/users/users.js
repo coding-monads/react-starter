@@ -4,6 +4,43 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const User = require("../../models/User");
 const messages = require("../messages");
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+
+const sendVerificationEmail = user => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS,
+    }
+  })
+
+  const mailOptions = {
+    from: "natripareact <natripareact@gmail.com>",
+    to: user.email,
+    subject: "Account Activation",
+    html: `
+      To activate your account, click this link
+      <a href="http://localhost:5000/api/users/activate/${user.activationKey}">Activate Account</a>
+    `
+  }
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if(err) throw err;
+  })
+}
+
+exports.activateUser = async (req, res) => {
+  const { activationKey } = req.params;
+  await User.findOneAndUpdate({ activationKey }, { emailVerified: true })
+  .then(() => {
+    res.status(200).json({ msg: messages.USER_ACTIVATED });
+  })
+  .catch(() => {
+    res.status(400).json({ msg: messages.SERVER_ERROR });
+  });
+}
 
 exports.registerUser = (req, res) => {
   const errors = validationResult(req);
@@ -16,7 +53,7 @@ exports.registerUser = (req, res) => {
 
   const { firstName, lastName, email, password } = req.body;
 
-  User.findOne({ email: email.toLowerCase() }).then(user => {
+  User.findOne({ email: email.toLowerCase() }).then(async (user) => {
     if (user) {
       return res
         .status(400)
@@ -28,6 +65,14 @@ exports.registerUser = (req, res) => {
         email: email.toLowerCase(),
         password
       });
+
+      await bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.email, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.activationKey = hash 
+        });
+      });
+
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
@@ -50,6 +95,7 @@ exports.registerUser = (req, res) => {
                 },
                 (err, token) => {
                   if (err) throw err;
+                  sendVerificationEmail(newUser);
                   res.json({ msg: messages.USER_REGISTERED, token });
                 }
               );

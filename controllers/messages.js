@@ -6,5 +6,6 @@ module.exports = {
   INVALID_CREDENTIALS: "Invalid Credentials",
   EMAIL_IS_REQUIRED: "Email is required",
   PLEASE_ENTER_A_VALID_EMAIL: "Please enter a valid email",
-  PASSWORD_IS_REQUIRED: "Password is required"
+  PASSWORD_IS_REQUIRED: "Password is required",
+  USER_ACTIVATED: "User activated"
 };

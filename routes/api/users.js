@@ -26,4 +26,9 @@ router.post(
   usersController.loginUser
 );
 
+// @route   GET api/users/activate/:activationKey
+// @desc    Activate account
+// @access  Public
+router.get('/activate/:activationKey', usersController.activateUser);
+
 module.exports = router;
