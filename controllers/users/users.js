@@ -115,4 +115,5 @@ const sendVerificationEmail = user => {
   transporter.sendMail(mailOptions, (err, data) => {
     if(err) throw err;
   })
+
 }
