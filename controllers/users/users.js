@@ -137,13 +137,11 @@ exports.deleteUser = (req, res) => {
 };
 
 const sendVerificationEmail = user => {
+  const mailSettings = config.get("mail.settings");
+  const mailCredentials = config.get("mail.credentials");
   const transporter = nodemailer.createTransport({
-    service: "mailhog",
-    port: "1025",
-    auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS,
-    }
+    ...mailSettings,
+    auth: mailCredentials
   })
 
   const mailOptions = {
