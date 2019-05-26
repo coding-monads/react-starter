@@ -106,3 +106,48 @@ exports.registerUser = (req, res) => {
     }
   });
 };
+
+exports.loginUser = (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ errors: errors.array({ onlyFirstError: true }) });
+  }
+  const { password, email } = req.body;
+
+  User.findOne({ email: email.toLowerCase() }).then(user => {
+    if (!user) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
+    } else {
+      bcrypt.compare(password, user.password).then(isMatch => {
+        if (isMatch) {
+          const payload = {
+            user: {
+              id: user.id
+            }
+          };
+
+          jwt.sign(
+            payload,
+            config.get("jwtSecret"),
+            {
+              expiresIn: 3600
+            },
+            (err, token) => {
+              if (err) throw err;
+              res.json({ msg: messages.USER_LOGGEDIN, token });
+            }
+          );
+        } else {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
+        }
+      });
+    }
+  });
+};
