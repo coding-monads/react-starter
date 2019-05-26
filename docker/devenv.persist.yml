@@ -1,0 +1,10 @@
+version: '3'
+
+networks:
+  backend:
+  frontend:
+
+services:
+  mongo:
+    volumes:
+    - ./data/db:/data/db
