@@ -9,7 +9,10 @@
     "install-all": "npm install && cd client && npm install",
     "storybook": "cd client && npm run storybook",
     "mongo": "docker run --network=react-starter-backend -p 27017:27017 -t mongo",
-    "mail": "docker run --network=react-starter-backend -p 1025:1025 -p 8025:8025 mailhog/mailhog"
+    "mail": "docker run --network=react-starter-backend -p 1025:1025 -p 8025:8025 mailhog/mailhog",
+    "local-dev-up": "docker-compose -f docker/devenv.yml up -d",
+    "local-dev-down": "docker-compose -f docker/devenv.yml down",
+    "local-dev-status": "docker-compose -f docker/devenv.yml ps"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
