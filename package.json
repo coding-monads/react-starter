@@ -11,7 +11,7 @@
     "docker-network": "docker network create react-starter-backend",
     "docker-mongo": "docker run --network=react-starter-backend -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example -p 27017:27017 --rm --name mongo -t mongo",
     "docker-mongo-express": "docker run --network=react-starter-backend -e ME_CONFIG_MONGODB_ADMINUSERNAME=root -e ME_CONFIG_MONGODB_ADMINPASSWORD=example -p 8081:8081 --rm --name mongo-express -t mongo-express",
-    "docker-mail": "docker run --network=react-starter-backend -p 1025:1025 -p 8025:8025 --rm --name mailhog -t mailhog/mailhog" ,
+    "docker-mail": "docker run --network=react-starter-backend -p 1025:1025 -p 8025:8025 --rm --name mailhog -t mailhog/mailhog",
     "docker-up": "concurrently \"npm run docker-mongo\" \"npm run docker-mongo-express\" \"npm run docker-mail\"",
     "dc-up": "docker-compose -f docker/devenv.yml up -d",
     "dc-up-persist": "docker-compose -f docker/devenv.yml -f docker/devenv.persist.yml up -d",
