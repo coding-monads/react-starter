@@ -5,31 +5,6 @@ const config = require("config");
 const User = require("../../models/User");
 const messages = require("../messages");
 const nodemailer = require("nodemailer");
-require("dotenv").config();
-
-const sendVerificationEmail = user => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.GMAIL_USER,
-      pass: process.env.GMAIL_PASS,
-    }
-  })
-
-  const mailOptions = {
-    from: "natripareact <natripareact@gmail.com>",
-    to: user.email,
-    subject: "Account Activation",
-    html: `
-      To activate your account, click this link
-      <a href="http://localhost:5000/api/users/activate/${user.activationKey}">Activate Account</a>
-    `
-  }
-
-  transporter.sendMail(mailOptions, err => {
-    if(err) throw err;
-  })
-}
 
 exports.activateUser = (req, res) => {
   const { activationKey } = req.params;
@@ -118,3 +93,27 @@ exports.deleteUser = (req, res) => {
     .then(() => res.json({ msg: messages.USER_DELETED }))
     .catch(err => res.status(500).send(messages.SERVER_ERROR));
 };
+
+const sendVerificationEmail = user => {
+  const mailSettings = config.get("mail.settings");
+  const mailCredentials = config.get("mail.credentials");
+  const transporter = nodemailer.createTransport({
+    ...mailSettings,
+    auth: mailCredentials
+  })
+
+  const mailOptions = {
+    from: "support <natripareact@gmail.com>",
+    to: user.email,
+    subject: "Account Activation",
+    html: `
+      To activate your account, click this link
+      <a href="http://localhost:5000/api/users/activate/${user.activationKey}">Activate Account</a>
+    `
+  }
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if(err) throw err;
+  })
+
+}

@@ -5,6 +5,14 @@
 1. npm run install-all // it will install dependencies inside root and client folder
 2. npm run dev // it will run at the same time server + react-app
 
+### to run project with local mongo and smtp (docker-compose)
+
+1. Install docker
+1. Install docker-compose (on windows already installed with docker)
+1. npm run install-all
+1. npm run dc-up (or dc-up-persist - to persist database entities on localhost)
+1. NODE_ENV=docker npm run dev
+
 ### to run storybook
 
 cd client -> npm run storybook
