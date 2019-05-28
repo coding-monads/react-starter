@@ -1,0 +1,20 @@
+{
+  "mongo": {
+    "uri": "mongodb://localhost/admin",
+    "credentials": {
+      "user": "root",
+      "pass": "example"
+    }
+  },
+  "jwtSecret": "secret",
+  "mail": {
+    "credentials": {
+      "user": "MAIL_USER",
+      "pass": "MAIL_PASS"
+    },
+    "settings": {
+      "service": "mailhog",
+      "port": 1025
+    }
+  }
+}
