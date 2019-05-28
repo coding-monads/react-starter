@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/db");
+const passport = require("passport");
 const test = require("./routes/api/test");
 
 const users = require("./routes/api/users");
@@ -12,6 +13,12 @@ app.use(express.urlencoded({ extended: false }));
 
 // Connect Database
 connectDB();
+
+// Passport middleware
+app.use(passport.initialize());
+
+// Passport Config
+require("./config/passport")(passport);
 
 // Routes
 app.use("/api/test", test);
