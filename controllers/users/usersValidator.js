@@ -1,5 +1,5 @@
 const { body } = require("express-validator/check");
-const { REGISTER_USER, LOGIN_USER } = require("./methods");
+const { REGISTER_USER, LOGIN_USER, UPDATE_USER } = require("./methods");
 const messages = require("../messages");
 
 exports.validate = method => {
@@ -49,6 +49,27 @@ exports.validate = method => {
           .not()
           .isEmpty()
       ];
+    }
+    case UPDATE_USER: {
+      return [
+        body(
+            "firstName",
+            "Please enter a first name between 2 and 30 characters"
+        ).optional().isLength({
+          min: 2,
+          max: 30
+        }),
+        body(
+            "lastName",
+            "Please enter a last name between 2 and 30 characters"
+        ).optional().isLength({
+          min: 2,
+          max: 30
+        }),
+        body("email", "Please enter a valid email").optional().isEmail(),
+        body("password", "Please enter a password with 6 or more characters")
+            .optional().isLength({ min: 6 })
+      ]
     }
   }
 };
