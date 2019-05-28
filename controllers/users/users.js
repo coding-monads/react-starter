@@ -15,44 +15,62 @@ exports.activateUser = (req, res) => {
     .catch(() => {
       res.status(400).json({ msg: messages.SERVER_ERROR });
     });
-}
+};
 
 exports.registerUser = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+    return res
+      .status(400)
+      .json({ errors: errors.array({ onlyFirstError: true }) });
   }
 
-  const { firstName, lastName, email = email.toLowerCase(), password } = req.body;
+  const {
+    firstName,
+    lastName,
+    email = email.toLowerCase(),
+    password
+  } = req.body;
 
   User.findOne({ email }).then(user => {
     if (user) {
-      return res.status(400).json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
+      return res
+        .status(400)
+        .json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
     } else {
-      const newUser = new User({ 
-        firstName, 
-        lastName, 
-        email, 
-        password: bcrypt.hashSync(password), 
-        activationKey: bcrypt.hashSync(email).replace(/\//g, '') 
+      const newUser = new User({
+        firstName,
+        lastName,
+        email,
+        password: bcrypt.hashSync(password),
+        activationKey: bcrypt.hashSync(email).replace(/\//g, "")
       });
 
-      newUser.save()
+      newUser
+        .save()
         .then(user => {
-          const payload = { 
-            user: { 
-              id: user.id 
-            } 
+          const payload = {
+            user: {
+              id: user.id
+            }
           };
-          jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 3600 }, (err, token) => {
-            if (err) throw err;
-            sendVerificationEmail(newUser);
-            res.json({ msg: messages.USER_REGISTERED, token });
-          });
+          jwt.sign(
+            payload,
+            config.get("jwtSecret"),
+            { expiresIn: 3600 },
+            (err, token) => {
+              if (err) throw err;
+              sendVerificationEmail(newUser);
+              res.json({
+                msg: messages.USER_REGISTERED,
+                token: "Bearer " + token
+              });
+            }
+          );
         })
         .catch(err => res.status(500).send(messages.SERVER_ERROR));
-      }
+    }
   });
 };
 
@@ -60,13 +78,17 @@ exports.loginUser = (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+    return res
+      .status(400)
+      .json({ errors: errors.array({ onlyFirstError: true }) });
   }
   const { password, email = email.toLowerCase() } = req.body;
 
   User.findOne({ email }).then(user => {
     if (!user) {
-      return res.status(400).json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
+      return res
+        .status(400)
+        .json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
     } else {
       bcrypt.compare(password, user.password).then(isMatch => {
         if (isMatch) {
@@ -76,12 +98,22 @@ exports.loginUser = (req, res) => {
             }
           };
 
-          jwt.sign(payload, config.get("jwtSecret"), { expiresIn: 3600 }, (err, token) => {
-            if (err) throw err;
-            res.json({ msg: messages.USER_LOGGEDIN, token });
-          });
+          jwt.sign(
+            payload,
+            config.get("jwtSecret"),
+            { expiresIn: 3600 },
+            (err, token) => {
+              if (err) throw err;
+              res.json({
+                msg: messages.USER_LOGGEDIN,
+                token: "Bearer " + token
+              });
+            }
+          );
         } else {
-          return res.status(400).json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
+          return res
+            .status(400)
+            .json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
         }
       });
     }

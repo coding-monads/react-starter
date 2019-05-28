@@ -1,32 +1,20 @@
-const jwt = require("jsonwebtoken");
-const config = require("config");
+const passport = require("passport");
 const messages = require("../controllers/messages");
-const User = require("../models/User");
 
 module.exports = (req, res, next) => {
-  // Get token from header
-  const token = req.header("x-auth-token");
-
-  // Check if not token
-  if (!token) {
-    return res
-      .status(401)
-      .json({ msg: messages.NO_TOKEN_AUTHORIZATION_DENIED });
-  }
-
-  // Verify token
-  jwt.verify(token, config.get("jwtSecret"), (err, decoded) => {
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
     if (err) {
-      res.status(401).json({ msg: messages.TOKEN_IS_INVALID });
-    } else {
-      User.findOne({ _id: decoded.user.id }).then(user => {
-        if (user.emailVerified) {
-          req.user = decoded.user;
-          next();
-        } else {
-          res.status(401).json({ msg: messages.EMAIL_NOT_VERIFIED });
-        }
+      return res.status(500).json({ msg: messages.SERVER_ERROR });
+    }
+    if (info) {
+      return res.status(401).json({
+        msg: info.message[0].toUpperCase() + info.message.slice(1)
       });
     }
-  });
+    if (!user.emailVerified) {
+      return res.status(401).json({ msg: messages.EMAIL_NOT_VERIFIED });
+    }
+    req.user = user;
+    next();
+  })(req, res, next);
 };

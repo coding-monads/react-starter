@@ -11,5 +11,6 @@ module.exports = {
   EMAIL_IS_REQUIRED: "Email is required",
   PLEASE_ENTER_A_VALID_EMAIL: "Please enter a valid email",
   PASSWORD_IS_REQUIRED: "Password is required",
-  USER_ACTIVATED: "User activated"
+  USER_ACTIVATED: "User activated",
+  TOKEN_EXPIRED: "Token expired"
 };
