@@ -6,19 +6,10 @@ module.exports = (req, res, next) => {
     if (err) {
       return res.status(500).json({ msg: messages.SERVER_ERROR });
     }
-    if (info !== undefined) {
-      if (info.message === "No auth token") {
-        return res
-          .status(401)
-          .json({ msg: messages.NO_TOKEN_AUTHORIZATION_DENIED });
-      } else if (
-        info.message === "invalid signature" ||
-        info.message === "jwt malformed"
-      ) {
-        return res.status(401).json({ msg: messages.TOKEN_IS_INVALID });
-      } else if (info.message === "jwt expired") {
-        return res.status(401).json({ msg: messages.TOKEN_EXPIRED });
-      }
+    if (info) {
+      return res.status(401).json({
+        msg: info.message[0].toUpperCase() + info.message.slice(1)
+      });
     }
     if (!user.emailVerified) {
       return res.status(401).json({ msg: messages.EMAIL_NOT_VERIFIED });
