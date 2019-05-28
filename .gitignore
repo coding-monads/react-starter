@@ -90,3 +90,7 @@ typings/
 
 # next.js build output
 .next
+
+# docker mongo data
+docker/mongo/data
+docker/data
