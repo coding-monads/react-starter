@@ -1,5 +1,10 @@
 # coding-monads-starter
 
+## project sructure
+
+- ./client - frontend side
+- ./ - backend side
+
 ### to run project
 
 1. npm run install-all // it will install dependencies inside root and client folder
