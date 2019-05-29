@@ -12,6 +12,8 @@ module.exports = {
   PLEASE_ENTER_A_VALID_EMAIL: "Please enter a valid email",
   PASSWORD_IS_REQUIRED: "Password is required",
   USER_ACTIVATED: "User activated",
+  ACTIVATION_KEY_IS_INCORRECT: "Activation key is incorrect",
+  KEY_HAS_BEEN_ACTIVATED: "Key has been activated",
   USER_UPDATED: "User updated",
   FIRST_NAME_REQUIRED: "First name field is required",
   FIRST_NAME_SPECIFIC_LENGTH: "Please enter a first name between 2 and 30 characters",
