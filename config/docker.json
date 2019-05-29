@@ -1,6 +1,10 @@
 {
   "mongo": {
-    "uri": "mongodb://localhost/admin",
+    "uri": {
+      "host": "localhost",
+      "resource": "admin",
+      "name": "mongodb"
+    },
     "credentials": {
       "user": "root",
       "pass": "example"
@@ -14,6 +18,7 @@
     },
     "settings": {
       "service": "mailhog",
+      "host": "localhost",
       "port": 1025
     }
   }

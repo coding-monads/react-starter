@@ -1,6 +1,10 @@
 {
   "mongo": {
-    "uri": "mongodb+srv://cluster0-eilzu.mongodb.net/natripa?retryWrites=true",
+    "uri": {
+      "host": "cluster0-eilzu.mongodb.net",
+      "resource": "natripa?",
+      "name": "mongodb+srv"
+    },
     "credentials": {
       "user": "admin",
       "pass": "admin"
