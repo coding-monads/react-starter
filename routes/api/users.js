@@ -48,26 +48,4 @@ router.put(
     usersController.updateUserData
 );
 
-
-
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
