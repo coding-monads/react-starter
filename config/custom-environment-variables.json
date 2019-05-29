@@ -1,0 +1,8 @@
+{
+    "mail": {
+        "credentials": {
+            "user": "MAIL_USER",
+            "pass": "MAIL_PASS"
+        }
+    }
+}

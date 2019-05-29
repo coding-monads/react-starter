@@ -1,9 +1,9 @@
 {
   "mongo": {
-    "uri": "mongodb+srv://cluster0-eilzu.mongodb.net/natripa?retryWrites=true",
+    "uri": "mongodb://localhost/admin",
     "credentials": {
-      "user": "admin",
-      "pass": "admin"
+      "user": "root",
+      "pass": "example"
     }
   },
   "jwtSecret": "secret",
@@ -13,7 +13,8 @@
       "pass": "MAIL_PASS"
     },
     "settings": {
-      "service": "gmail"
+      "service": "mailhog",
+      "port": 1025
     }
   }
 }
