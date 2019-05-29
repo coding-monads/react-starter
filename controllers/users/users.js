@@ -130,8 +130,8 @@ exports.updateUserData = async (req, res) => {
   if (user){
     let { firstName, lastName, email, password } = req.body;
 
-    user.firstName = firstName || user.firstName;
-    user.lastName = lastName || user.lastName;
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
 
     if (email){
       email = email.toLowerCase();
