@@ -3,6 +3,7 @@
     "uri": {
       "host": "localhost",
       "resource": "admin",
+      "query": "",
       "name": "mongodb"
     },
     "credentials": {

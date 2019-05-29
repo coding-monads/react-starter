@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const config = require("config");
-const { host, resource, name } = config.get("mongo.uri");
+const { host, resource, query, name } = config.get("mongo.uri");
 const dbCredentials = config.get("mongo.credentials");
 
 const settings = {
@@ -10,7 +10,7 @@ const settings = {
   useFindAndModify: false
 };
 
-const dbURI = `${name}://${host}/${resource}`;
+const dbURI = `${name}://${host}/${resource}${query}`;
 
 const connectDB = () =>
   console.log("Trying to connect to mongodb [URI] ", dbURI);
