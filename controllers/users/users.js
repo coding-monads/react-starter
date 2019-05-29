@@ -126,6 +126,43 @@ exports.deleteUser = (req, res) => {
     .catch(err => res.status(500).send(messages.SERVER_ERROR));
 };
 
+exports.updateUserData = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+  }
+
+  const user = await User.findById(req.user.id);
+  if (user){
+    let { firstName, lastName, email, password } = req.body;
+
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+
+    if (email){
+      email = email.toLowerCase();
+      if (email !== user.email){
+        const emailExist = await User.findOne({email});
+        if (emailExist){
+          return res.status(400).json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
+        }
+        user.email = email;
+        user.activationKey = bcrypt.hashSync(email).replace(/\//g, '');
+        user.emailVerified = false;
+        sendVerificationEmail(user)
+      }
+    }
+    if (password){
+      user.password = bcrypt.hashSync(password)
+    }
+    await user.save();
+    return res.json({msg: messages.USER_UPDATED })
+  }else {
+    return res.status(500).send(messages.SERVER_ERROR)
+  }
+};
+
 const sendVerificationEmail = user => {
   const mailSettings = config.get("mail.settings");
   const mailCredentials = config.get("mail.credentials");

@@ -5,7 +5,8 @@ const usersController = require("../../controllers/users/users");
 const usersValidator = require("../../controllers/users/usersValidator");
 const {
   REGISTER_USER,
-  LOGIN_USER
+  LOGIN_USER,
+  UPDATE_USER
 } = require("../../controllers/users/methods");
 const auth = require("../../middleware/auth");
 
@@ -36,5 +37,15 @@ router.delete("/", auth, usersController.deleteUser);
 // @desc    Activate account
 // @access  Public
 router.get('/activate/:activationKey', usersController.activateUser);
+
+// @route   PUT api/users
+// @desc    Change user data
+// @access  Private
+router.put(
+    '/',
+    auth,
+    usersValidator.validate(UPDATE_USER),
+    usersController.updateUserData
+);
 
 module.exports = router;

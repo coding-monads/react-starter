@@ -12,5 +12,11 @@ module.exports = {
   PLEASE_ENTER_A_VALID_EMAIL: "Please enter a valid email",
   PASSWORD_IS_REQUIRED: "Password is required",
   USER_ACTIVATED: "User activated",
+  USER_UPDATED: "User updated",
+  FIRST_NAME_REQUIRED: "First name field is required",
+  FIRST_NAME_SPECIFIC_LENGTH: "Please enter a first name between 2 and 30 characters",
+  LAST_NAME_REQUIRED: "Last name field is required",
+  LAST_NAME_SPECIFIC_LENGTH: "Please enter a last name between 2 and 30 characters",
+  PASSWORD_SPECIFIC_LENGTH: "Please enter a password with 6 or more characters",
   TOKEN_EXPIRED: "Token expired"
 };
