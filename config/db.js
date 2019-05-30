@@ -20,4 +20,8 @@ mongoose
   .then(() => console.log("MoongoDB Connected"))
   .catch(err => console.log("MoongoDB not connected", err));
 
-module.exports = connectDB;
+module.exports = {
+  connectDB,
+  settings,
+  dbURI
+};
