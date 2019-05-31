@@ -1,1 +1,0 @@
-export { MadeWithLove } from './MadeWithLove';

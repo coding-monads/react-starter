@@ -10,8 +10,8 @@ export default (state = initState, action: TestAction): TestState => {
     case TYPES.TEST_DISPATCH:
       return {
         ...state,
-        test: action.payload
-	    }
+        test: action.payload,
+      };
     default:
       return state;
   }
