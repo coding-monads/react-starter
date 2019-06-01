@@ -1,14 +1,16 @@
 import React from 'react';
-import Button, { ButtonProps } from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button';
 
 interface ButtonTypes {
   children: string;
+  color?: "default" | "inherit" | "primary" | "secondary";
+  type?: "button" | "submit";
 }
 
-const ButtonMUI: React.FC<ButtonTypes & ButtonProps> = ({
+const ButtonMUI: React.FC<ButtonTypes> = ({
   children,
   type = 'button',
-  color,
+  color = 'default',
 }) => (
   <Button type={type} variant="contained" color={color}>
     {children}

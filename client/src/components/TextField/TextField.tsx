@@ -3,16 +3,16 @@ import { FieldProps } from "formik";
 import TextField from "@material-ui/core/TextField";
 
 interface TextFieldMUITypes {
-  label: string;
-  error: boolean;
-  outllined: boolean;
+  label?: string;
+  error?: boolean;
+  outllined?: boolean;
 }
 
 const TextFieldMUI: React.FC<FieldProps & TextFieldMUITypes> = ({
-  label,
-  error,
+  label = "",
+  error = false,
   field,
-  outllined
+  outllined = false
 }) => {
   const variantProps = outllined
     ? { variant: "outlined" as "outlined" }

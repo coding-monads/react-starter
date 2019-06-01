@@ -1,13 +1,14 @@
 import React from 'react';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
 
 interface TextHeadingTypes {
   children: string;
+  variant?: "body1" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }
 
-const TextHeading: React.FC<TextHeadingTypes & TypographyProps> = ({
+const TextHeading: React.FC<TextHeadingTypes> = ({
   children,
-  variant,
+  variant = 'body1',
 }) => (
   <Typography variant={variant} gutterBottom align="center">
     {children}
