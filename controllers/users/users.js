@@ -6,16 +6,19 @@ const User = require("../../models/User");
 const messages = require("../messages");
 const nodemailer = require("nodemailer");
 
-exports.activateUser = (req, res) => {
+exports.activateUser = async (req, res) => {
   const { activationKey } = req.params;
-  User.findOneAndUpdate({ activationKey }, { emailVerified: true })
-    .then(() => {
-      res.status(200).json({ msg: messages.USER_ACTIVATED });
-    })
-    .catch(() => {
-      res.status(400).json({ msg: messages.SERVER_ERROR });
-    });
-};
+  const user = await User.findOne({ activationKey });
+  if(user){
+    if(user.emailVerified) {
+      return res.status(400).json({ msg: messages.KEY_HAS_BEEN_ACTIVATED });
+    }
+    user.emailVerified = true;
+    await user.save();
+    return res.status(200).json({ msg: messages.USER_ACTIVATED });
+  }
+  return res.status(400).json({ msg: messages.ACTIVATION_KEY_IS_INCORRECT }); 
+}
 
 exports.registerUser = (req, res) => {
   const errors = validationResult(req);
