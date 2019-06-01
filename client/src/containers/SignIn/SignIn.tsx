@@ -9,6 +9,7 @@ import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
 import TextHeading from "../../components/TextHeading/TextHeading";
 import { AuthState } from "../../store/interfaces/authTypes";
 import { loginUser } from "../../store/actions/authActions";
+import { Store } from "../../store/reducers";
 
 const LinksWrapper = styled.div`
   width: 100%;
@@ -17,11 +18,22 @@ const LinksWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const SignIn = ({ loginUser }: any) => (
+interface Values {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+
+interface SignInProps {
+  loginUser: (loginData: Values) => void;
+  errors: [{ msg: string }] | null;
+}
+
+const SignIn: React.SFC<SignInProps> = ({ loginUser, errors }) => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
     <TextHeading variant="h5">Sign In</TextHeading>
-    <SignInForm onSubmit={loginData => loginUser(loginData)} />
+    <SignInForm errors={errors} onSubmit={loginData => loginUser(loginData)} />
     <LinksWrapper>
       <TextLink to="/">Forgot password?</TextLink>
       <TextLink to="/">Don&apos;t have an account? Sign Up</TextLink>
@@ -30,8 +42,8 @@ const SignIn = ({ loginUser }: any) => (
   </Container>
 );
 
-const mapStateToProps = (state: AuthState) => ({
-  auth: state
+const mapStateToProps = (state: Store) => ({
+  errors: state.auth.errors
 });
 
 export default connect(
