@@ -1,2 +1,3 @@
-export const TEST_DISPATCH = 'TEST_DISPATCH';
-export const TEST_DISPATCH2 = 'TEST_DISPATCH2';
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_ERROR = "LOGIN_ERROR";
+export const LOGIN_LOADING = "LOGIN_LOADING";
