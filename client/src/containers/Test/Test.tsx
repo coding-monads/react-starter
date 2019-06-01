@@ -1,6 +1,6 @@
-import React from "react";
-import { AnimatedH1 } from "./styled";
-import { MadeWithLove } from "../../components/MadeWithLove";
+import React from 'react';
+import { AnimatedH1 } from './styled';
+import MadeWithLove from '../../components/MadeWithLove/MadeWithLove';
 
 const Test = () => (
   <>

@@ -6,6 +6,7 @@ import theme from './utillities/theme';
 
 import Layout from './containers/Layout/Layout';
 import Test from './containers/Test/Test';
+import SignIn from './containers/SignIn/SignIn';
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -14,7 +15,7 @@ const App: React.FC = () => (
         <GlobalStyle />
         <Layout>
           <Switch>
-            <Route path='/' exact component={Test} />
+            <Route path="/" exact component={SignIn} />
           </Switch>
         </Layout>
       </>
