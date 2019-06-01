@@ -23,7 +23,6 @@ export const loginUser = (
       token: asyncResp.data.token
     });
   } catch (err) {
-    console.log(err.response.data.errors);
     dispatch({
       type: TYPES.LOGIN_ERROR,
       errors: err.response.data.errors

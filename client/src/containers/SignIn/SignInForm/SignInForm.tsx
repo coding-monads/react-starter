@@ -56,6 +56,7 @@ const SignIn: React.FC<Props> = ({ onSubmit, errors }) => (
         />
         <Field
           name="password"
+          type="password"
           error={!!errors.password}
           label="Password *"
           outllined
