@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from "react-redux";
 import styled from 'styled-components';
 import SignUpForm from './SignUpForm/SignUpForm';
 import MadeWithLove from '../../components/MadeWithLove/MadeWithLove';
@@ -6,6 +7,8 @@ import TextLink from '../../components/TextLink/TextLink';
 import Container from '../../components/Container/Container';
 import { IconAvatarLock } from '../../components/AvatarIcon/AvatarIcon';
 import TextHeading from '../../components/TextHeading/TextHeading';
+import { registerUser } from "../../store/actions/regsiterActions";
+import { Store } from "../../store/reducers";
 
 const LinksWrapper = styled.div`
   width: 100%;
@@ -14,16 +17,36 @@ const LinksWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const SignUp = () => (
+interface Values {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordRepeat: string;
+}
+
+interface SignUpProps {
+  registerUser: (registerData: Values) => void;
+  errors: [{ msg: string }] | null;
+}
+
+const SignUp: React.SFC<SignUpProps> = ({registerUser, errors}) => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
     <TextHeading variant="h5">Sign Up</TextHeading>
-    <SignUpForm onSubmit={values => console.log(values)} />
+    <SignUpForm serverErrors={errors} onSubmit={registerData => registerUser(registerData)} />
     <LinksWrapper>
-      <TextLink to="/">Already have an account? Sign In</TextLink>
+      <TextLink to="/login">Already have an account? Sign In</TextLink>
     </LinksWrapper>
     <MadeWithLove />
   </Container>
 );
 
-export default SignUp;
+const mapStateToProps = (state: Store) => ({
+  errors: state.auth.errors
+});
+
+export default connect(
+  mapStateToProps,
+  { registerUser }
+)(SignUp);

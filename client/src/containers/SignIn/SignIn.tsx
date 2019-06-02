@@ -7,7 +7,6 @@ import TextLink from "../../components/TextLink/TextLink";
 import Container from "../../components/Container/Container";
 import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
 import TextHeading from "../../components/TextHeading/TextHeading";
-import { AuthState } from "../../store/interfaces/authTypes";
 import { loginUser } from "../../store/actions/authActions";
 import { Store } from "../../store/reducers";
 
@@ -36,7 +35,7 @@ const SignIn: React.SFC<SignInProps> = ({ loginUser, errors }) => (
     <SignInForm errors={errors} onSubmit={loginData => loginUser(loginData)} />
     <LinksWrapper>
       <TextLink to="/">Forgot password?</TextLink>
-      <TextLink to="/">Don&apos;t have an account? Sign Up</TextLink>
+      <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
     </LinksWrapper>
     <MadeWithLove />
   </Container>

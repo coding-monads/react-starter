@@ -5,5 +5,8 @@ import SignUpForm from './SignUpForm';
 
 storiesOf('SignUpForm', module)
   .add('default', () => (
-    <SignUpForm onSubmit={values => console.log(values)} />
+    <SignUpForm serverErrors={ null } onSubmit={values => console.log(values)} />
+  ))
+  .add('server error', () => (
+    <SignUpForm serverErrors={ [{msg: "User already registerd"}] } onSubmit={values => console.log(values)} />
   ));
