@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import { connect } from "react-redux";
-import styled from 'styled-components';
-import SignUpForm from './SignUpForm/SignUpForm';
-import MadeWithLove from '../../components/MadeWithLove/MadeWithLove';
-import TextLink from '../../components/TextLink/TextLink';
-import Container from '../../components/Container/Container';
-import { IconAvatarLock } from '../../components/AvatarIcon/AvatarIcon';
-import TextHeading from '../../components/TextHeading/TextHeading';
-import { registerUser } from "../../store/actions/regsiterActions";
+import styled from "styled-components";
+import SignUpForm from "./SignUpForm/SignUpForm";
+import MadeWithLove from "../../components/MadeWithLove/MadeWithLove";
+import TextLink from "../../components/TextLink/TextLink";
+import Container from "../../components/Container/Container";
+import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
+import TextHeading from "../../components/TextHeading/TextHeading";
+import { registerUser } from "../../store/actions/authActions";
 import { Store } from "../../store/reducers";
 
 const LinksWrapper = styled.div`
@@ -27,14 +27,13 @@ interface Values {
 
 interface SignUpProps {
   registerUser: (registerData: Values) => void;
-  errors: [{ msg: string }] | null;
 }
 
-const SignUp: React.SFC<SignUpProps> = ({registerUser, errors}) => (
+const SignUp: React.SFC<SignUpProps> = ({ registerUser }) => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
     <TextHeading variant="h5">Sign Up</TextHeading>
-    <SignUpForm serverErrors={errors} onSubmit={registerData => registerUser(registerData)} />
+    <SignUpForm onSubmit={registerData => registerUser(registerData)} />
     <LinksWrapper>
       <TextLink to="/login">Already have an account? Sign In</TextLink>
     </LinksWrapper>

@@ -10,6 +10,14 @@ export interface LoginData {
   remember: boolean;
 }
 
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordRepeat: string;
+}
+
 export const loginUser = (
   loginData: LoginData
 ): ThunkAction<void, {}, {}, Action> => async dispatch => {
@@ -31,3 +39,28 @@ export const loginUser = (
 };
 
 export const authStartLoading = () => ({ type: TYPES.LOGIN_LOADING });
+
+export const registerUser = (
+  registerData: RegisterData
+): ThunkAction<void, {}, {}, Action> => async dispatch => {
+  dispatch({
+    type: TYPES.REGISTER_LOADING
+  });
+
+  axios
+    .post("/api/users/register", registerData)
+    .then(resp => {
+      dispatch({
+        type: TYPES.REGISTER_SUCCESS,
+        token: resp.data.token
+      });
+    })
+    .catch(err => {
+      dispatch({
+        type: TYPES.REGISTER_ERROR,
+        errors: err.response.data.errors
+      });
+    });
+};
+
+export const registerStartLoading = () => ({ type: TYPES.REGISTER_LOADING });

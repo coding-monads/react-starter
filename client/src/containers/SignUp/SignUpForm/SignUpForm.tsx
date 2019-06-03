@@ -1,10 +1,10 @@
-import React from 'react';
-import styled from 'styled-components';
-import * as Yup from 'yup';
-import { Formik, Form, Field, FormikErrors } from 'formik';
-import TextHelper from '../../../components/TextHelper/TextHelper';
-import TextField from '../../../components/TextField/TextField';
-import Button from '../../../components/Button/Button';
+import React from "react";
+import styled from "styled-components";
+import * as Yup from "yup";
+import { Formik, Form, Field, FormikErrors } from "formik";
+import TextHelper from "../../../components/TextHelper/TextHelper";
+import TextField from "../../../components/TextField/TextField";
+import Button from "../../../components/Button/Button";
 
 const StyledFormikForm = styled(Form)`
   display: grid;
@@ -16,65 +16,38 @@ const StyledFormikForm = styled(Form)`
 
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
-    .min(2, 'First name length must be at least 2 characters')
-    .required('First name is required'),
+    .min(2, "First name length must be at least 2 characters")
+    .required("First name is required"),
   lastName: Yup.string()
-    .min(2, 'First name length must be at least 2 characters')
-    .required('First name is required'),
+    .min(2, "First name length must be at least 2 characters")
+    .required("First name is required"),
   email: Yup.string()
-    .email('Invalid email')
-    .required('Email is required'),
+    .email("Invalid email")
+    .required("Email is required"),
   password: Yup.string()
-    .min(6, 'Password length must be at least 6 characters')
-    .required('Password is required'),
+    .min(6, "Password length must be at least 6 characters")
+    .required("Password is required"),
   passwordRepeat: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Passwords must match')
-    .min(6, 'Password repeat length must be at least 6 characters')
-    .required('Password repeat is required'),
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .min(6, "Password repeat length must be at least 6 characters")
+    .required("Password repeat is required")
 });
 
-interface ErrorsProps {
-  clientErrors: FormikErrors<Values>;
-  serverErrors: [{ msg: string }] | null;
+interface ClientErrors {
+  errors: FormikErrors<Values>;
 }
 
-class Error {
-  msg: string;
-  constructor(msg: string) {
-    this.msg = msg;
-  }
-}
-
-function notEmpty<Error>(value: Error | null | undefined): value is Error {
-  return value !== null && value !== undefined;
-}
-
-function mapToError(value: [{ msg: string }] | null): Error[] {
-  if (value == null) {
-    return [] as Error[];
-  } else {
-    return value.map(x => new Error(x.msg))
-  }
-}
-
-const Errors: React.FC<ErrorsProps> = ({ clientErrors, serverErrors }) => {
-  let nonEmptyErrors: Error[] = Object.values(clientErrors)
-    .filter(notEmpty)
-    .map(error => new Error(error))
-    .concat(mapToError(serverErrors))
-
+const FormErrors: React.FC<ClientErrors> = ({ errors }) => {
   return (
     <TextHelper error component="div">
-      {nonEmptyErrors.map((error, index) => (
-        <p key={index} style={{ marginBottom: '5px' }}>
-          -
-          {' '}
-          {error.msg}
+      {Object.values(errors).map((error, index) => (
+        <p key={index} style={{ marginBottom: "5px" }}>
+          - {error}
         </p>
       ))}
     </TextHelper>
-  )
-}
+  );
+};
 
 interface Values {
   firstName: string;
@@ -86,23 +59,20 @@ interface Values {
 
 interface Props {
   onSubmit: (values: Values) => void;
-  serverErrors: [{ msg: string }] | null;
 }
 
-const SignUp: React.FC<Props> = ({ onSubmit, serverErrors }) => (
+const SignUp: React.FC<Props> = ({ onSubmit }) => (
   <Formik
     validateOnBlur={false}
     validateOnChange={false}
-    initialValues={
-      {
-        firstName: '',
-        lastName: '',
-        email: '',
-        password: '',
-        passwordRepeat: ''
-      }
-    }
-    onSubmit={(values) => {
+    initialValues={{
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      passwordRepeat: ""
+    }}
+    onSubmit={values => {
       onSubmit(values);
     }}
     validationSchema={SignupSchema}
@@ -146,12 +116,7 @@ const SignUp: React.FC<Props> = ({ onSubmit, serverErrors }) => (
           outllined
           component={TextField}
         />
-        {
-          <Errors
-            clientErrors={errors}
-            serverErrors={serverErrors}
-          />
-        }
+        <FormErrors errors={errors} />
         <Button type="submit" color="primary">
           Sign up
         </Button>

@@ -12,6 +12,7 @@ const initState: AuthState = {
 export default (state = initState, action: Action): AuthState => {
   switch (action.type) {
     case TYPES.LOGIN_SUCCESS:
+    case TYPES.REGISTER_SUCCESS:
       return {
         ...state,
         isAuth: true,
@@ -20,6 +21,7 @@ export default (state = initState, action: Action): AuthState => {
         errors: null
       };
     case TYPES.LOGIN_ERROR:
+    case TYPES.REGISTER_ERROR:
       return {
         ...state,
         isAuth: false,
@@ -28,6 +30,7 @@ export default (state = initState, action: Action): AuthState => {
         errors: action.errors
       };
     case TYPES.LOGIN_LOADING:
+    case TYPES.REGISTER_LOADING:
       return {
         ...state,
         isLoading: true
