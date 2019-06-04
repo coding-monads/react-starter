@@ -13,6 +13,8 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import WarningIcon from "@material-ui/icons/Warning";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import { clearAlert } from "../../store/actions/alertActions";
+import { Store } from "../../store/reducers";
+import { AlertState } from "../../store/interfaces/alertTypes";
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -48,14 +50,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface AlertProps {
-  alert: {
-    open: boolean;
-    message: string;
-    variant: "error";
-    autoHideDuration: number;
-    vertical: "top" | "bottom";
-    horizontal: "left" | "center" | "right";
-  };
+  alert: AlertState;
   clearAlert: () => void;
 }
 
@@ -100,7 +95,7 @@ const Alert: React.FC<AlertProps> = ({
   );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: Store) => ({
   alert: state.alert
 });
 

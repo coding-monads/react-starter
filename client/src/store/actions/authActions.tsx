@@ -3,14 +3,8 @@ import axios from "axios";
 import { addAlert } from "./alertActions";
 
 import { ThunkAction } from "redux-thunk";
-import { Action } from "../interfaces/authTypes";
+import { LoginData, Action } from "../interfaces/authTypes";
 import { AlertActions } from "../interfaces/alertTypes";
-
-export interface LoginData {
-  email: string;
-  password: string;
-  remember: boolean;
-}
 
 export const loginUser = (
   loginData: LoginData
@@ -35,5 +29,3 @@ export const loginUser = (
     );
   }
 };
-
-export const authStartLoading = () => ({ type: TYPES.LOGIN_LOADING });
