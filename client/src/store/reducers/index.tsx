@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
+import alertReducer from './alertReducer'
 import { AuthState } from "../interfaces/authTypes";
 
 export interface Store {
@@ -7,5 +8,6 @@ export interface Store {
 }
 
 export default combineReducers({
-  auth: authReducer
+  auth: authReducer,
+  alert: alertReducer
 });
