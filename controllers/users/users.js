@@ -9,16 +9,30 @@ const nodemailer = require("nodemailer");
 exports.activateUser = async (req, res) => {
   const { activationKey } = req.params;
   const user = await User.findOne({ activationKey });
-  if(user){
-    if(user.emailVerified) {
+  if (user) {
+    if (user.emailVerified) {
       return res.status(400).json({ msg: messages.KEY_HAS_BEEN_ACTIVATED });
     }
     user.emailVerified = true;
     await user.save();
     return res.status(200).json({ msg: messages.USER_ACTIVATED });
   }
-  return res.status(400).json({ msg: messages.ACTIVATION_KEY_IS_INCORRECT }); 
-}
+  return res.status(400).json({ msg: messages.ACTIVATION_KEY_IS_INCORRECT });
+};
+
+exports.getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id)
+      .select("-_id")
+      .select("-password")
+      .select("-activationKey")
+      .select("-updatedAt")
+      .select("-__v");
+    res.json(user);
+  } catch (err) {
+    res.status(500).send(messages.SERVER_ERROR);
+  }
+};
 
 exports.registerUser = (req, res) => {
   const errors = validationResult(req);
@@ -133,36 +147,40 @@ exports.updateUserData = async (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+    return res
+      .status(400)
+      .json({ errors: errors.array({ onlyFirstError: true }) });
   }
 
   const user = await User.findById(req.user.id);
-  if (user){
+  if (user) {
     let { firstName, lastName, email, password } = req.body;
 
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
 
-    if (email){
+    if (email) {
       email = email.toLowerCase();
-      if (email !== user.email){
-        const emailExist = await User.findOne({email});
-        if (emailExist){
-          return res.status(400).json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
+      if (email !== user.email) {
+        const emailExist = await User.findOne({ email });
+        if (emailExist) {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
         }
         user.email = email;
-        user.activationKey = bcrypt.hashSync(email).replace(/\//g, '');
+        user.activationKey = bcrypt.hashSync(email).replace(/\//g, "");
         user.emailVerified = false;
-        sendVerificationEmail(user)
+        sendVerificationEmail(user);
       }
     }
-    if (password){
-      user.password = bcrypt.hashSync(password)
+    if (password) {
+      user.password = bcrypt.hashSync(password);
     }
     await user.save();
-    return res.json({msg: messages.USER_UPDATED })
-  }else {
-    return res.status(500).send(messages.SERVER_ERROR)
+    return res.json({ msg: messages.USER_UPDATED });
+  } else {
+    return res.status(500).send(messages.SERVER_ERROR);
   }
 };
 
@@ -172,7 +190,7 @@ const sendVerificationEmail = user => {
   const transporter = nodemailer.createTransport({
     ...mailSettings,
     auth: mailCredentials
-  })
+  });
 
   const mailOptions = {
     from: "support <natripareact@gmail.com>",
@@ -180,12 +198,13 @@ const sendVerificationEmail = user => {
     subject: "Account Activation",
     html: `
       To activate your account, click this link
-      <a href="http://localhost:5000/api/users/activate/${user.activationKey}">Activate Account</a>
+      <a href="http://localhost:5000/api/users/activate/${
+        user.activationKey
+      }">Activate Account</a>
     `
-  }
+  };
 
   transporter.sendMail(mailOptions, (err, data) => {
-    if(err) throw err;
-  })
-
-}
+    if (err) throw err;
+  });
+};

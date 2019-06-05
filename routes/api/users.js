@@ -10,6 +10,12 @@ const {
 } = require("../../controllers/users/methods");
 const auth = require("../../middleware/auth");
 
+// @route   GET api/users
+// @desc    Return user depending on jwt
+// @access  Private without emailVerified
+router.get("/", (req, res, next) => auth(req, res, next, withEmail = false), usersController.getUser
+);
+
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
