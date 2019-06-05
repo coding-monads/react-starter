@@ -1,5 +1,9 @@
 import * as TYPES from "../actions/types";
-import { AuthState, Action } from "../interfaces/authTypes";
+import {
+  AuthState,
+  LoginActions,
+  LoadUserActions
+} from "../interfaces/authTypes";
 
 const initState: AuthState = {
   isAuth: false,
@@ -9,7 +13,9 @@ const initState: AuthState = {
   errors: null
 };
 
-export default (state = initState, action: Action): AuthState => {
+type AuthActions = LoginActions | LoadUserActions;
+
+export default (state = initState, action: AuthActions): AuthState => {
   switch (action.type) {
     case TYPES.LOGIN_SUCCESS:
       return {
@@ -31,6 +37,18 @@ export default (state = initState, action: Action): AuthState => {
       return {
         ...state,
         isLoading: true
+      };
+    case TYPES.USER_LOADED:
+      return {
+        ...state,
+        isAuth: true,
+        token: localStorage.getItem("token"),
+        user: action.user
+      };
+    case TYPES.USER_LOAD_ERROR:
+      return {
+        ...state,
+        token: null
       };
     default:
       return state;

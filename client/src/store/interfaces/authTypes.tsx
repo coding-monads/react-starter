@@ -23,4 +23,25 @@ export interface LoginErrorAction {
 export interface LoginLoadingAction {
   type: "LOGIN_LOADING";
 }
-export type Action = LoginSuccessAction | LoginErrorAction | LoginLoadingAction;
+
+export type LoginActions =
+  | LoginSuccessAction
+  | LoginErrorAction
+  | LoginLoadingAction;
+
+export interface UserLoadedAction {
+  type: "USER_LOADED";
+  user: {
+    emailVerified: boolean;
+    roles: [string];
+    firstName: string;
+    lastName: string;
+    email: string;
+    createdAt: string;
+  };
+}
+export interface UserLoadErrorAction {
+  type: "USER_LOAD_ERROR";
+}
+
+export type LoadUserActions = UserLoadedAction | UserLoadErrorAction;

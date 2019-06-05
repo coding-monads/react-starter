@@ -1,26 +1,41 @@
-import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-import GlobalStyle from './GlobalStyles';
-import theme from './utillities/theme';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { ThemeProvider } from "styled-components";
+import GlobalStyle from "./GlobalStyles";
+import theme from "./utillities/theme";
+import setAuthToken from "./utillities/setAuthToken";
+import { loadUser } from "./store/actions/authActions";
 
-import Layout from './containers/Layout/Layout';
-import Test from './containers/Test/Test';
-import SignIn from './containers/SignIn/SignIn';
+import Layout from "./containers/Layout/Layout";
+import Test from "./containers/Test/Test";
+import SignIn from "./containers/SignIn/SignIn";
 
-const App: React.FC = () => (
-  <BrowserRouter>
-    <ThemeProvider theme={theme}>
-      <>
-        <GlobalStyle />
-        <Layout>
-          <Switch>
-            <Route path="/" exact component={SignIn} />
-          </Switch>
-        </Layout>
-      </>
-    </ThemeProvider>
-  </BrowserRouter>
-);
+interface Props {
+  dispatch: (callback: any) => void;
+}
 
-export default App;
+const App: React.FC<Props> = ({ dispatch }) => {
+  useEffect(() => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token);
+      dispatch(loadUser());
+    }
+  }, [dispatch]);
+  return (
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <>
+          <GlobalStyle />
+          <Layout>
+            <Switch>
+              <Route path="/" exact component={SignIn} />
+            </Switch>
+          </Layout>
+        </>
+      </ThemeProvider>
+    </BrowserRouter>
+  );
+};
+
+export default connect()(App);
