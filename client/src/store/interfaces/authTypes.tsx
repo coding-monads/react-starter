@@ -44,10 +44,12 @@ export interface RegisterLoadingAction {
   type: "REGISTER_LOADING";
 }
 
-export type Action =
+export type LoginAction =
   | LoginSuccessAction
   | LoginErrorAction
-  | LoginLoadingAction
+  | LoginLoadingAction;
+
+export type RegisterAction =
   | RegisterSuccessAction
   | RegisterErrorAction
   | RegisterLoadingAction;

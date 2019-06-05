@@ -2,7 +2,7 @@ import React from 'react';
 
 const LandingPage: React.FC = () => {
     return (
-        <div>NaTrepa Portal Landing Page</div>
+        <div>NaTripa Portal Landing Page</div>
     )
 }
 

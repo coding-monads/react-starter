@@ -38,15 +38,19 @@ interface ClientErrors {
 }
 
 const FormErrors: React.FC<ClientErrors> = ({ errors }) => {
-  return (
-    <TextHelper error component="div">
-      {Object.values(errors).map((error, index) => (
-        <p key={index} style={{ marginBottom: "5px" }}>
-          - {error}
-        </p>
-      ))}
-    </TextHelper>
-  );
+  if (Object.keys(errors).length > 0) {
+    return (
+      <TextHelper error component="div">
+        {Object.values(errors).map((error, index) => (
+          <p key={index} style={{ marginBottom: "5px" }}>
+            - {error}
+          </p>
+        ))}
+      </TextHelper>
+    );
+  } else {
+    return (<></>)
+  }
 };
 
 interface Values {

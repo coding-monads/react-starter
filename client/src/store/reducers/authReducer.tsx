@@ -1,5 +1,5 @@
 import * as TYPES from "../actions/types";
-import { AuthState, Action } from "../interfaces/authTypes";
+import { AuthState, LoginAction, RegisterAction } from "../interfaces/authTypes";
 
 const initState: AuthState = {
   isAuth: false,
@@ -9,7 +9,7 @@ const initState: AuthState = {
   errors: null
 };
 
-export default (state = initState, action: Action): AuthState => {
+export default (state = initState, action: LoginAction | RegisterAction): AuthState => {
   switch (action.type) {
     case TYPES.LOGIN_SUCCESS:
     case TYPES.REGISTER_SUCCESS:

@@ -1,26 +1,12 @@
 import * as TYPES from "./types";
+import { ThunkAction } from "redux-thunk";
 import axios from "axios";
 
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { Action } from "../interfaces/authTypes";
-
-export interface LoginData {
-  email: string;
-  password: string;
-  remember: boolean;
-}
-
-export interface RegisterData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  passwordRepeat: string;
-}
+import { LoginAction, RegisterAction, LoginData, RegisterData } from "../interfaces/authTypes";
 
 export const loginUser = (
   loginData: LoginData
-): ThunkAction<void, {}, {}, Action> => async dispatch => {
+): ThunkAction<void, {}, {}, LoginAction> => async dispatch => {
   dispatch({
     type: TYPES.LOGIN_LOADING
   });
@@ -38,11 +24,9 @@ export const loginUser = (
   }
 };
 
-export const authStartLoading = () => ({ type: TYPES.LOGIN_LOADING });
-
 export const registerUser = (
   registerData: RegisterData
-): ThunkAction<void, {}, {}, Action> => async dispatch => {
+): ThunkAction<void, {}, {}, RegisterAction> => async dispatch => {
   dispatch({
     type: TYPES.REGISTER_LOADING
   });
@@ -62,5 +46,3 @@ export const registerUser = (
       });
     });
 };
-
-export const registerStartLoading = () => ({ type: TYPES.REGISTER_LOADING });
