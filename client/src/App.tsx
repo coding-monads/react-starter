@@ -5,8 +5,9 @@ import GlobalStyle from './GlobalStyles';
 import theme from './utillities/theme';
 
 import Layout from './containers/Layout/Layout';
-import Test from './containers/Test/Test';
+import LandingPage from './containers/LandingPage';
 import SignIn from './containers/SignIn/SignIn';
+import SignUp from './containers/SignUp/SignUp';
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -15,7 +16,9 @@ const App: React.FC = () => (
         <GlobalStyle />
         <Layout>
           <Switch>
-            <Route path="/" exact component={SignIn} />
+            <Route path="/" exact component={LandingPage} />
+            <Route path="/login" exact component={SignIn} />
+            <Route path="/register" exact component={SignUp} />
           </Switch>
         </Layout>
       </>
