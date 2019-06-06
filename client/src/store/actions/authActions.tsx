@@ -2,11 +2,20 @@ import * as TYPES from "./types";
 import { ThunkAction } from "redux-thunk";
 import axios from "axios";
 
-import { LoginAction, RegisterAction, LoginData, RegisterData } from "../interfaces/authTypes";
+import {
+  LoginAction,
+  RegisterAction,
+  LoginData,
+  RegisterData
+} from "../interfaces/authTypes";
+
+type ErrorResponse = {
+  errors: string
+}
 
 export const loginUser = (
   loginData: LoginData
-): ThunkAction<void, {}, {}, LoginAction> => async dispatch => {
+): ThunkAction<void, {}, ErrorResponse, LoginAction> => async dispatch => {
   dispatch({
     type: TYPES.LOGIN_LOADING
   });
@@ -26,23 +35,22 @@ export const loginUser = (
 
 export const registerUser = (
   registerData: RegisterData
-): ThunkAction<void, {}, {}, RegisterAction> => async dispatch => {
+): ThunkAction<void, {}, ErrorResponse, RegisterAction> => async dispatch => {
   dispatch({
     type: TYPES.REGISTER_LOADING
   });
-
   axios
     .post("/api/users/register", registerData)
-    .then(resp => {
+    .then(({ data: { token } }) => {
       dispatch({
         type: TYPES.REGISTER_SUCCESS,
-        token: resp.data.token
+        token: token
       });
     })
-    .catch(err => {
+    .catch(({ response: { data } }) => {
       dispatch({
         type: TYPES.REGISTER_ERROR,
-        errors: err.response.data.errors
+        errors: data.errors
       });
     });
 };

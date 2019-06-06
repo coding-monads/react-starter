@@ -33,7 +33,7 @@ const SignupSchema = Yup.object().shape({
     .required("Password repeat is required")
 });
 
-interface ClientErrors {
+type ClientErrors = {
   errors: FormikErrors<Values>;
 }
 
@@ -49,11 +49,11 @@ const FormErrors: React.FC<ClientErrors> = ({ errors }) => {
       </TextHelper>
     );
   } else {
-    return (<></>)
+    return null;
   }
 };
 
-export interface Values {
+export type Values = {
   firstName: string;
   lastName: string;
   email: string;
@@ -61,7 +61,7 @@ export interface Values {
   passwordRepeat: string;
 }
 
-interface Props {
+type Props = {
   onSubmit: (values: Values) => void;
 }
 
