@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import SignUpForm from "./SignUpForm/SignUpForm";
+import SignUpForm, { Values } from "./SignUpForm/SignUpForm";
 import MadeWithLove from "../../components/MadeWithLove/MadeWithLove";
 import TextLink from "../../components/TextLink/TextLink";
 import Container from "../../components/Container/Container";
@@ -17,14 +17,6 @@ const LinksWrapper = styled.div`
   justify-content: space-between;
 `;
 
-interface Values {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  passwordRepeat: string;
-}
-
 interface SignUpProps {
   registerUser: (registerData: Values) => void;
 }
@@ -33,7 +25,7 @@ const SignUp: React.SFC<SignUpProps> = ({ registerUser }) => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
     <TextHeading variant="h5">Sign Up</TextHeading>
-    <SignUpForm onSubmit={registerData => registerUser(registerData)} />
+    <SignUpForm onSubmit={ registerUser } />
     <LinksWrapper>
       <TextLink to="/login">Already have an account? Sign In</TextLink>
     </LinksWrapper>

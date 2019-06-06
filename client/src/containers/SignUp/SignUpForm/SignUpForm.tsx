@@ -53,7 +53,7 @@ const FormErrors: React.FC<ClientErrors> = ({ errors }) => {
   }
 };
 
-interface Values {
+export interface Values {
   firstName: string;
   lastName: string;
   email: string;
