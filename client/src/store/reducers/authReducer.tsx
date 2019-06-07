@@ -3,7 +3,8 @@ import {
   AuthState,
   LoginActions,
   RegisterActions,
-  LoadUserActions
+  LoadUserActions,
+  LogoutAction
 } from "../interfaces/authTypes";
 
 const initState: AuthState = {
@@ -14,7 +15,11 @@ const initState: AuthState = {
   errors: null
 };
 
-type AuthActions = LoginActions | RegisterActions | LoadUserActions;
+type AuthActions =
+  | LoginActions
+  | RegisterActions
+  | LoadUserActions
+  | LogoutAction;
 
 export default (state = initState, action: AuthActions): AuthState => {
   switch (action.type) {
@@ -50,9 +55,12 @@ export default (state = initState, action: AuthActions): AuthState => {
         user: action.user
       };
     case TYPES.USER_LOAD_ERROR:
+    case TYPES.LOGOUT:
       return {
         ...state,
-        token: null
+        isAuth: false,
+        token: null,
+        user: null
       };
     default:
       return state;
