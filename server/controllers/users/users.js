@@ -28,7 +28,7 @@ exports.getUser = async (req, res) => {
       .select("-activationKey")
       .select("-updatedAt")
       .select("-__v");
-    res.json({ user: user});
+    res.json({ user: user });
   } catch (err) {
     res.status(500).send(messages.SERVER_ERROR);
   }
@@ -81,7 +81,8 @@ exports.registerUser = (req, res) => {
               sendVerificationEmail(newUser);
               res.json({
                 msg: messages.USER_REGISTERED,
-                token: "Bearer " + token
+                token: "Bearer " + token,
+                expTime: 3600
               });
             }
           );
@@ -99,7 +100,7 @@ exports.loginUser = (req, res) => {
       .status(400)
       .json({ errors: errors.array({ onlyFirstError: true }) });
   }
-  const { password, email = email.toLowerCase() } = req.body;
+  const { password, email = email.toLowerCase(), remember } = req.body;
 
   User.findOne({ email }).then(user => {
     if (!user) {
@@ -114,17 +115,17 @@ exports.loginUser = (req, res) => {
               id: user.id
             }
           };
-
+          const expiresIn = remember ? 43200 : 3600;
           jwt.sign(
             payload,
             config.get("jwtSecret"),
-            { expiresIn: 60 },
+            { expiresIn },
             (err, token) => {
               if (err) throw err;
               res.json({
                 msg: messages.USER_LOGGEDIN,
                 token: "Bearer " + token,
-                expTime: 60
+                expTime: expiresIn
               });
             }
           );

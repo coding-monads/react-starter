@@ -72,3 +72,6 @@ export interface UserLoadErrorAction {
 
 export type LoadUserActions = UserLoadedAction | UserLoadErrorAction;
 
+export interface LogoutAction {
+  type: "LOGOUT";
+}

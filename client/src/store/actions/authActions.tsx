@@ -8,12 +8,13 @@ import {
   RegisterActions,
   LoginData,
   RegisterData,
-  LoadUserActions
+  LoadUserActions,
+  LogoutAction
 } from "../interfaces/authTypes";
 
 type ErrorResponse = {
-  errors: string
-}
+  errors: string;
+};
 
 export const loginUser = (
   loginData: LoginData
@@ -22,19 +23,17 @@ export const loginUser = (
     type: TYPES.LOGIN_LOADING
   });
   try {
-    const { data } = await axios.post("/api/users/login", loginData);
+    const {
+      data: { token, expTime }
+    } = await axios.post("/api/users/login", loginData);
 
-    if (loginData.remember) {
-      localStorage.setItem("token", data.token);
-      const expDate = new Date(new Date().getTime() + (data.expTime * 1000))
-      localStorage.setItem("expDate", JSON.stringify(expDate));
-    }
-    setAuthToken(data.token);
+    setAuthToken(token);
+    dispatch(setToken(token, expTime));
+    await dispatch(loadUser());
     dispatch({
       type: TYPES.LOGIN_SUCCESS,
-      token: data.token
+      token
     });
-    dispatch(loadUser());
   } catch (err) {
     dispatch({
       type: TYPES.LOGIN_ERROR,
@@ -49,9 +48,13 @@ export const registerUser = (
   dispatch({
     type: TYPES.REGISTER_LOADING
   });
+
   axios
     .post("/api/users/register", registerData)
-    .then(({ data: { token } }) => {
+    .then(({ data: { token, expTime } }) => {
+      setAuthToken(token);
+      dispatch(setToken(token, expTime));
+      dispatch(loadUser());
       dispatch({
         type: TYPES.REGISTER_SUCCESS,
         token: token
@@ -64,16 +67,6 @@ export const registerUser = (
       });
     });
 };
-
-
-export const logoutUser = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('expDate')
-
-  return {
-      type: TYPES.LOGOUT
-  }
-}
 
 export const loadUser = (): ThunkAction<
   void,
@@ -89,6 +82,7 @@ export const loadUser = (): ThunkAction<
     });
   } catch (err) {
     localStorage.removeItem("token");
+    localStorage.removeItem("expDate");
     dispatch({
       type: TYPES.USER_LOAD_ERROR,
       errors: err.response.data
@@ -96,36 +90,50 @@ export const loadUser = (): ThunkAction<
   }
 };
 
-export const checkAuthTimeout = (expTime: number): ThunkAction<
-  void,
-  {},
-  {},
-  any
-> => dispatch => {
-      setTimeout(() => {
-          dispatch(logoutUser())
-      }, expTime);
-  
-}
+export const logoutUser = (): LogoutAction => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("expDate");
 
-export const checkAuth = (): ThunkAction<
-  void,
-  {},
-  {},
-  any
-> => dispatch => {
+  return {
+    type: TYPES.LOGOUT
+  };
+};
 
-  const token = localStorage.getItem('token')
-  const expDate = localStorage.getItem('expDate')
+const setToken = (token: string, expTime: number) => (
+  dispatch: (arg: Function) => void
+) => {
+  localStorage.setItem("token", token);
+  const expDate = new Date(new Date().getTime() + expTime * 1000);
+  localStorage.setItem("expDate", JSON.stringify(expDate));
+
+  dispatch(checkAuthTimeout(expDate.getTime() - new Date().getTime()));
+};
+
+const checkAuthTimeout = (expTime: number) => (
+  dispatch: (arg: LogoutAction) => void
+) => {
+  setTimeout(() => {
+    dispatch(logoutUser());
+  }, expTime);
+};
+
+export const checkAuth = () => (
+  dispatch: (arg: Function | LogoutAction) => void
+) => {
+  const token = localStorage.getItem("token");
+  const expDate = localStorage.getItem("expDate");
 
   if (token && expDate) {
-      if(new Date() < new Date (JSON.parse(expDate))) {
-        setAuthToken(localStorage.token);
-        dispatch(loadUser());
-        console.log(new Date(JSON.parse(expDate)).getTime() - new Date().getTime())
-        dispatch(checkAuthTimeout(new Date(JSON.parse(expDate)).getTime() - new Date().getTime()));
-      } else {
-        dispatch(logoutUser())
-      }
+    if (new Date() < new Date(JSON.parse(expDate))) {
+      setAuthToken(token);
+      dispatch(loadUser());
+      dispatch(
+        checkAuthTimeout(
+          new Date(JSON.parse(expDate)).getTime() - new Date().getTime()
+        )
+      );
+    } else {
+      dispatch(logoutUser());
+    }
   }
 };
