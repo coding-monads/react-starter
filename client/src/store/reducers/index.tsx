@@ -7,5 +7,5 @@ export interface Store {
 }
 
 export default combineReducers({
-  auth: authReducer
+  auth: authReducer,
 });

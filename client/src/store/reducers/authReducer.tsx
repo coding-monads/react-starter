@@ -2,6 +2,7 @@ import * as TYPES from "../actions/types";
 import {
   AuthState,
   LoginActions,
+  RegisterActions,
   LoadUserActions
 } from "../interfaces/authTypes";
 
@@ -13,11 +14,12 @@ const initState: AuthState = {
   errors: null
 };
 
-type AuthActions = LoginActions | LoadUserActions;
+type AuthActions = LoginActions | RegisterActions | LoadUserActions;
 
 export default (state = initState, action: AuthActions): AuthState => {
   switch (action.type) {
     case TYPES.LOGIN_SUCCESS:
+    case TYPES.REGISTER_SUCCESS:
       return {
         ...state,
         isAuth: true,
@@ -26,6 +28,7 @@ export default (state = initState, action: AuthActions): AuthState => {
         errors: null
       };
     case TYPES.LOGIN_ERROR:
+    case TYPES.REGISTER_ERROR:
       return {
         ...state,
         isAuth: false,
@@ -34,6 +37,7 @@ export default (state = initState, action: AuthActions): AuthState => {
         errors: action.errors
       };
     case TYPES.LOGIN_LOADING:
+    case TYPES.REGISTER_LOADING:
       return {
         ...state,
         isLoading: true

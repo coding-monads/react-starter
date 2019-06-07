@@ -1,17 +1,23 @@
 import * as TYPES from "./types";
+import { ThunkAction } from "redux-thunk";
 import axios from "axios";
 import setAuthToken from "../../utillities/setAuthToken";
 
-import { ThunkAction } from "redux-thunk";
 import {
-  LoginData,
   LoginActions,
+  RegisterActions,
+  LoginData,
+  RegisterData,
   LoadUserActions
 } from "../interfaces/authTypes";
 
+type ErrorResponse = {
+  errors: string
+}
+
 export const loginUser = (
   loginData: LoginData
-): ThunkAction<void, {}, {}, LoginActions> => async dispatch => {
+): ThunkAction<void, {}, ErrorResponse, LoginActions> => async dispatch => {
   dispatch({
     type: TYPES.LOGIN_LOADING
   });
@@ -36,6 +42,29 @@ export const loginUser = (
     });
   }
 };
+
+export const registerUser = (
+  registerData: RegisterData
+): ThunkAction<void, {}, ErrorResponse, RegisterActions> => async dispatch => {
+  dispatch({
+    type: TYPES.REGISTER_LOADING
+  });
+  axios
+    .post("/api/users/register", registerData)
+    .then(({ data: { token } }) => {
+      dispatch({
+        type: TYPES.REGISTER_SUCCESS,
+        token: token
+      });
+    })
+    .catch(({ response: { data } }) => {
+      dispatch({
+        type: TYPES.REGISTER_ERROR,
+        errors: data.errors
+      });
+    });
+};
+
 
 export const logoutUser = () => {
   localStorage.removeItem('token')

@@ -3,25 +3,25 @@
 ## project sructure
 
 - ./client - frontend side
-- ./ - backend side
+- ./server - backend side
 
 ### to run project
 
-1. npm run install-all // it will install dependencies inside root and client folder
-2. npm run dev // it will run at the same time server + react-app
+1. npm run install:all // it will install dependencies inside root and client folder
+2. npm run start // it will run at the same time server + react-app
 
 ### to run project with local mongo and smtp (docker-compose)
 
 1. Install docker
 1. Install docker-compose (on windows already installed with docker)
-1. npm run install-all
-1. npm run dc-up (or dc-up-persist - to persist database entities on localhost)
-1. Copy env.docker.template to .env
-1. npm run dev
+1. npm run install:all
+1. npm run dc:up (or dc:up-persist - to persist database entities on localhost)
+1. cd server && cp env.docker.template .env && cd ..
+1. npm run start
 
 ### to run storybook
 
-cd client -> npm run storybook
+npm run storybook
 
 ### starter which contains
 
