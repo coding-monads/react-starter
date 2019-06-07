@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./GlobalStyles";
 import theme from "./utillities/theme";
 import setAuthToken from "./utillities/setAuthToken";
-import { loadUser } from "./store/actions/authActions";
+import { checkAuth } from "./store/actions/authActions";
 
 import Layout from "./containers/Layout/Layout";
 import Test from "./containers/Test/Test";
@@ -17,10 +17,7 @@ interface Props {
 
 const App: React.FC<Props> = ({ dispatch }) => {
   useEffect(() => {
-    if (localStorage.token) {
-      setAuthToken(localStorage.token);
-      dispatch(loadUser());
-    }
+      dispatch(checkAuth());
   }, [dispatch]);
   return (
     <BrowserRouter>

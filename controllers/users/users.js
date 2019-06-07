@@ -28,7 +28,7 @@ exports.getUser = async (req, res) => {
       .select("-activationKey")
       .select("-updatedAt")
       .select("-__v");
-    res.json(user);
+    res.json({ user: user});
   } catch (err) {
     res.status(500).send(messages.SERVER_ERROR);
   }
@@ -118,12 +118,13 @@ exports.loginUser = (req, res) => {
           jwt.sign(
             payload,
             config.get("jwtSecret"),
-            { expiresIn: 3600 },
+            { expiresIn: 60 },
             (err, token) => {
               if (err) throw err;
               res.json({
                 msg: messages.USER_LOGGEDIN,
-                token: "Bearer " + token
+                token: "Bearer " + token,
+                expTime: 60
               });
             }
           );

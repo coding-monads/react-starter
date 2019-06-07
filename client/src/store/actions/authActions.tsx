@@ -16,15 +16,17 @@ export const loginUser = (
     type: TYPES.LOGIN_LOADING
   });
   try {
-    const asyncResp = await axios.post("/api/users/login", loginData);
+    const { data } = await axios.post("/api/users/login", loginData);
 
     if (loginData.remember) {
-      localStorage.setItem("token", asyncResp.data.token);
+      localStorage.setItem("token", data.token);
+      const expDate = new Date(new Date().getTime() + (data.expTime * 1000))
+      localStorage.setItem("expDate", JSON.stringify(expDate));
     }
-    setAuthToken(asyncResp.data.token);
+    setAuthToken(data.token);
     dispatch({
       type: TYPES.LOGIN_SUCCESS,
-      token: asyncResp.data.token
+      token: data.token
     });
     dispatch(loadUser());
   } catch (err) {
@@ -35,6 +37,15 @@ export const loginUser = (
   }
 };
 
+export const logoutUser = () => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('expDate')
+
+  return {
+      type: TYPES.LOGOUT
+  }
+}
+
 export const loadUser = (): ThunkAction<
   void,
   {},
@@ -42,10 +53,10 @@ export const loadUser = (): ThunkAction<
   LoadUserActions
 > => async dispatch => {
   try {
-    const asyncResp = await axios.get("/api/users");
+    const { data } = await axios.get("/api/users");
     dispatch({
       type: TYPES.USER_LOADED,
-      user: asyncResp.data
+      user: data.user
     });
   } catch (err) {
     localStorage.removeItem("token");
@@ -53,5 +64,39 @@ export const loadUser = (): ThunkAction<
       type: TYPES.USER_LOAD_ERROR,
       errors: err.response.data
     });
+  }
+};
+
+export const checkAuthTimeout = (expTime: number): ThunkAction<
+  void,
+  {},
+  {},
+  any
+> => dispatch => {
+      setTimeout(() => {
+          dispatch(logoutUser())
+      }, expTime);
+  
+}
+
+export const checkAuth = (): ThunkAction<
+  void,
+  {},
+  {},
+  any
+> => dispatch => {
+
+  const token = localStorage.getItem('token')
+  const expDate = localStorage.getItem('expDate')
+
+  if (token && expDate) {
+      if(new Date() < new Date (JSON.parse(expDate))) {
+        setAuthToken(localStorage.token);
+        dispatch(loadUser());
+        console.log(new Date(JSON.parse(expDate)).getTime() - new Date().getTime())
+        dispatch(checkAuthTimeout(new Date(JSON.parse(expDate)).getTime() - new Date().getTime()));
+      } else {
+        dispatch(logoutUser())
+      }
   }
 };
