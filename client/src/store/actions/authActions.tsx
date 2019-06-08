@@ -1,6 +1,7 @@
 import * as TYPES from "./types";
 import { ThunkAction } from "redux-thunk";
 import axios from "axios";
+import { addAlert } from "./alertActions";
 
 import {
   LoginAction,
@@ -8,6 +9,7 @@ import {
   LoginData,
   RegisterData
 } from "../interfaces/authTypes";
+import { AlertActions } from "../interfaces/alertTypes";
 
 type ErrorResponse = {
   errors: string
@@ -15,7 +17,7 @@ type ErrorResponse = {
 
 export const loginUser = (
   loginData: LoginData
-): ThunkAction<void, {}, ErrorResponse, LoginAction> => async dispatch => {
+): ThunkAction<void, {}, ErrorResponse, LoginAction | AlertActions> => async dispatch => {
   dispatch({
     type: TYPES.LOGIN_LOADING
   });
@@ -25,11 +27,15 @@ export const loginUser = (
       type: TYPES.LOGIN_SUCCESS,
       token: asyncResp.data.token
     });
+    dispatch(addAlert({ message: asyncResp.data.msg, variant: "success" }));
   } catch (err) {
     dispatch({
       type: TYPES.LOGIN_ERROR,
       errors: err.response.data.errors
     });
+    dispatch(
+      addAlert({ message: err.response.data.errors[0].msg, variant: "error" })
+    );
   }
 };
 
