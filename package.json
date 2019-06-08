@@ -4,7 +4,7 @@
   "scripts": {
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
-    "start:docker": "NODE_ENV=docker npm start",
+    "start:docker": "cross-env NODE_ENV=docker npm start",
     "start:server": "cd server && nodemon server",
     "start:client": "npm start --prefix client",
     "storybook": "cd client && npm run storybook",
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
+    "cross-env": "^5.2.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.17.3",
