@@ -20,6 +20,20 @@ exports.activateUser = async (req, res) => {
 	return res.status(400).json({ msg: messages.ACTIVATION_KEY_IS_INCORRECT });
 };
 
+exports.getUser = async (req, res) => {
+	try {
+		const user = await User.findById(req.user.id)
+			.select('-_id')
+			.select('-password')
+			.select('-activationKey')
+			.select('-updatedAt')
+			.select('-__v');
+		res.json({ user });
+	} catch (err) {
+		res.status(500).send(messages.SERVER_ERROR);
+	}
+};
+
 exports.registerUser = (req, res) => {
 	const errors = validationResult(req);
 
@@ -67,12 +81,13 @@ exports.registerUser = (req, res) => {
 							sendVerificationEmail(newUser);
 							res.json({
 								msg: messages.USER_REGISTERED,
-								token: 'Bearer ' + token
+								token: 'Bearer ' + token,
+								expTime: 3600
 							});
 						}
 					);
 				})
-				.catch(() => res.status(500).send(messages.SERVER_ERROR));
+				.catch(err => res.status(500).send(messages.SERVER_ERROR, err));
 		}
 	});
 };
@@ -85,7 +100,7 @@ exports.loginUser = (req, res) => {
 			.status(400)
 			.json({ errors: errors.array({ onlyFirstError: true }) });
 	}
-	const { password, email = email.toLowerCase() } = req.body;
+	const { password, email = email.toLowerCase(), remember } = req.body;
 
 	User.findOne({ email }).then(user => {
 		if (!user) {
@@ -100,16 +115,17 @@ exports.loginUser = (req, res) => {
 							id: user.id
 						}
 					};
-
+					const expiresIn = remember ? 43200 : 3600;
 					jwt.sign(
 						payload,
 						config.get('jwtSecret'),
-						{ expiresIn: 3600 },
+						{ expiresIn },
 						(err, token) => {
 							if (err) throw err;
 							res.json({
 								msg: messages.USER_LOGGEDIN,
-								token: 'Bearer ' + token
+								token: 'Bearer ' + token,
+								expTime: expiresIn
 							});
 						}
 					);
@@ -181,7 +197,9 @@ const sendVerificationEmail = user => {
 		subject: 'Account Activation',
 		html: `
       To activate your account, click this link
-      <a href="http://localhost:5000/api/users/activate/${user.activationKey}">Activate Account</a>
+      <a href="http://localhost:5000/api/users/activate/${
+	user.activationKey
+}">Activate Account</a>
     `
 	};
 

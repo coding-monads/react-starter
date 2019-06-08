@@ -12,14 +12,6 @@ export interface LoginData {
   remember: boolean;
 }
 
-export interface RegisterData {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  passwordRepeat: string;
-}
-
 export interface LoginSuccessAction {
   type: "LOGIN_SUCCESS";
   token: string;
@@ -30,6 +22,19 @@ export interface LoginErrorAction {
 }
 export interface LoginLoadingAction {
   type: "LOGIN_LOADING";
+}
+
+export type LoginActions =
+  | LoginSuccessAction
+  | LoginErrorAction
+  | LoginLoadingAction;
+
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  passwordRepeat: string;
 }
 
 export interface RegisterSuccessAction {
@@ -44,12 +49,29 @@ export interface RegisterLoadingAction {
   type: "REGISTER_LOADING";
 }
 
-export type LoginAction =
-  | LoginSuccessAction
-  | LoginErrorAction
-  | LoginLoadingAction;
-
-export type RegisterAction =
+export type RegisterActions =
   | RegisterSuccessAction
   | RegisterErrorAction
   | RegisterLoadingAction;
+
+
+export interface UserLoadedAction {
+  type: "USER_LOADED";
+  user: {
+    emailVerified: boolean;
+    roles: [string];
+    firstName: string;
+    lastName: string;
+    email: string;
+    createdAt: string;
+  };
+}
+export interface UserLoadErrorAction {
+  type: "USER_LOAD_ERROR";
+}
+
+export type LoadUserActions = UserLoadedAction | UserLoadErrorAction;
+
+export interface LogoutAction {
+  type: "LOGOUT";
+}
