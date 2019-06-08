@@ -1,5 +1,5 @@
-const passport = require("passport");
-const messages = require("../controllers/messages");
+const passport = require('passport');
+const messages = require('../controllers/messages');
 
 module.exports = (req, res, next, withEmail = true) => {
   passport.authenticate("jwt", { session: false }, (err, user, info) => {

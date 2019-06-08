@@ -5,6 +5,7 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./GlobalStyles";
 import theme from "./utillities/theme";
 import { checkAuth } from "./store/actions/authActions";
+import Alert from "./components/Alert/Alert";
 
 import Layout from "./containers/Layout/Layout";
 import LandingPage from "./containers/LandingPage";
@@ -23,6 +24,7 @@ const App: React.FC<Props> = ({ dispatch }) => {
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         <>
+          <Alert />
           <GlobalStyle />
           <Layout>
             <Switch>

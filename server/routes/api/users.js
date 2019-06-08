@@ -1,14 +1,14 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const usersController = require("../../controllers/users/users");
-const usersValidator = require("../../controllers/users/usersValidator");
+const usersController = require('../../controllers/users/users');
+const usersValidator = require('../../controllers/users/usersValidator');
 const {
-  REGISTER_USER,
-  LOGIN_USER,
-  UPDATE_USER
-} = require("../../controllers/users/methods");
-const auth = require("../../middleware/auth");
+	REGISTER_USER,
+	LOGIN_USER,
+	UPDATE_USER
+} = require('../../controllers/users/methods');
+const auth = require('../../middleware/auth');
 
 // @route   GET api/users
 // @desc    Return user depending on jwt
@@ -20,24 +20,24 @@ router.get("/", (req, res, next) => auth(req, res, next, withEmail = false), use
 // @desc    Register user
 // @access  Public
 router.post(
-  "/register",
-  usersValidator.validate(REGISTER_USER),
-  usersController.registerUser
+	'/register',
+	usersValidator.validate(REGISTER_USER),
+	usersController.registerUser
 );
 
 // @route   POST api/users/login
 // @desc    Login user
 // @access  Public
 router.post(
-  "/login",
-  usersValidator.validate(LOGIN_USER),
-  usersController.loginUser
+	'/login',
+	usersValidator.validate(LOGIN_USER),
+	usersController.loginUser
 );
 
 // @route   DELETE api/users
 // @desc    Delete user
 // @access  Private
-router.delete("/", auth, usersController.deleteUser);
+router.delete('/', auth, usersController.deleteUser);
 
 // @route   GET api/users/activate/:activationKey
 // @desc    Activate account
@@ -48,10 +48,10 @@ router.get('/activate/:activationKey', usersController.activateUser);
 // @desc    Change user data
 // @access  Private
 router.put(
-    '/',
-    auth,
-    usersValidator.validate(UPDATE_USER),
-    usersController.updateUserData
+	'/',
+	auth,
+	usersValidator.validate(UPDATE_USER),
+	usersController.updateUserData
 );
 
 module.exports = router;
