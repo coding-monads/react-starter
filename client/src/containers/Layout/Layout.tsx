@@ -1,16 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-const Layout: React.FC = ({ children }) => (
+interface LayoutTypes {
+  children: string | JSX.Element[] | JSX.Element;
+}
+
+const Layout: React.FC<LayoutTypes> = ({ children }) => (
   <>
     <nav />
     <main>{children}</main>
     <footer />
   </>
 );
-
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export default Layout;

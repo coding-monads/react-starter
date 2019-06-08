@@ -1,6 +1,11 @@
-import { combineReducers } from 'redux';
-import testReducer from './testReducer';
+import { combineReducers } from "redux";
+import authReducer from "./authReducer";
+import { AuthState } from "../interfaces/authTypes";
+
+export interface Store {
+  auth: AuthState;
+}
 
 export default combineReducers({
-  test: testReducer,
+  auth: authReducer,
 });

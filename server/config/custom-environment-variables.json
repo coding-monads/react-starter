@@ -1,0 +1,16 @@
+{
+  "mongo": {
+    "uri": {
+      "host": "MONGO_HOST"
+    }
+  },
+  "mail": {
+    "credentials": {
+      "user": "MAIL_USER",
+      "pass": "MAIL_PASS"
+    },
+    "settings": {
+      "host": "MAIL_HOST"
+    }
+  }
+}
