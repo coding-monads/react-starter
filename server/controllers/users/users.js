@@ -28,7 +28,7 @@ exports.getUser = async (req, res) => {
       .select("-activationKey")
       .select("-updatedAt")
       .select("-__v");
-    res.json({ user: user });
+    res.json({ user });
   } catch (err) {
     res.status(500).send(messages.SERVER_ERROR);
   }
