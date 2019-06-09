@@ -2,12 +2,12 @@
   "name": "coding-monads",
   "version": "0.1.0",
   "scripts": {
+    "build": "tsc",
     "prestart": "npm run build",
-    "start": "node server",
+    "start": "node ./build/server",
     "test": "jest -i ./__test__",
-    "dev": "ts-node-dev --respawn --transpileOnly server.ts",
-    "prod": "tsc && node ./build/app.js",
-    "build": "tsc"
+    "prod": "tsc && node ./build/server.js",
+    "dev": "ts-node-dev --respawn --transpileOnly server.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -33,6 +33,7 @@
     "@types/passport": "^1.0.0",
     "@types/passport-jwt": "^3.0.1",
     "@types/supertest": "^2.0.7",
+    "bcrypt": "^3.0.6",
     "dotenv": "^8.0.0",
     "faker": "^4.1.0",
     "jest": "^24.8.0",
