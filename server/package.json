@@ -7,7 +7,6 @@
     "test": "jest -i ./__test__",
     "dev": "ts-node-dev --respawn --transpileOnly server.ts",
     "prod": "tsc && node ./build/app.js",
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc"
   },
   "dependencies": {
@@ -40,7 +39,6 @@
     "nodemailer": "^6.2.1",
     "supertest": "^4.0.2",
     "ts-node-dev": "^1.0.0-pre.39",
-    "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   },
   "repository": {
