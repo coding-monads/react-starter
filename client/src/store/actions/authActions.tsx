@@ -2,6 +2,7 @@ import * as TYPES from "./types";
 import { ThunkAction } from "redux-thunk";
 import axios from "axios";
 import setAuthToken from "../../utillities/setAuthToken";
+import jwt_decode from "jwt-decode";
 import { addAlert } from "./alertActions";
 
 import {
@@ -26,11 +27,10 @@ export const loginUser = (
   });
   try {
     const {
-      data: { token, expTime, msg }
+      data: { token, msg }
     } = await axios.post("/api/users/login", loginData);
-
     setAuthToken(token);
-    dispatch(setToken(token, expTime));
+    dispatch(setToken(token));
     await dispatch(loadUser());
     dispatch({
       type: TYPES.LOGIN_SUCCESS,
@@ -57,9 +57,9 @@ export const registerUser = (
 
   axios
     .post("/api/users/register", registerData)
-    .then(({ data: { token, expTime } }) => {
+    .then(({ data: { token } }) => {
       setAuthToken(token);
-      dispatch(setToken(token, expTime));
+      dispatch(setToken(token));
       dispatch(loadUser());
       dispatch({
         type: TYPES.REGISTER_SUCCESS,
@@ -105,12 +105,12 @@ export const logoutUser = (): LogoutAction => {
   };
 };
 
-const setToken = (token: string, expTime: number) => (
+const setToken = (token: string) => (
   dispatch: (arg: Function) => void
 ) => {
-  localStorage.setItem("token", token);
-  const expDate = new Date(new Date().getTime() + expTime * 1000);
-  localStorage.setItem("expDate", JSON.stringify(expDate));
+  const decoded: {exp: number} = jwt_decode(token);
+  const expDate = new Date(new Date().getTime() + decoded.exp * 1000);
+  localStorage.setItem("token", JSON.stringify({token, expDate}));
 
   dispatch(checkAuthTimeout(expDate.getTime() - new Date().getTime()));
 };
@@ -126,16 +126,16 @@ const checkAuthTimeout = (expTime: number) => (
 export const checkAuth = () => (
   dispatch: (arg: Function | LogoutAction) => void
 ) => {
-  const token = localStorage.getItem("token");
-  const expDate = localStorage.getItem("expDate");
+  const tokenData = localStorage.getItem("token");
 
-  if (token && expDate) {
-    if (new Date() < new Date(JSON.parse(expDate))) {
+  if (tokenData) {
+    const { token, expDate } = JSON.parse(tokenData);
+    if (new Date() < new Date(expDate)) {
       setAuthToken(token);
       dispatch(loadUser());
       dispatch(
         checkAuthTimeout(
-          new Date(JSON.parse(expDate)).getTime() - new Date().getTime()
+          new Date(expDate).getTime() - new Date().getTime()
         )
       );
     } else {
