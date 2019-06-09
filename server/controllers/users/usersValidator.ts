@@ -3,7 +3,7 @@ import { body } from "express-validator/check";
 import { userMethods, REGISTER_USER, LOGIN_USER, UPDATE_USER } from "./methods";
 import messages from "../messages";
 
-export = (method: userMethods) => {
+export const validate = (method: userMethods) => {
   switch (method) {
     case REGISTER_USER: {
       return [
