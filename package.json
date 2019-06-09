@@ -4,8 +4,9 @@
   "scripts": {
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
-    "start:server": "cd server && nodemon server",
+    "start:server": "cd server && npm run start",
     "start:client": "npm start --prefix client",
+    "build:server": "cd server && npm run build",
     "storybook": "cd client && npm run storybook",
     "docker:network": "docker network create react-starter-backend",
     "docker:mongo": "docker run --network=react-starter-backend -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=example -p 27017:27017 --rm --name mongo -t mongo",
@@ -37,7 +38,6 @@
     "eslint-plugin-node": "^9.1.0",
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-react": "^7.13.0",
-    "eslint-plugin-standard": "^4.0.0",
-    "typescript-tslint-plugin": "^0.4.0"
+    "eslint-plugin-standard": "^4.0.0"
   }
 }
