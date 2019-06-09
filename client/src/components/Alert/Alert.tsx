@@ -68,7 +68,7 @@ const Alert: React.FC<AlertProps> = ({
         horizontal
       }}
       open={open}
-      autoHideDuration={autoHideDuration}
+      autoHideDuration={open ? autoHideDuration : undefined}
       onClose={clearAlert}
     >
       <SnackbarContent

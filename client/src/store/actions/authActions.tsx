@@ -37,27 +37,27 @@ export const loginUser = (
       token
     });
     dispatch(addAlert({ message: msg, variant: "success" }));
-  } catch (err) {
+  } catch ({ response: { data } }) {
     dispatch({
       type: TYPES.LOGIN_ERROR,
-      errors: err.response.data.errors
+      errors: data.errors
     });
     dispatch(
-      addAlert({ message: err.response.data.errors[0].msg, variant: "error" })
+      addAlert({ message: data.errors[0].msg, variant: "error" })
     );
   }
 };
 
 export const registerUser = (
   registerData: RegisterData
-): ThunkAction<void, {}, ErrorResponse, RegisterActions> => async dispatch => {
+): ThunkAction<void, {}, ErrorResponse, RegisterActions | AlertActions> => async dispatch => {
   dispatch({
     type: TYPES.REGISTER_LOADING
   });
 
   axios
     .post("/api/users/register", registerData)
-    .then(({ data: { token } }) => {
+    .then(({ data: { token, msg } }) => {
       setAuthToken(token);
       dispatch(setToken(token));
       dispatch(loadUser());
@@ -65,12 +65,14 @@ export const registerUser = (
         type: TYPES.REGISTER_SUCCESS,
         token: token
       });
+      dispatch(addAlert({ message: msg, variant: "success" }));
     })
     .catch(({ response: { data } }) => {
       dispatch({
         type: TYPES.REGISTER_ERROR,
         errors: data.errors
       });
+      dispatch(addAlert({ message: data.errors[0].msg, variant: "error" }));
     });
 };
 
