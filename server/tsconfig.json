@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es2015", "dom"],
+    "rootDir": "./",
+    "outDir": "./build",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "strict": true,
+    "declaration": true,
+    "sourceMap": true,
+    "inlineSources": true,
+    "esModuleInterop": true,
+    "types": ["node", "jest"]
+  },
+  "include": ["./**/*"],
+  "exclude": ["node_modules", "build"]
+}

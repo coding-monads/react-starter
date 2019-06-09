@@ -1,7 +1,13 @@
-const passport = require('passport');
-const messages = require('../controllers/messages');
+import passport from 'passport';
+import messages from '../controllers/messages';
+import { Response, NextFunction, Request } from 'express';
 
-module.exports = (req, res, next, withEmail = true) => {
+export const auth = (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+	withEmail: boolean = true
+) => {
 	passport.authenticate('jwt', { session: false }, (err, user, info) => {
 		if (err) {
 			return res.status(500).json({ msg: messages.SERVER_ERROR });

@@ -1,13 +1,16 @@
-const request = require('supertest');
-const app = require('../../app');
-const mongoose = require('mongoose');
-const { settings, dbURI } = require('../../config/db');
-const User = require('../../models/User');
-const faker = require('faker');
+import request, { Response } from 'supertest';
+import { app } from '../../app';
+import mongoose from 'mongoose';
+import { settings, dbURI } from '../../config/db';
+import User from '../../models/User';
+import faker from 'faker';
+import { ITestUser } from '../types/user';
 
 describe('some initial tests for user', () => {
 	// global variables that we can use in all tests
-	let randomUser, registerResponse, connection;
+	let connection: typeof mongoose;
+	let randomUser: ITestUser;
+	let registerResponse: Response;
 
 	beforeAll(async done => {
 		// waiting for connection with mongoDB database
@@ -23,7 +26,8 @@ describe('some initial tests for user', () => {
 			password: faker.internet.password()
 		};
 
-		const response = await request(app).post('/api/users/register')
+		const response = await request(app)
+			.post('/api/users/register')
 			.type('form')
 			.send({ ...userToRegister })
 			.set('Accept', 'application/json');
@@ -45,7 +49,8 @@ describe('some initial tests for user', () => {
 				email: faker.internet.email(),
 				password: faker.internet.password()
 			};
-			registerResponse = await request(app).post('/api/users/register')
+			registerResponse = await request(app)
+				.post('/api/users/register')
 				.type('form')
 				.send({ ...randomUser })
 				.set('Accept', 'application/json');
@@ -54,16 +59,17 @@ describe('some initial tests for user', () => {
 
 		test('user should be able to login', async () => {
 			const { email, password } = randomUser;
-			const response = await request(app).post('/api/users/login')
+			const response = await request(app)
+				.post('/api/users/login')
 				.type('form')
 				.send({ email, password })
 				.set('Accept', 'application/json');
 			expect(response.body.msg).toContain('logged in');
 			expect(response.body.token).toContain('Bearer');
 		});
-
 		test('user should not be able to update data when he have not confirmed email', async () => {
-			const response = await request(app).put('/api/users/')
+			const response = await request(app)
+				.put('/api/users/')
 				.set('Authorization', registerResponse.body.token)
 				.type('form')
 				.send({

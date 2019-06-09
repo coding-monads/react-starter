@@ -1,19 +1,25 @@
-const express = require('express');
-const router = express.Router();
+import express, { NextFunction, Request, Response } from 'express';
 
-const usersController = require('../../controllers/users/users');
-const usersValidator = require('../../controllers/users/usersValidator');
-const {
+import { auth } from '../../middleware/auth';
+
+import * as usersController from '../../controllers/users/users';
+import * as usersValidator from '../../controllers/users/usersValidator';
+
+import {
 	REGISTER_USER,
 	LOGIN_USER,
 	UPDATE_USER
-} = require('../../controllers/users/methods');
-const auth = require('../../middleware/auth');
+} from '../../controllers/users/methods';
+const router = express.Router();
 
 // @route   GET api/users
 // @desc    Return user depending on jwt
 // @access  Private without emailVerified
-router.get('/', (req, res, next) => auth(req, res, next, false), usersController.getUser
+router.get(
+	'/',
+	(req: Request, res: Response, next: NextFunction) =>
+		auth(req, res, next, false),
+	usersController.getUser
 );
 
 // @route   POST api/users/register
@@ -37,7 +43,11 @@ router.post(
 // @route   DELETE api/users
 // @desc    Delete user
 // @access  Private
-router.delete('/', auth, usersController.deleteUser);
+router.delete(
+	'/',
+	(req: Request, res: Response, next: NextFunction) => auth(req, res, next),
+	usersController.deleteUser
+);
 
 // @route   GET api/users/activate/:activationKey
 // @desc    Activate account
@@ -49,9 +59,10 @@ router.get('/activate/:activationKey', usersController.activateUser);
 // @access  Private
 router.put(
 	'/',
-	auth,
+	(req: Request, res: Response, next: NextFunction) =>
+		auth(req, res, next, true),
 	usersValidator.validate(UPDATE_USER),
 	usersController.updateUserData
 );
 
-module.exports = router;
+export default router;
