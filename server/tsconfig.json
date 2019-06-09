@@ -15,5 +15,5 @@
     "types": ["node", "jest"]
   },
   "include": ["./**/*"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build", "__test__"]
 }
