@@ -26,6 +26,20 @@ export const activateUser = async (req: Request, res: Response) => {
 	return res.status(400).json({ msg: messages.ACTIVATION_KEY_IS_INCORRECT });
 };
 
+export const getUser = async (req: Request, res: Response) => {
+	try {
+		const user = await User.findById(req.user.id)
+			.select('-_id')
+			.select('-password')
+			.select('-activationKey')
+			.select('-updatedAt')
+			.select('-__v');
+		res.json({ user });
+	} catch (err) {
+		res.status(500).send(messages.SERVER_ERROR);
+	}
+};
+
 export const registerUser = (req: Request, res: Response) => {
 	const errors = validationResult(req);
 
