@@ -12,6 +12,16 @@ import {
 } from '../../controllers/users/methods';
 const router = express.Router();
 
+// @route   GET api/users
+// @desc    Return user depending on jwt
+// @access  Private without emailVerified
+router.get(
+	'/',
+	(req: Request, res: Response, next: NextFunction) =>
+		auth(req, res, next, false),
+	usersController.getUser
+);
+
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
