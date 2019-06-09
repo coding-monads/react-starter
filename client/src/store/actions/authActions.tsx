@@ -100,7 +100,6 @@ export const loadUser = (): ThunkAction<
 
 export const logoutUser = (): LogoutAction => {
   localStorage.removeItem("token");
-  localStorage.removeItem("expDate");
 
   return {
     type: TYPES.LOGOUT
@@ -111,10 +110,10 @@ const setToken = (token: string) => (
   dispatch: (arg: Function) => void
 ) => {
   const decoded: {exp: number} = jwt_decode(token);
-  const expDate = new Date(new Date().getTime() + decoded.exp * 1000);
-  localStorage.setItem("token", JSON.stringify({token, expDate}));
+  const expTime = decoded.exp * 1000
+  localStorage.setItem("token", token);
 
-  dispatch(checkAuthTimeout(expDate.getTime() - new Date().getTime()));
+  dispatch(checkAuthTimeout(expTime - new Date().getTime()));
 };
 
 const checkAuthTimeout = (expTime: number) => (
@@ -128,16 +127,17 @@ const checkAuthTimeout = (expTime: number) => (
 export const checkAuth = () => (
   dispatch: (arg: Function | LogoutAction) => void
 ) => {
-  const tokenData = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
-  if (tokenData) {
-    const { token, expDate } = JSON.parse(tokenData);
-    if (new Date() < new Date(expDate)) {
+  if (token) {
+    const decoded: {exp: number} = jwt_decode(token);
+    const expTime = decoded.exp * 1000
+    if (new Date() < new Date(expTime)) {
       setAuthToken(token);
       dispatch(loadUser());
       dispatch(
         checkAuthTimeout(
-          new Date(expDate).getTime() - new Date().getTime()
+          expTime - new Date().getTime()
         )
       );
     } else {
