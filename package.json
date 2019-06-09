@@ -19,7 +19,6 @@
     "dc:status": "docker-compose -f docker/devenv.yml ps"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
     "concurrently": "^4.1.0",
     "nodemon": "^1.19.0"
   },
