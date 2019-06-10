@@ -1,9 +1,10 @@
-const mongoose = require('mongoose');
-const config = require('config');
+import config from 'config';
+import mongoose from 'mongoose';
+
 const { host, resource, query, name } = config.get('mongo.uri');
 const dbCredentials = config.get('mongo.credentials');
 
-const settings = {
+const settings: any = {
 	...dbCredentials,
 	useNewUrlParser: true,
 	useCreateIndex: true,
@@ -18,10 +19,6 @@ const connectDB = () =>
 mongoose
 	.connect(dbURI, settings)
 	.then(() => console.log('MoongoDB Connected'))
-	.catch(err => console.log('MoongoDB not connected', err));
+	.catch((err: any) => console.log('MoongoDB not connected', err));
 
-module.exports = {
-	connectDB,
-	settings,
-	dbURI
-};
+export { connectDB, settings, dbURI };

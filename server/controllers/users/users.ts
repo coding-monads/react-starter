@@ -1,12 +1,17 @@
-const { validationResult } = require('express-validator/check');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const User = require('../../models/User');
-const messages = require('../messages');
-const nodemailer = require('nodemailer');
+import { validationResult } from 'express-validator/check';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import config from 'config';
+import messages from '../messages';
+import User, { IUser } from '../../models/User';
+import nodemailer, {
+	TransportOptions,
+	Transport,
+	Transporter
+} from 'nodemailer';
+import { Response, Request } from 'express';
 
-exports.activateUser = async (req, res) => {
+export const activateUser = async (req: Request, res: Response) => {
 	const { activationKey } = req.params;
 	const user = await User.findOne({ activationKey });
 	if (user) {
@@ -14,13 +19,14 @@ exports.activateUser = async (req, res) => {
 			return res.status(400).json({ msg: messages.KEY_HAS_BEEN_ACTIVATED });
 		}
 		user.emailVerified = true;
+
 		await user.save();
 		return res.status(200).json({ msg: messages.USER_ACTIVATED });
 	}
 	return res.status(400).json({ msg: messages.ACTIVATION_KEY_IS_INCORRECT });
 };
 
-exports.getUser = async (req, res) => {
+export const getUser = async (req: Request, res: Response) => {
 	try {
 		const user = await User.findById(req.user.id)
 			.select('-_id')
@@ -34,7 +40,7 @@ exports.getUser = async (req, res) => {
 	}
 };
 
-exports.registerUser = (req, res) => {
+export const registerUser = (req: Request, res: Response) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
@@ -46,6 +52,7 @@ exports.registerUser = (req, res) => {
 	const {
 		firstName,
 		lastName,
+		// @ts-ignore
 		email = email.toLowerCase(),
 		password
 	} = req.body;
@@ -86,12 +93,12 @@ exports.registerUser = (req, res) => {
 						}
 					);
 				})
-				.catch(err => res.status(500).send(messages.SERVER_ERROR, err));
+				.catch(() => res.status(500).send(messages.SERVER_ERROR));
 		}
 	});
 };
 
-exports.loginUser = (req, res) => {
+export const loginUser = (req: Request, res: Response) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
@@ -99,7 +106,12 @@ exports.loginUser = (req, res) => {
 			.status(400)
 			.json({ errors: errors.array({ onlyFirstError: true }) });
 	}
-	const { password, email = email.toLowerCase(), remember } = req.body;
+
+	const {
+		password,
+		// @ts-ignore
+		email = email.toLowerCase()
+	} = req.body;
 
 	User.findOne({ email }).then(user => {
 		if (!user) {
@@ -114,11 +126,11 @@ exports.loginUser = (req, res) => {
 							id: user.id
 						}
 					};
-					const expiresIn = remember ? 43200 : 3600;
+
 					jwt.sign(
 						payload,
 						config.get('jwtSecret'),
-						{ expiresIn },
+						{ expiresIn: 3600 },
 						(err, token) => {
 							if (err) throw err;
 							res.json({
@@ -137,19 +149,20 @@ exports.loginUser = (req, res) => {
 	});
 };
 
-exports.deleteUser = (req, res) => {
+export const deleteUser = (req: Request, res: Response) => {
 	User.findOneAndRemove({ _id: req.user.id })
 		.then(() => res.json({ msg: messages.USER_DELETED }))
 		.catch(() => res.status(500).send(messages.SERVER_ERROR));
 };
 
-exports.updateUserData = async (req, res) => {
+export const updateUserData = async (req: Request, res: Response) => {
 	const errors = validationResult(req);
 
 	if (!errors.isEmpty()) {
-		return res.status(400).json({ errors: errors.array({ onlyFirstError: true }) });
+		return res
+			.status(400)
+			.json({ errors: errors.array({ onlyFirstError: true }) });
 	}
-
 	const user = await User.findById(req.user.id);
 	if (user) {
 		const { firstName, lastName, password } = req.body;
@@ -163,7 +176,9 @@ exports.updateUserData = async (req, res) => {
 			if (email !== user.email) {
 				const emailExist = await User.findOne({ email });
 				if (emailExist) {
-					return res.status(400).json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
+					return res
+						.status(400)
+						.json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
 				}
 				user.email = email;
 				user.activationKey = bcrypt.hashSync(email).replace(/\//g, '');
@@ -181,9 +196,13 @@ exports.updateUserData = async (req, res) => {
 	}
 };
 
-const sendVerificationEmail = user => {
-	const mailSettings = config.get('mail.settings');
-	const mailCredentials = config.get('mail.credentials');
+interface ITransporterAuth {
+	user: string;
+	pass: string;
+}
+const sendVerificationEmail = (user: IUser) => {
+	const mailSettings: TransportOptions = config.get('mail.settings');
+	const mailCredentials: ITransporterAuth = config.get('mail.credentials');
 	const transporter = nodemailer.createTransport({
 		...mailSettings,
 		auth: mailCredentials
@@ -196,8 +215,8 @@ const sendVerificationEmail = user => {
 		html: `
       To activate your account, click this link
       <a href="http://localhost:5000/api/users/activate/${
-	user.activationKey
-}">Activate Account</a>
+				user.activationKey
+			}">Activate Account</a>
     `
 	};
 

@@ -2,8 +2,12 @@
   "name": "coding-monads",
   "version": "0.1.0",
   "scripts": {
-    "start": "node server",
-    "test": "jest -i ./__test__"
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node ./build/server",
+    "test": "jest",
+    "prod": "tsc && node ./build/server.js",
+    "dev": "ts-node-dev --respawn --transpileOnly server.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -16,12 +20,28 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/config": "0.0.34",
+    "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.17.0",
+    "@types/faker": "^4.1.5",
     "@types/jest": "^24.0.13",
+    "@types/jsonwebtoken": "^8.3.2",
+    "@types/mongoose": "^5.5.5",
+    "@types/node": "^12.0.7",
+    "@types/nodemailer": "^6.2.0",
+    "@types/passport": "^1.0.0",
+    "@types/passport-jwt": "^3.0.1",
+    "@types/superagent": "^4.1.1",
+    "@types/supertest": "^2.0.7",
     "dotenv": "^8.0.0",
     "faker": "^4.1.0",
     "jest": "^24.8.0",
     "nodemailer": "^6.2.1",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2",
+    "ts-node-dev": "^1.0.0-pre.39",
+    "typescript": "^3.5.1"
   },
   "repository": {
     "type": "git",

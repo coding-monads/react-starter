@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	SERVER_ERROR: 'Server error',
 	EMAIL_ALREADY_EXISTS: 'Email already exists',
 	USER_REGISTERED: 'User registered',
@@ -16,9 +16,11 @@ module.exports = {
 	KEY_HAS_BEEN_ACTIVATED: 'Key has been activated',
 	USER_UPDATED: 'User updated',
 	FIRST_NAME_REQUIRED: 'First name field is required',
-	FIRST_NAME_SPECIFIC_LENGTH: 'Please enter a first name between 2 and 30 characters',
+	FIRST_NAME_SPECIFIC_LENGTH:
+		'Please enter a first name between 2 and 30 characters',
 	LAST_NAME_REQUIRED: 'Last name field is required',
-	LAST_NAME_SPECIFIC_LENGTH: 'Please enter a last name between 2 and 30 characters',
+	LAST_NAME_SPECIFIC_LENGTH:
+		'Please enter a last name between 2 and 30 characters',
 	PASSWORD_SPECIFIC_LENGTH: 'Please enter a password with 6 or more characters',
 	TOKEN_EXPIRED: 'Token expired'
 };
