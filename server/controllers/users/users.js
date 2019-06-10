@@ -81,8 +81,7 @@ exports.registerUser = (req, res) => {
 							sendVerificationEmail(newUser);
 							res.json({
 								msg: messages.USER_REGISTERED,
-								token: 'Bearer ' + token,
-								expTime: 3600
+								token: 'Bearer ' + token
 							});
 						}
 					);
@@ -124,8 +123,7 @@ exports.loginUser = (req, res) => {
 							if (err) throw err;
 							res.json({
 								msg: messages.USER_LOGGEDIN,
-								token: 'Bearer ' + token,
-								expTime: expiresIn
+								token: 'Bearer ' + token
 							});
 						}
 					);

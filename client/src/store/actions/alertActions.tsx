@@ -9,7 +9,7 @@ export const addAlert = (alert: AlertData): AlertActions => {
   };
 };
 
-export function clearAlert() {
+export const clearAlert = (): AlertActions => {
   return {
     type: TYPES.ALERT_CLEARED
   };
