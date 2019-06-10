@@ -59,8 +59,7 @@ router.get('/activate/:activationKey', usersController.activateUser);
 // @access  Private
 router.put(
 	'/',
-	(req: Request, res: Response, next: NextFunction) =>
-		auth(req, res, next, true),
+	(req: Request, res: Response, next: NextFunction) => auth(req, res, next),
 	usersValidator.validate(UPDATE_USER),
 	usersController.updateUserData
 );
