@@ -40,6 +40,19 @@ export const getUser = async (req: Request, res: Response) => {
 	}
 };
 
+export const getUserList = async (req: Request, res: Response) => {
+	try {
+		const userList = await User.find()
+			.select('-password')
+			.select('-activationKey')
+			.select('-updatedAt')
+			.select('-__v');
+		res.json({ userList });
+	} catch (err) {
+		res.status(500).send(messages.SERVER_ERROR);
+	}
+};
+
 export const registerUser = (req: Request, res: Response) => {
 	const errors = validationResult(req);
 

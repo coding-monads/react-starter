@@ -6,7 +6,8 @@ export const auth = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
-	withEmail: boolean = true
+	authEmail: boolean = true,
+	authAdmin: boolean = false
 ) => {
 	passport.authenticate('jwt', { session: false }, (err, user, info) => {
 		if (err) {
@@ -17,12 +18,21 @@ export const auth = (
 				msg: info.message[0].toUpperCase() + info.message.slice(1)
 			});
 		}
-		if (withEmail) {
+		if (authEmail) {
 			if (!user.emailVerified) {
 				return res.status(401).json({ msg: messages.EMAIL_NOT_VERIFIED });
 			}
 		}
-		req.user = user;
+		if (authAdmin){
+			if(!user.roles.includes('admin')){
+				return res.status(401).json({ msg: "You don't have permission to access" });
+			}
+			if(req.params.user_id){
+				req.user = { id: req.params.user_id }
+			}
+		} else {
+			req.user = user;
+		}
 		next();
-	})(req, res, next, withEmail);
+	})(req, res, next, authEmail, authAdmin);
 };
