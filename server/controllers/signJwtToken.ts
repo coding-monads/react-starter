@@ -4,7 +4,7 @@ import { Response } from 'express';
 import { IUser } from '../models/User';
 
 
-export default (res: Response, user: IUser, expiresIn: number, message: string) => {
+export default  (res: Response, user: IUser, expiresIn: number, message: string) => {
     const payload = {
         user: {
             id: user.id
@@ -16,7 +16,7 @@ export default (res: Response, user: IUser, expiresIn: number, message: string) 
         { expiresIn },
         (err, token) => {
             if (err) throw err;
-            res.json({
+             res.json({
                 msg: message,
                 token: 'Bearer ' + token
             });

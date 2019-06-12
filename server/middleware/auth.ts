@@ -3,12 +3,13 @@ import messages from '../controllers/messages';
 import { Response, NextFunction, Request } from 'express';
 import roles from '../controllers/adminRoles';
 
-export const auth = (
+export const auth = ({
+	authEmail = true, authAdmin = false}: 
+	{authEmail?: boolean, authAdmin?: boolean 
+}) => (
 	req: Request,
 	res: Response,
-	next: NextFunction,
-	{authEmail = true, authAdmin = false} : {authEmail?: boolean, authAdmin?: boolean },
-	
+	next: NextFunction,	
 ) => {
 	passport.authenticate('jwt', { session: false }, (err, user, info) => {
 		if (err) {

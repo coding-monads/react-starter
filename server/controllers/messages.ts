@@ -27,5 +27,6 @@ export default {
 	USER_NOT_FOUND: 'User not found',
 	USER_ADDED: 'User added',
 	MUST_BE_BOOLEAN: 'Field must be boolean',
-	MUST_MATCH_PATTERN: 'Roles must match pattern: "admin"'
+	MUST_MATCH_PATTERN: 'Roles must match pattern: "admin"',
+	USERS_NOT_FOUND: 'No users found',
 };
