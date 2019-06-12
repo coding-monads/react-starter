@@ -1,11 +1,11 @@
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import config from 'config';
 import messages from '../messages';
 import User, { IUser } from '../../models/User';
 import nodemailer, { TransportOptions } from 'nodemailer';
 import { Response, Request } from 'express';
 import reqValidator from '../reqValidator';
+import signJwtToken from '../signJwtToken';
 
 export const activateUser = async (req: Request, res: Response) => {
 	const { activationKey } = req.params;
@@ -101,24 +101,8 @@ export const registerUser = (req: Request, res: Response) => {
 			newUser
 				.save()
 				.then(user => {
-					const payload = {
-						user: {
-							id: user.id
-						}
-					};
-					jwt.sign(
-						payload,
-						config.get('jwtSecret'),
-						{ expiresIn: 3600 },
-						(err, token) => {
-							if (err) throw err;
-							sendVerificationEmail(newUser);
-							res.json({
-								msg: messages.USER_REGISTERED,
-								token: 'Bearer ' + token
-							});
-						}
-					);
+					sendVerificationEmail(user);
+					signJwtToken(res, user, 3600, messages.USER_REGISTERED);
 				})
 				.catch(() => res.status(500).send(messages.SERVER_ERROR));
 		}
@@ -131,7 +115,8 @@ export const loginUser = (req: Request, res: Response) => {
 	const {
 		password,
 		// @ts-ignore
-		email = email.toLowerCase()
+		email = email.toLowerCase(),
+		remember
 	} = req.body;
 
 	User.findOne({ email }).then(user => {
@@ -142,24 +127,9 @@ export const loginUser = (req: Request, res: Response) => {
 		} else {
 			bcrypt.compare(password, user.password).then(isMatch => {
 				if (isMatch) {
-					const payload = {
-						user: {
-							id: user.id
-						}
-					};
-
-					jwt.sign(
-						payload,
-						config.get('jwtSecret'),
-						{ expiresIn: 3600 },
-						(err, token) => {
-							if (err) throw err;
-							res.json({
-								msg: messages.USER_LOGGEDIN,
-								token: 'Bearer ' + token
-							});
-						}
-					);
+					const expiresIn = remember ? 43200 : 3600;
+					signJwtToken(res, user, expiresIn, messages.USER_LOGGEDIN);
+				
 				} else {
 					return res
 						.status(400)
