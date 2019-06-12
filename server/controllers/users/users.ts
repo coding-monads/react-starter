@@ -1,15 +1,11 @@
-import { validationResult } from 'express-validator/check';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import config from 'config';
 import messages from '../messages';
 import User, { IUser } from '../../models/User';
-import nodemailer, {
-	TransportOptions,
-	Transport,
-	Transporter
-} from 'nodemailer';
+import nodemailer, { TransportOptions } from 'nodemailer';
 import { Response, Request } from 'express';
+import reqValidator from '../reqValidator';
 
 export const activateUser = async (req: Request, res: Response) => {
 	const { activationKey } = req.params;
@@ -53,18 +49,10 @@ export const getUserList = async (req: Request, res: Response) => {
 	}
 };
 
-const reqValidation = (req: Request, res: Response) => {
-	const errors = validationResult(req);
-	
-	if (!errors.isEmpty()) {
-		return res
-			.status(400)
-			.json({ errors: errors.array({ onlyFirstError: true }) });
-	}
-}
+
 
 export const addUser = async (req: Request, res: Response) => {
-	reqValidation(req, res);
+	reqValidator(req, res);
 
 	try {
 		const user = await User.findOne({ email: req.body.email.toLowerCase() });
@@ -86,13 +74,7 @@ export const addUser = async (req: Request, res: Response) => {
 };
 
 export const registerUser = (req: Request, res: Response) => {
-	const errors = validationResult(req);
-
-	if (!errors.isEmpty()) {
-		return res
-			.status(400)
-			.json({ errors: errors.array({ onlyFirstError: true }) });
-	}
+	reqValidator(req, res);
 
 	const {
 		firstName,
@@ -144,13 +126,7 @@ export const registerUser = (req: Request, res: Response) => {
 };
 
 export const loginUser = (req: Request, res: Response) => {
-	const errors = validationResult(req);
-
-	if (!errors.isEmpty()) {
-		return res
-			.status(400)
-			.json({ errors: errors.array({ onlyFirstError: true }) });
-	}
+	reqValidator(req, res);
 
 	const {
 		password,
@@ -201,13 +177,8 @@ export const deleteUser = (req: Request, res: Response) => {
 };
 
 export const updateUserData = async (req: Request, res: Response) => {
-	const errors = validationResult(req);
+	reqValidator(req, res);
 
-	if (!errors.isEmpty()) {
-		return res
-			.status(400)
-			.json({ errors: errors.array({ onlyFirstError: true }) });
-	}
 	const user = await User.findById(req.user.id);
 	if (user) {
 		const { firstName, lastName, password, emailVerified, roles } = req.body;

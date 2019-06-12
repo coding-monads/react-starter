@@ -1,12 +1,11 @@
 import express, { NextFunction, Request, Response } from 'express';
-
 import { auth } from '../../middleware/auth';
-
 import * as usersController from '../../controllers/users/users';
 import * as usersValidator from '../../controllers/users/usersValidator';
 
 import {
-	ADD_USER
+    ADD_USER,
+    UPDATE_USER
 } from '../../controllers/users/methods';
 
 const router = express.Router();
@@ -36,6 +35,7 @@ router.post(
 router.put(
     '/user/:user_id',
     (req: Request, res: Response, next: NextFunction) => auth(req, res, next, {authAdmin: true}),
+    usersValidator.validate(UPDATE_USER),
 	usersController.updateUserData
 );
 

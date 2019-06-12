@@ -1,6 +1,7 @@
 import passport from 'passport';
 import messages from '../controllers/messages';
 import { Response, NextFunction, Request } from 'express';
+import roles from '../controllers/adminRoles';
 
 export const auth = (
 	req: Request,
@@ -24,7 +25,7 @@ export const auth = (
 			}
 		}
 		if (authAdmin){
-			if(!user.roles.includes('admin')){
+			if(!user.roles.includes(roles.ADMIN)){
 				return res.status(401).json({ msg: messages.NO_PERMISSION });
 			}
 			if(req.params.user_id){
