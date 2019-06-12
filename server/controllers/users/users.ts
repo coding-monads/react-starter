@@ -202,7 +202,10 @@ interface ITransporterAuth {
 }
 const sendVerificationEmail = (user: IUser) => {
 	const mailSettings: TransportOptions = config.get('mail.settings');
-	const mailCredentials: ITransporterAuth = config.get('mail.credentials');
+	const mailCredentials: ITransporterAuth = { 
+		user: process.env.GMAIL_USER || config.get('mail.credentials.user'), 
+		pass: process.env.GMAIL_PASS || config.get('mail.credentials.pass') 
+	}
 	const transporter = nodemailer.createTransport({
 		...mailSettings,
 		auth: mailCredentials
