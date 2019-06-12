@@ -6,8 +6,8 @@ export const auth = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
-	authEmail: boolean = true,
-	authAdmin: boolean = false
+	{authEmail = true, authAdmin = false} : {authEmail?: boolean, authAdmin?: boolean },
+	
 ) => {
 	passport.authenticate('jwt', { session: false }, (err, user, info) => {
 		if (err) {
@@ -25,10 +25,10 @@ export const auth = (
 		}
 		if (authAdmin){
 			if(!user.roles.includes('admin')){
-				return res.status(401).json({ msg: "You don't have permission to access" });
+				return res.status(401).json({ msg: messages.NO_PERMISSION });
 			}
 			if(req.params.user_id){
-				req.user = { id: req.params.user_id }
+				req.user = { id: req.params.user_id, admin: true }
 			}
 		} else {
 			req.user = user;

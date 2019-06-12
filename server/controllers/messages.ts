@@ -22,5 +22,10 @@ export default {
 	LAST_NAME_SPECIFIC_LENGTH:
 		'Please enter a last name between 2 and 30 characters',
 	PASSWORD_SPECIFIC_LENGTH: 'Please enter a password with 6 or more characters',
-	TOKEN_EXPIRED: 'Token expired'
+	TOKEN_EXPIRED: 'Token expired',
+	NO_PERMISSION: "You don't have permission to access",
+	USER_NOT_FOUND: 'User not found',
+	USER_ADDED: 'User added',
+	MUST_BE_BOOLEAN: 'Field must be boolean',
+	MUST_MATCH_PATTERN: 'Roles must match pattern: "admin"'
 };

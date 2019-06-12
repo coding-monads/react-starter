@@ -3,6 +3,11 @@ import express, { NextFunction, Request, Response } from 'express';
 import { auth } from '../../middleware/auth';
 
 import * as usersController from '../../controllers/users/users';
+import * as usersValidator from '../../controllers/users/usersValidator';
+
+import {
+	ADD_USER
+} from '../../controllers/users/methods';
 
 const router = express.Router();
 
@@ -11,16 +16,35 @@ const router = express.Router();
 // @access  Private
 router.get(
     '/userList',
-    (req: Request, res: Response, next: NextFunction) => auth(req, res, next, true, true),
+    (req: Request, res: Response, next: NextFunction) => auth(req, res, next, {authAdmin: true}),
 	usersController.getUserList
 );
 
-// @route   GET api/admin/user
+// @route   POST api/admin/user
+// @desc    Add new user
+// @access  Private
+router.post(
+    '/user',
+    (req: Request, res: Response, next: NextFunction) => auth(req, res, next, {authAdmin: true}),
+    usersValidator.validate(ADD_USER),
+	usersController.addUser
+);
+
+// @route   GET api/admin/user/:user_id
+// @desc    Update user
+// @access  Private
+router.put(
+    '/user/:user_id',
+    (req: Request, res: Response, next: NextFunction) => auth(req, res, next, {authAdmin: true}),
+	usersController.updateUserData
+);
+
+// @route   GET api/admin/user/:user_id
 // @desc    Delete user
 // @access  Private
 router.delete(
     '/user/:user_id',
-    (req: Request, res: Response, next: NextFunction) => auth(req, res, next, true, true),
+    (req: Request, res: Response, next: NextFunction) => auth(req, res, next, {authAdmin: true}),
 	usersController.deleteUser
 );
 

@@ -18,7 +18,7 @@ const router = express.Router();
 router.get(
 	'/',
 	(req: Request, res: Response, next: NextFunction) =>
-		auth(req, res, next, false),
+		auth(req, res, next, {authEmail: false}),
 	usersController.getUser
 );
 
@@ -45,7 +45,7 @@ router.post(
 // @access  Private
 router.delete(
 	'/',
-	(req: Request, res: Response, next: NextFunction) => auth(req, res, next),
+	(req: Request, res: Response, next: NextFunction) => auth(req, res, next, {}),
 	usersController.deleteUser
 );
 
@@ -59,7 +59,7 @@ router.get('/activate/:activationKey', usersController.activateUser);
 // @access  Private
 router.put(
 	'/',
-	(req: Request, res: Response, next: NextFunction) => auth(req, res, next),
+	(req: Request, res: Response, next: NextFunction) => auth(req, res, next, {}),
 	usersValidator.validate(UPDATE_USER),
 	usersController.updateUserData
 );

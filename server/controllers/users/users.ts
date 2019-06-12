@@ -53,6 +53,38 @@ export const getUserList = async (req: Request, res: Response) => {
 	}
 };
 
+const reqValidation = (req: Request, res: Response) => {
+	const errors = validationResult(req);
+	
+	if (!errors.isEmpty()) {
+		return res
+			.status(400)
+			.json({ errors: errors.array({ onlyFirstError: true }) });
+	}
+}
+
+export const addUser = async (req: Request, res: Response) => {
+	reqValidation(req, res);
+
+	try {
+		const user = await User.findOne({ email: req.body.email.toLowerCase() });
+		if (user) {
+			return res
+				.status(400)
+				.json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
+		} else {
+			const newUser = new User(req.body)
+			newUser.email = newUser.email.toLowerCase()
+			newUser.password = bcrypt.hashSync(newUser.password)
+		
+			await newUser.save();
+			return res.json({ msg: messages.USER_ADDED });
+		};
+	} catch (err) {
+		res.status(500).send(messages.SERVER_ERROR);
+	}
+};
+
 export const registerUser = (req: Request, res: Response) => {
 	const errors = validationResult(req);
 
@@ -178,11 +210,16 @@ export const updateUserData = async (req: Request, res: Response) => {
 	}
 	const user = await User.findById(req.user.id);
 	if (user) {
-		const { firstName, lastName, password } = req.body;
+		const { firstName, lastName, password, emailVerified, roles } = req.body;
 		let { email } = req.body;
 
 		if (firstName) user.firstName = firstName;
 		if (lastName) user.lastName = lastName;
+
+		if(req.user.admin){
+			if (emailVerified) user.emailVerified = emailVerified;
+			if (roles) user.roles = roles;
+		}
 
 		if (email) {
 			email = email.toLowerCase();
@@ -194,9 +231,11 @@ export const updateUserData = async (req: Request, res: Response) => {
 						.json({ errors: [{ msg: messages.EMAIL_ALREADY_EXISTS }] });
 				}
 				user.email = email;
-				user.activationKey = bcrypt.hashSync(email).replace(/\//g, '');
-				user.emailVerified = false;
-				sendVerificationEmail(user);
+				if(!req.user.admin){
+					user.activationKey = bcrypt.hashSync(email).replace(/\//g, '');
+					user.emailVerified = false;
+					sendVerificationEmail(user);
+				}
 			}
 		}
 		if (password) {

@@ -1,11 +1,12 @@
 import { body } from 'express-validator/check';
 
-import { userMethods, REGISTER_USER, LOGIN_USER, UPDATE_USER } from './methods';
+import { userMethods, REGISTER_USER, LOGIN_USER, UPDATE_USER, ADD_USER } from './methods';
 import messages from '../messages';
 
 export const validate = (method: userMethods) => {
 	switch (method) {
-	case REGISTER_USER: {
+	case REGISTER_USER: 
+	case ADD_USER: {
 		return [
 			body('firstName', messages.FIRST_NAME_REQUIRED)
 				.not()
@@ -28,7 +29,9 @@ export const validate = (method: userMethods) => {
 			body('password', messages.PASSWORD_IS_REQUIRED)
 				.not()
 				.isEmpty(),
-			body('password', messages.PASSWORD_SPECIFIC_LENGTH).isLength({ min: 6 })
+			body('password', messages.PASSWORD_SPECIFIC_LENGTH).isLength({ min: 6 }),
+			body('emailVerified', messages.MUST_BE_BOOLEAN).optional().isBoolean(),
+			body('roles', messages.MUST_MATCH_PATTERN).optional().equals('admin')
 		];
 	}
 	case LOGIN_USER: {
