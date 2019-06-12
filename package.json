@@ -5,7 +5,7 @@
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:docker": "cross-env NODE_ENV=docker npm start",
-    "start:server": "cd server && npm run start",
+    "start:server": "cd server && npm run dev",
     "start:client": "npm start --prefix client",
     "build:server": "cd server && npm run build",
     "storybook": "cd client && npm run storybook",
