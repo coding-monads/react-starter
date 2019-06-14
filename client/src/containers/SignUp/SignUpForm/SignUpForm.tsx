@@ -123,7 +123,7 @@ const SignUp: React.FC<Props> = ({ onSubmit }) => (
           label="Repeat Password*"
           outllined
           component={TextField}
-          id="password"
+          id="passwordRepeat"
         />
         <FormErrors errors={errors} />
         <Button type="submit" color="primary">
