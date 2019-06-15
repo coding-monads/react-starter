@@ -8,7 +8,9 @@ import * as usersValidator from '../../controllers/users/usersValidator';
 import {
 	REGISTER_USER,
 	LOGIN_USER,
-	UPDATE_USER
+	UPDATE_USER,
+	RESET_PASSWORD,
+	RESET_PASSWORD_REQUEST
 } from '../../controllers/users/methods';
 const router = express.Router();
 
@@ -38,6 +40,24 @@ router.post(
 	'/login',
 	usersValidator.validate(LOGIN_USER),
 	usersController.loginUser
+);
+
+// @route   POST api/users/reset
+// @desc    Reset user password
+// @access  Public
+router.post(
+	'/reset/create',
+	usersValidator.validate(RESET_PASSWORD_REQUEST),
+	usersController.resetPasswordRequest
+);
+
+// @route   POST api/users/reset
+// @desc    Reset user password
+// @access  Public
+router.post(
+	'/reset',
+	usersValidator.validate(RESET_PASSWORD),
+	usersController.resetPassword
 );
 
 // @route   DELETE api/users

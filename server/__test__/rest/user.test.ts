@@ -8,7 +8,7 @@ import { ITestUser } from '../types/user';
 
 describe('Initial tests for user', () => {
 	// global variables that we can use in all tests
-	let connection: typeof mongoose;
+	let connection: typeof mongoose | null;
 	let randomUser: ITestUser;
 	let registerResponse: Response;
 
@@ -79,7 +79,7 @@ describe('Initial tests for user', () => {
 		});
 	});
 	afterAll(async done => {
-		await connection.disconnect();
+		connection && await connection.disconnect();
 		done();
 	});
 });
