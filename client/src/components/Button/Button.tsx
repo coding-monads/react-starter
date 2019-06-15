@@ -5,6 +5,7 @@ interface ButtonTypes {
   children: string;
   color?: "default" | "inherit" | "primary" | "secondary";
   type?: "button" | "submit";
+  disabled?: boolean
 }
 
 const ButtonMUI: React.FC<ButtonTypes> = ({

@@ -34,7 +34,7 @@ const SignIn: React.SFC<SignInProps> = ({ loginUser, errors }) => (
     <TextHeading variant="h5">Sign In</TextHeading>
     <SignInForm errors={errors} onSubmit={loginData => loginUser(loginData)} />
     <LinksWrapper>
-      <TextLink to="/">Forgot password?</TextLink>
+      <TextLink to="/reset">Forgot password?</TextLink>
       <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
     </LinksWrapper>
     <MadeWithLove />
