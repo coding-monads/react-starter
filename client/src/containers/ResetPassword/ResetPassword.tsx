@@ -1,7 +1,7 @@
 import React from "react";
+import axios from "axios";
 import * as Yup from "yup";
-import { withFormik, FormikProps, FormikErrors, Form, Field } from "formik";
-import { connect } from "react-redux";
+import { withFormik, FormikProps, Form, Field } from "formik";
 import styled from "styled-components";
 import MadeWithLove from "../../components/MadeWithLove/MadeWithLove";
 import TextHelper from "../../components/TextHelper/TextHelper";
@@ -11,8 +11,6 @@ import Button from "../../components/Button/Button";
 import Container from "../../components/Container/Container";
 import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
 import TextHeading from "../../components/TextHeading/TextHeading";
-import { loginUser } from "../../store/actions/authActions";
-import { Store } from "../../store/reducers";
 
 const StyledFormikForm = styled(Form)`
   display: grid;
@@ -36,7 +34,6 @@ const ResetPasswordForm = (props: OtherProps & FormikProps<FormValues>) => {
     <StyledFormikForm>
       <h1>{message}</h1>
       <Field
-        type="email"
         name="email"
         label="Email Address*"
         error={!!errors.email}
@@ -74,11 +71,9 @@ const ResetPasswordFormWrapper = withFormik<ResetPasswordFormProps, FormValues>(
         email: props.email || ""
       };
     },
-
     validationSchema: ResetPasswordSchema,
-
     handleSubmit: values => {
-      // do submitting things
+      axios.post("/api/users/reset/create", values)
     }
   }
 )(ResetPasswordForm);
