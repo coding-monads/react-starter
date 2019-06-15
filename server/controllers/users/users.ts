@@ -3,14 +3,13 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "config";
 import messages from "../messages";
-import User, { IUser } from "../../models/User";
-import nodemailer, {
-  TransportOptions,
-  Transport,
-  Transporter
-} from "nodemailer";
+import User from "../../models/User";
 import { Response, Request } from "express";
 import { isObject } from "util";
+import {
+  sendVerificationEmail,
+  sendResetPasswordEmail
+} from "../../services/email/EmailService";
 
 export const activateUser = async (req: Request, res: Response) => {
   const { activationKey } = req.params;
@@ -74,7 +73,7 @@ export const registerUser = (req: Request, res: Response) => {
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
-          sendVerificationEmail(newUser);
+          sendVerificationEmail(newUser.email, newUser.activationKey);
           res.json({
             msg: messages.USER_REGISTERED,
             token: "Bearer " + token
@@ -173,7 +172,7 @@ export const resetPasswordRequest = (req: Request, res: Response) => {
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
-          sendResetPasswordEmail(user, token);
+          sendResetPasswordEmail(user.email, token);
           res.json({
             msg: messages.RESET_PASSWORD_EMAIL_SEND
           });
@@ -248,7 +247,7 @@ export const updateUserData = async (req: Request, res: Response) => {
         user.email = email;
         user.activationKey = bcrypt.hashSync(email).replace(/\//g, "");
         user.emailVerified = false;
-        sendVerificationEmail(user);
+        sendVerificationEmail(user.email, user.activationKey);
       }
     }
     if (password) {
@@ -259,58 +258,4 @@ export const updateUserData = async (req: Request, res: Response) => {
   } else {
     return res.status(500).send(messages.SERVER_ERROR);
   }
-};
-
-interface ITransporterAuth {
-  user: string;
-  pass: string;
-}
-
-const sendVerificationEmail = (user: IUser) => {
-  const mailSettings: TransportOptions = config.get("mail.settings");
-  const mailCredentials: ITransporterAuth = config.get("mail.credentials");
-  const transporter = nodemailer.createTransport({
-    ...mailSettings,
-    auth: mailCredentials
-  });
-
-  const mailOptions = {
-    from: "support <natripareact@gmail.com>",
-    to: user.email,
-    subject: "Account Activation",
-    html: `
-      To activate your account, click this link
-      <a href="http://localhost:5000/api/users/activate/${
-        user.activationKey
-      }">Activate Account</a>
-    `
-  };
-
-  transporter.sendMail(mailOptions, (err, data) => {
-    if (err) throw err;
-  });
-};
-
-const sendResetPasswordEmail = (user: IUser, resetKey: string) => {
-  const mailSettings: TransportOptions = config.get("mail.settings");
-  const mailCredentials: ITransporterAuth = config.get("mail.credentials");
-
-  const transporter = nodemailer.createTransport({
-    ...mailSettings,
-    auth: mailCredentials
-  });
-
-  const mailOptions = {
-    from: "support <natripareact@gmail.com>",
-    to: user.email,
-    subject: "Reset Password",
-    html: `
-      To reset your account password, click this link
-      <a href="http://localhost:5000/api/users/resetpassword/${resetKey}">Resset Account Password</a>
-    `
-  };
-
-  transporter.sendMail(mailOptions, (err, data) => {
-    if (err) throw err;
-  });
 };
