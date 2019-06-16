@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
 import * as Yup from "yup";
 import { withFormik, FormikProps, Form, Field } from "formik";
@@ -11,6 +12,7 @@ import Button from "../../components/Button/Button";
 import Container from "../../components/Container/Container";
 import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
 import TextHeading from "../../components/TextHeading/TextHeading";
+import { addAlert, CanAddAlert } from "../../store/actions/alertActions";
 
 const StyledFormikForm = styled(Form)`
   display: grid;
@@ -85,7 +87,7 @@ const ResetPasswordSchema = Yup.object().shape({
 });
 
 const UpdatePasswordFormWrapper = withFormik<
-  UpdatePasswordFormProps,
+  UpdatePasswordFormProps & CanAddAlert,
   FormValues
 >({
   mapPropsToValues: props => ({
@@ -94,8 +96,22 @@ const UpdatePasswordFormWrapper = withFormik<
     passwordConfirm: ""
   }),
   validationSchema: ResetPasswordSchema,
-  handleSubmit: values => {
-    axios.post("/api/users/password/update", values);
+  handleSubmit: (values, bag) => {
+    axios
+      .post("/api/users/password/update", values)
+      .then(x => {
+        bag.props.addAlert({
+          message: x.data.msg,
+          variant: "success"
+        });
+      })
+      .catch(({ response: { data } }) => {
+        console.log(JSON.stringify(data));
+        bag.props.addAlert({
+          message: data.errors[0].msg,
+          variant: "error"
+        });
+      });
   }
 })(UpdatePasswordForm);
 
@@ -110,12 +126,18 @@ interface UpdatePasswordParams {
   match: { params: { token: string } };
 }
 
-const UpdatePassword: FC<UpdatePasswordParams> = ({ match }) => {
+const UpdatePassword: FC<UpdatePasswordParams & CanAddAlert> = ({
+  match,
+  addAlert
+}) => {
   return (
     <Container maxWidth="xs">
       <IconAvatarLock color="pink" />
       <TextHeading variant="h5">Update Password</TextHeading>
-      <UpdatePasswordFormWrapper token={match.params.token} />
+      <UpdatePasswordFormWrapper
+        token={match.params.token}
+        addAlert={addAlert}
+      />
       <LinksWrapper>
         <TextLink to="/login">Already have an account? Sign In</TextLink>
         <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
@@ -125,4 +147,7 @@ const UpdatePassword: FC<UpdatePasswordParams> = ({ match }) => {
   );
 };
 
-export default UpdatePassword;
+export default connect(
+  () => {},
+  { addAlert }
+)(UpdatePassword);

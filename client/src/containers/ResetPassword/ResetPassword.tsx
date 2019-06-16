@@ -1,4 +1,5 @@
-import React from "react";
+import React, { FC } from "react";
+import { connect } from "react-redux";
 import axios from "axios";
 import * as Yup from "yup";
 import { withFormik, FormikProps, Form, Field } from "formik";
@@ -11,6 +12,7 @@ import Button from "../../components/Button/Button";
 import Container from "../../components/Container/Container";
 import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
 import TextHeading from "../../components/TextHeading/TextHeading";
+import { addAlert, CanAddAlert } from "../../store/actions/alertActions";
 
 const StyledFormikForm = styled(Form)`
   display: grid;
@@ -64,19 +66,34 @@ const ResetPasswordSchema = Yup.object().shape({
     .required("Email is required")
 });
 
-const ResetPasswordFormWrapper = withFormik<ResetPasswordFormProps, FormValues>(
-  {
-    mapPropsToValues: props => {
-      return {
-        email: props.email || ""
-      };
-    },
-    validationSchema: ResetPasswordSchema,
-    handleSubmit: values => {
-      axios.post("/api/users/password/reset", values)
-    }
+const ResetPasswordFormWrapper = withFormik<
+  ResetPasswordFormProps & CanAddAlert,
+  FormValues
+>({
+  mapPropsToValues: props => {
+    return {
+      email: props.email || ""
+    };
+  },
+  validationSchema: ResetPasswordSchema,
+  handleSubmit: (values, bag) => {
+    axios
+      .post("/api/users/password/reset", values)
+      .then(x => {
+        bag.props.addAlert({
+          message: x.data.msg,
+          variant: "success"
+        });
+      })
+      .catch(({ response: { data } }) => {
+        console.log(JSON.stringify(data));
+        bag.props.addAlert({
+          message: data.errors[0].msg,
+          variant: "error"
+        });
+      });
   }
-)(ResetPasswordForm);
+})(ResetPasswordForm);
 
 const LinksWrapper = styled.div`
   width: 100%;
@@ -85,11 +102,11 @@ const LinksWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const ResetPassword = () => (
+const ResetPassword: FC<CanAddAlert> = ({ addAlert }) => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
     <TextHeading variant="h5">Reset Password</TextHeading>
-    <ResetPasswordFormWrapper />
+    <ResetPasswordFormWrapper addAlert={addAlert} />
     <LinksWrapper>
       <TextLink to="/login">Already have an account? Sign In</TextLink>
       <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
@@ -98,4 +115,7 @@ const ResetPassword = () => (
   </Container>
 );
 
-export default ResetPassword;
+export default connect(
+  () => {},
+  { addAlert }
+)(ResetPassword);

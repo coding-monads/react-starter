@@ -50,7 +50,7 @@ export const loginUser = (
 
 export const registerUser = (
   registerData: RegisterData
-): ThunkAction<void, {}, ErrorResponse, RegisterActions | AlertActions> => async dispatch => {
+): ThunkAction<void, {}, ErrorResponse, RegisterActions | AlertActions> => dispatch => {
   dispatch({
     type: TYPES.REGISTER_LOADING
   });

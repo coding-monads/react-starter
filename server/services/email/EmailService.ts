@@ -1,11 +1,5 @@
-import { IUser } from "../../models/User";
 import config from "config";
-import nodemailer, {
-  TransportOptions,
-  Transport,
-  Transporter,
-  SendMailOptions
-} from "nodemailer";
+import nodemailer, { TransportOptions, SendMailOptions } from "nodemailer";
 
 interface ITransporterAuth {
   user: string;
