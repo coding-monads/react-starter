@@ -7,11 +7,13 @@
     "start": "node ./build/server",
     "test": "jest",
     "prod": "tsc && node ./build/server.js",
-    "dev": "ts-node-dev --respawn --transpileOnly server.ts"
+    "dev": "ts-node-dev --respawn --transpileOnly server.ts",
+    "dev:docker": "cross-env NODE_ENV=docker ts-node-dev --respawn --transpileOnly server.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.1.0",
+    "cross-env": "^5.2.0",
     "express": "^4.16.4",
     "express-validator": "^5.3.1",
     "jsonwebtoken": "^8.5.1",

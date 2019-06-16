@@ -1,4 +1,4 @@
-import { body } from "express-validator/check";
+import { body, param } from "express-validator/check";
 
 import {
   userMethods,
@@ -6,7 +6,7 @@ import {
   LOGIN_USER,
   UPDATE_USER,
   RESET_PASSWORD,
-  RESET_PASSWORD_REQUEST
+  UPDATE_PASSWORD
 } from "./methods";
 import messages from "../messages";
 
@@ -65,7 +65,7 @@ export const validate = (method: userMethods) => {
           .isLength({ min: 6 })
       ];
     }
-    case RESET_PASSWORD_REQUEST: {
+    case RESET_PASSWORD: {
       return [
         body("email", messages.EMAIL_IS_REQUIRED)
           .not()
@@ -73,7 +73,7 @@ export const validate = (method: userMethods) => {
         body("email", messages.PLEASE_ENTER_A_VALID_EMAIL).isEmail()
       ];
     }
-    case RESET_PASSWORD: {
+    case UPDATE_PASSWORD: {
       return [
         body("token", messages.FIRST_NAME_REQUIRED)
           .not()
@@ -89,7 +89,16 @@ export const validate = (method: userMethods) => {
           .isEmpty(),
         body("passwordConfirm", messages.PASSWORD_SPECIFIC_LENGTH).isLength({
           min: 6
-        })
+        }),
+        body("password", "invalid password")
+          .isLength({ min: 4 })
+          .custom((value, { req }) => {
+            if (value !== req.body.passwordConfirm) {
+              throw new Error("Passwords don't match");
+            } else {
+              return value;
+            }
+          })
       ];
     }
   }

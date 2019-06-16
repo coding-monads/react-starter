@@ -8,6 +8,7 @@ export interface IUser extends Document {
   password: string;
   emailVerified: boolean;
   activationKey: string;
+  lastResetToken?: string;
   roles: [string];
 }
 
@@ -37,6 +38,9 @@ const UserSchema = new Schema(
       default: false
     },
     activationKey: {
+      type: String
+    },
+    lastResetToken: {
       type: String
     },
     roles: [String]

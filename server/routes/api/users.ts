@@ -10,7 +10,7 @@ import {
 	LOGIN_USER,
 	UPDATE_USER,
 	RESET_PASSWORD,
-	RESET_PASSWORD_REQUEST
+	UPDATE_PASSWORD,
 } from '../../controllers/users/methods';
 const router = express.Router();
 
@@ -42,22 +42,30 @@ router.post(
 	usersController.loginUser
 );
 
-// @route   POST api/users/reset
+// @route   POST api/users/password/reset
 // @desc    Reset user password
 // @access  Public
 router.post(
-	'/reset/create',
-	usersValidator.validate(RESET_PASSWORD_REQUEST),
-	usersController.resetPasswordRequest
-);
-
-// @route   POST api/users/reset
-// @desc    Reset user password
-// @access  Public
-router.post(
-	'/reset',
+	'/password/reset',
 	usersValidator.validate(RESET_PASSWORD),
 	usersController.resetPassword
+);
+
+// @route   GET api/users/password/update
+// @desc    Verify user password reset token and return decoded values
+// @access  Public
+router.get(
+	'/password/update/:token',
+	usersController.updatePasswordVerifyToken
+);
+
+// @route   POST api/users/password/update
+// @desc    Update user password
+// @access  Public
+router.post(
+	'/password/update',
+	usersValidator.validate(UPDATE_PASSWORD),
+	usersController.updatePassword
 );
 
 // @route   DELETE api/users

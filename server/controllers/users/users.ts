@@ -140,16 +140,16 @@ export const loginUser = (req: Request, res: Response) => {
 };
 
 class ResetPayload {
-  subject: string;
+  sub: string;
   type: string;
 
-  constructor(subject: string, type: string) {
-    this.subject = subject;
+  constructor(sub: string, type: string) {
+    this.sub = sub;
     this.type = type;
   }
 }
 
-export const resetPasswordRequest = (req: Request, res: Response) => {
+export const resetPassword = (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
@@ -172,6 +172,8 @@ export const resetPasswordRequest = (req: Request, res: Response) => {
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
+          user.lastResetToken = token;
+          user.save();
           sendResetPasswordEmail(user.email, token);
           res.json({
             msg: messages.RESET_PASSWORD_EMAIL_SEND
@@ -182,7 +184,7 @@ export const resetPasswordRequest = (req: Request, res: Response) => {
   });
 };
 
-export const resetPassword = (req: Request, res: Response) => {
+export const updatePasswordVerifyToken = (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res
@@ -190,24 +192,57 @@ export const resetPassword = (req: Request, res: Response) => {
       .json({ errors: errors.array({ onlyFirstError: true }) });
   }
 
-  const { token, password, passwordConfirm } = req.body;
+  const { token } = req.params;
 
+  try {
+    const decodedToken = <ResetPayload>(
+      jwt.verify(token, config.get("jwtSecret"))
+    );
+
+    if (isObject(decodedToken)) {
+      res.json(decodedToken);
+    } else {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: messages.TOKEN_IS_INVALID }] });
+    }
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ errors: [{ msg: messages.TOKEN_IS_INVALID }] });
+  }
+};
+
+export const updatePassword = (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res
+      .status(400)
+      .json({ errors: errors.array({ onlyFirstError: true }) });
+  }
+
+  const { token, password } = req.body;
   const decodedToken = <ResetPayload>jwt.verify(token, config.get("jwtSecret"));
 
-  console.log(decodedToken);
-
   if (isObject(decodedToken)) {
-    User.findById(decodedToken.subject).then(user => {
+    User.findById(decodedToken.sub).then(user => {
       if (!user) {
         return res
           .status(400)
-          .json({ errors: [{ msg: messages.INVALID_CREDENTIALS }] });
+          .json({ errors: [{ msg: messages.USER_NOT_FOUND }] });
       } else {
-        user.password = bcrypt.hashSync(password);
-        user.save();
-        res.json({
-          msg: messages.RESET_PASSWORD_SUCCESSFUL
-        });
+        if (user.lastResetToken === token) {
+          user.lastResetToken = undefined;
+          user.password = bcrypt.hashSync(password);
+          user.save();
+          res.json({
+            msg: messages.RESET_PASSWORD_SUCCESSFUL
+          });
+        } else {
+          return res
+            .status(400)
+            .json({ errors: [{ msg: messages.TOKEN_EXPIRED }] });
+        }
       }
     });
   }

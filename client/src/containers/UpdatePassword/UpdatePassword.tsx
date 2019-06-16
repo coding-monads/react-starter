@@ -21,62 +21,66 @@ const StyledFormikForm = styled(Form)`
 `;
 
 interface FormValues {
-  email: string;
+  password: string;
+  passwordConfirm: string;
 }
 
 interface OtherProps {
   message?: string;
 }
 
-const ResetPasswordForm = (props: OtherProps & FormikProps<FormValues>) => {
+const UpdatePasswordForm = (props: OtherProps & FormikProps<FormValues>) => {
   const { touched, errors, isSubmitting, message } = props;
   return (
     <StyledFormikForm>
       <h1>{message}</h1>
+      
       <Field
-        name="email"
-        label="Email Address*"
-        error={!!errors.email}
-        outllined
-        component={TextField}
-      />
-      {touched.email && errors.email && (
-        <TextHelper error component="div">
-          <p style={{ marginBottom: "5px" }}>- {errors.email}</p>
-        </TextHelper>
-      )}
+          name="password"
+          type="password"
+          error={!!errors.password}
+          label="Password*"
+          outllined
+          component={TextField}
+        />
+        <Field
+          name="passwordConfirm"
+          type="password"
+          error={!!errors.passwordConfirm}
+          label="Password Confirm*"
+          outllined
+          component={TextField}
+        />
 
       <Button type="submit" color="primary" disabled={isSubmitting}>
-        Send verification email
+        Update password
       </Button>
     </StyledFormikForm>
   );
 };
 
-interface ResetPasswordFormProps {
-  email?: string;
+interface UpdatePasswordFormProps {
   message?: string;
 }
 
 const ResetPasswordSchema = Yup.object().shape({
-  email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required")
+  password: Yup.string()
+    .min(6, "Password length must be at least 6 characters")
+    .required("Password is required"),
+  passwordConfirm: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .min(6, "Password repeat length must be at least 6 characters")
+    .required("Password repeat is required")
 });
 
-const ResetPasswordFormWrapper = withFormik<ResetPasswordFormProps, FormValues>(
+const UpdatePasswordFormWrapper = withFormik<UpdatePasswordFormProps, FormValues>(
   {
-    mapPropsToValues: props => {
-      return {
-        email: props.email || ""
-      };
-    },
     validationSchema: ResetPasswordSchema,
     handleSubmit: values => {
-      axios.post("/api/users/password/reset", values)
+      axios.post("/api/users/password/update", values)
     }
   }
-)(ResetPasswordForm);
+)(UpdatePasswordForm);
 
 const LinksWrapper = styled.div`
   width: 100%;
@@ -85,11 +89,11 @@ const LinksWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const ResetPassword = () => (
+const UpdatePassword = () => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
-    <TextHeading variant="h5">Reset Password</TextHeading>
-    <ResetPasswordFormWrapper />
+    <TextHeading variant="h5">Update Password</TextHeading>
+    <UpdatePasswordFormWrapper />
     <LinksWrapper>
       <TextLink to="/login">Already have an account? Sign In</TextLink>
       <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
@@ -98,4 +102,4 @@ const ResetPassword = () => (
   </Container>
 );
 
-export default ResetPassword;
+export default UpdatePassword;

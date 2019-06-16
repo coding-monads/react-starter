@@ -15,6 +15,7 @@ export default {
   ACTIVATION_KEY_IS_INCORRECT: "Activation key is incorrect",
   KEY_HAS_BEEN_ACTIVATED: "Key has been activated",
   USER_UPDATED: "User updated",
+  USER_NOT_FOUND: "User with given id not found",
   FIRST_NAME_REQUIRED: "First name field is required",
   FIRST_NAME_SPECIFIC_LENGTH:
     "Please enter a first name between 2 and 30 characters",
@@ -27,5 +28,7 @@ export default {
   RESET_PASSWORD_EMAIL_SEND:
     "Reset password token was send to your email address",
   RESET_PASSWORD_SUCCESSFUL:
-    "Password successfuly updated. You can login with new credentials"
+    "Password successfuly updated. You can login with new credentials",
+  TOKEN_REQUIRED: "Token is required",
+  TOKEN_NOT_VALID: "Token is invalid"
 };
