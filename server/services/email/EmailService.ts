@@ -32,7 +32,7 @@ export const sendResetPasswordEmail = (email: string, resetKey: string) => {
     subject: "Reset Password",
     html: `
         To reset your account password, click this link
-        <a href="http://localhost:5000/api/users/resetpassword/${resetKey}">Resset Account Password</a>
+        <a href="http://localhost:3000/password/update/${resetKey}">Reset Account Password</a>
       `
   };
   sendEmail(mailOptions);

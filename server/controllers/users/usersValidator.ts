@@ -75,7 +75,7 @@ export const validate = (method: userMethods) => {
     }
     case UPDATE_PASSWORD: {
       return [
-        body("token", messages.FIRST_NAME_REQUIRED)
+        body("token", messages.TOKEN_REQUIRED)
           .not()
           .isEmpty(),
         body("password", messages.PASSWORD_IS_REQUIRED)

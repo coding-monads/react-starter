@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import axios from "axios";
 import * as Yup from "yup";
 import { withFormik, FormikProps, Form, Field } from "formik";
@@ -21,6 +21,7 @@ const StyledFormikForm = styled(Form)`
 `;
 
 interface FormValues {
+  token: string;
   password: string;
   passwordConfirm: string;
 }
@@ -34,24 +35,33 @@ const UpdatePasswordForm = (props: OtherProps & FormikProps<FormValues>) => {
   return (
     <StyledFormikForm>
       <h1>{message}</h1>
-      
-      <Field
-          name="password"
-          type="password"
-          error={!!errors.password}
-          label="Password*"
-          outllined
-          component={TextField}
-        />
-        <Field
-          name="passwordConfirm"
-          type="password"
-          error={!!errors.passwordConfirm}
-          label="Password Confirm*"
-          outllined
-          component={TextField}
-        />
 
+      <Field
+        name="password"
+        type="password"
+        error={!!errors.password}
+        label="Password*"
+        outllined
+        component={TextField}
+      />
+      <Field
+        name="passwordConfirm"
+        type="password"
+        error={!!errors.passwordConfirm}
+        label="Password Confirm*"
+        outllined
+        component={TextField}
+      />
+      {touched.password && errors.password && (
+        <TextHelper error component="div">
+          <p style={{ marginBottom: "5px" }}>- {errors.password}</p>
+        </TextHelper>
+      )}
+      {touched.passwordConfirm && errors.passwordConfirm && (
+        <TextHelper error component="div">
+          <p style={{ marginBottom: "5px" }}>- {errors.passwordConfirm}</p>
+        </TextHelper>
+      )}
       <Button type="submit" color="primary" disabled={isSubmitting}>
         Update password
       </Button>
@@ -60,6 +70,7 @@ const UpdatePasswordForm = (props: OtherProps & FormikProps<FormValues>) => {
 };
 
 interface UpdatePasswordFormProps {
+  token: string;
   message?: string;
 }
 
@@ -73,14 +84,20 @@ const ResetPasswordSchema = Yup.object().shape({
     .required("Password repeat is required")
 });
 
-const UpdatePasswordFormWrapper = withFormik<UpdatePasswordFormProps, FormValues>(
-  {
-    validationSchema: ResetPasswordSchema,
-    handleSubmit: values => {
-      axios.post("/api/users/password/update", values)
-    }
+const UpdatePasswordFormWrapper = withFormik<
+  UpdatePasswordFormProps,
+  FormValues
+>({
+  mapPropsToValues: props => ({
+    token: props.token,
+    password: "",
+    passwordConfirm: ""
+  }),
+  validationSchema: ResetPasswordSchema,
+  handleSubmit: values => {
+    axios.post("/api/users/password/update", values);
   }
-)(UpdatePasswordForm);
+})(UpdatePasswordForm);
 
 const LinksWrapper = styled.div`
   width: 100%;
@@ -89,17 +106,23 @@ const LinksWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const UpdatePassword = () => (
-  <Container maxWidth="xs">
-    <IconAvatarLock color="pink" />
-    <TextHeading variant="h5">Update Password</TextHeading>
-    <UpdatePasswordFormWrapper />
-    <LinksWrapper>
-      <TextLink to="/login">Already have an account? Sign In</TextLink>
-      <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
-    </LinksWrapper>
-    <MadeWithLove />
-  </Container>
-);
+interface UpdatePasswordParams {
+  match: { params: { token: string } };
+}
+
+const UpdatePassword: FC<UpdatePasswordParams> = ({ match }) => {
+  return (
+    <Container maxWidth="xs">
+      <IconAvatarLock color="pink" />
+      <TextHeading variant="h5">Update Password</TextHeading>
+      <UpdatePasswordFormWrapper token={match.params.token} />
+      <LinksWrapper>
+        <TextLink to="/login">Already have an account? Sign In</TextLink>
+        <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
+      </LinksWrapper>
+      <MadeWithLove />
+    </Container>
+  );
+};
 
 export default UpdatePassword;

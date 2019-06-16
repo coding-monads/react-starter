@@ -7,4 +7,11 @@ storiesOf("UpdatePassword", module)
   .addDecorator(story => (
     <MemoryRouter initialEntries={["/"]}>{story()}</MemoryRouter>
   ))
-  .add("default", () => <UpdatePassword />);
+  .add("default", () => {
+    const match = {
+      params: {
+        token: "SomeToken"
+      }
+    };
+    return <UpdatePassword match={match} />;
+  });

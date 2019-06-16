@@ -12,6 +12,7 @@ import LandingPage from "./containers/LandingPage";
 import SignIn from "./containers/SignIn/SignIn";
 import SignUp from "./containers/SignUp/SignUp";
 import ResetPassword from "./containers/ResetPassword";
+import UpdatePassword from "./containers/UpdatePassword";
 
 interface Props {
   dispatch: (callback: any) => void;
@@ -32,7 +33,12 @@ const App: React.FC<Props> = ({ dispatch }) => {
               <Route path="/" exact component={LandingPage} />
               <Route path="/login" exact component={SignIn} />
               <Route path="/register" exact component={SignUp} />
-              <Route path="/reset" exact component={ResetPassword} />
+              <Route path="/password/reset" exact component={ResetPassword} />
+              <Route
+                path="/password/update/:token"
+                exact
+                component={UpdatePassword}
+              />
             </Switch>
           </Layout>
         </>
