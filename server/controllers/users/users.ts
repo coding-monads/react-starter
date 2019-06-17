@@ -7,9 +7,14 @@ import User from "../../models/User";
 import { Response, Request } from "express";
 import { isObject } from "util";
 import {
-  sendVerificationEmail,
-  sendResetPasswordEmail
-} from "../../services/email/EmailService";
+  SendMessageService,
+  SendMessageServiceImpl
+} from "../../services/SendMessageService";
+
+const sendMessageService: SendMessageService = new SendMessageServiceImpl(
+  config.get("mail.settings"),
+  config.get("mail.credentials")
+);
 
 export const activateUser = async (req: Request, res: Response) => {
   const { activationKey } = req.params;
@@ -73,7 +78,12 @@ export const registerUser = (req: Request, res: Response) => {
         { expiresIn: 3600 },
         (err, token) => {
           if (err) throw err;
-          sendVerificationEmail(newUser.email, newUser.activationKey);
+
+          sendMessageService.sendMessage({
+            email: newUser.email,
+            activationKey: newUser.activationKey
+          });
+
           res.json({
             msg: messages.USER_REGISTERED,
             token: "Bearer " + token
@@ -174,7 +184,12 @@ export const resetPassword = (req: Request, res: Response) => {
           if (err) throw err;
           user.lastResetToken = token;
           user.save();
-          sendResetPasswordEmail(user.email, token);
+
+          sendMessageService.sendMessage({
+            email: user.email,
+            resetKey: token
+          });
+
           res.json({
             msg: messages.RESET_PASSWORD_EMAIL_SEND
           });
@@ -282,7 +297,11 @@ export const updateUserData = async (req: Request, res: Response) => {
         user.email = email;
         user.activationKey = bcrypt.hashSync(email).replace(/\//g, "");
         user.emailVerified = false;
-        sendVerificationEmail(user.email, user.activationKey);
+
+        sendMessageService.sendMessage({
+          email: user.email,
+          activationKey: user.activationKey
+        });
       }
     }
     if (password) {

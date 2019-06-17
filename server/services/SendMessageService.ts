@@ -1,16 +1,16 @@
 import nodemailer, { TransportOptions, SendMailOptions } from "nodemailer";
 
-interface ITransporterAuth {
+export interface ITransporterAuth {
   user: string;
   pass: string;
 }
 
-type VerificationMessage = {
+export type VerificationMessage = {
   email: string;
   activationKey: string;
 };
 
-type ResetPasswordMessage = {
+export type ResetPasswordMessage = {
   email: string;
   resetKey: string;
 };
@@ -27,11 +27,11 @@ function isResetPasswordMessage(
   return (<ResetPasswordMessage>message).resetKey !== undefined;
 }
 
-interface SendMessageService {
+export interface SendMessageService {
   sendMessage(message: VerificationMessage | ResetPasswordMessage): void;
 }
 
-class SendMessageServiceImpl implements SendMessageService {
+export class SendMessageServiceImpl implements SendMessageService {
   mailSettings: TransportOptions;
   mailCredentials: ITransporterAuth;
 
