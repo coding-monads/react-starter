@@ -1,4 +1,3 @@
-import config from "config";
 import nodemailer, { TransportOptions, SendMailOptions } from "nodemailer";
 
 interface ITransporterAuth {
@@ -6,41 +5,85 @@ interface ITransporterAuth {
   pass: string;
 }
 
-export const sendVerificationEmail = (email: string, activationKey: string) => {
-  const mailOptions = {
-    from: "support <natripareact@gmail.com>",
-    to: email,
-    subject: "Account Activation",
-    html: `
-        To activate your account, click this link
-        <a href="http://localhost:5000/api/users/activate/${activationKey}">Activate Account</a>
-      `
-  };
-  sendEmail(mailOptions);
+type VerificationMessage = {
+  email: string;
+  activationKey: string;
 };
 
-export const sendResetPasswordEmail = (email: string, resetKey: string) => {
-  const mailOptions = {
-    from: "support <natripareact@gmail.com>",
-    to: email,
-    subject: "Reset Password",
-    html: `
-        To reset your account password, click this link
-        <a href="http://localhost:3000/password/update/${resetKey}">Reset Account Password</a>
-      `
-  };
-  sendEmail(mailOptions);
+type ResetPasswordMessage = {
+  email: string;
+  resetKey: string;
 };
 
-const sendEmail = (mailOptions: SendMailOptions) => {
-  const mailSettings: TransportOptions = config.get("mail.settings");
-  const mailCredentials: ITransporterAuth = config.get("mail.credentials");
+function isVerificationMessage(
+  message: VerificationMessage | ResetPasswordMessage
+): message is VerificationMessage {
+  return (<VerificationMessage>message).activationKey !== undefined;
+}
 
-  const transporter = nodemailer.createTransport({
-    ...mailSettings,
-    auth: mailCredentials
-  });
-  transporter.sendMail(mailOptions, (err, data) => {
-    if (err) throw err;
-  });
-};
+function isResetPasswordMessage(
+  message: VerificationMessage | ResetPasswordMessage
+): message is ResetPasswordMessage {
+  return (<ResetPasswordMessage>message).resetKey !== undefined;
+}
+
+interface SendMessageService {
+  sendMessage(message: VerificationMessage | ResetPasswordMessage): void;
+}
+
+class SendMessageServiceImpl implements SendMessageService {
+  mailSettings: TransportOptions;
+  mailCredentials: ITransporterAuth;
+
+  constructor(
+    mailSettings: TransportOptions,
+    mailCredentials: ITransporterAuth
+  ) {
+    this.mailSettings = mailSettings;
+    this.mailCredentials = mailCredentials;
+  }
+
+  sendMessage(message: VerificationMessage | ResetPasswordMessage): void {
+    if (isVerificationMessage(message)) {
+      this.sendVerificationEmail(message.email, message.activationKey);
+    } else {
+      this.sendResetPasswordEmail(message.email, message.resetKey);
+    }
+  }
+
+  private sendVerificationEmail(email: string, activationKey: string) {
+    const mailOptions = {
+      from: "support <natripareact@gmail.com>",
+      to: email,
+      subject: "Account Activation",
+      html: `
+          To activate your account, click this link
+          <a href="http://localhost:5000/api/users/activate/${activationKey}">Activate Account</a>
+        `
+    };
+    this.sendEmail(mailOptions);
+  }
+
+  private sendResetPasswordEmail(email: string, resetKey: string) {
+    const mailOptions = {
+      from: "support <natripareact@gmail.com>",
+      to: email,
+      subject: "Reset Password",
+      html: `
+          To reset your account password, click this link
+          <a href="http://localhost:3000/password/update/${resetKey}">Reset Account Password</a>
+        `
+    };
+    this.sendEmail(mailOptions);
+  }
+
+  private sendEmail(mailOptions: SendMailOptions) {
+    const transporter = nodemailer.createTransport({
+      ...this.mailSettings,
+      auth: this.mailCredentials
+    });
+    transporter.sendMail(mailOptions, (err, data) => {
+      if (err) throw err;
+    });
+  }
+}
