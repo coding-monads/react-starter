@@ -15,7 +15,6 @@ export default {
   ACTIVATION_KEY_IS_INCORRECT: "Activation key is incorrect",
   KEY_HAS_BEEN_ACTIVATED: "Key has been activated",
   USER_UPDATED: "User updated",
-  USER_NOT_FOUND: "User with given id not found",
   FIRST_NAME_REQUIRED: "First name field is required",
   FIRST_NAME_SPECIFIC_LENGTH:
     "Please enter a first name between 2 and 30 characters",
@@ -24,6 +23,12 @@ export default {
     "Please enter a last name between 2 and 30 characters",
   PASSWORD_SPECIFIC_LENGTH: "Please enter a password with 6 or more characters",
   TOKEN_EXPIRED: "Token expired",
+  NO_PERMISSION: "You don't have permission to access",
+  USER_NOT_FOUND: "User not found",
+  USER_ADDED: "User added",
+  MUST_BE_BOOLEAN: "Field must be boolean",
+  MUST_MATCH_PATTERN: 'Roles must match pattern: "admin"',
+  USERS_NOT_FOUND: "No users found",
   EMAIL_NOT_EXISTS: "Email not exists",
   RESET_PASSWORD_EMAIL_SEND:
     "Reset password token was send to your email address",

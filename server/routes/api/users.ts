@@ -1,9 +1,8 @@
-import express, { NextFunction, Request, Response } from 'express';
-
+import express from 'express';
 import { auth } from '../../middleware/auth';
-
 import * as usersController from '../../controllers/users/users';
 import * as usersValidator from '../../controllers/users/usersValidator';
+import checkErrors from '../../middleware/checkErrors';
 
 import {
 	REGISTER_USER,
@@ -19,8 +18,7 @@ const router = express.Router();
 // @access  Private without emailVerified
 router.get(
 	'/',
-	(req: Request, res: Response, next: NextFunction) =>
-		auth(req, res, next, false),
+	auth({authEmail: false}),
 	usersController.getUser
 );
 
@@ -30,6 +28,7 @@ router.get(
 router.post(
 	'/register',
 	usersValidator.validate(REGISTER_USER),
+	checkErrors,
 	usersController.registerUser
 );
 
@@ -39,6 +38,7 @@ router.post(
 router.post(
 	'/login',
 	usersValidator.validate(LOGIN_USER),
+	checkErrors,
 	usersController.loginUser
 );
 
@@ -48,6 +48,7 @@ router.post(
 router.post(
 	'/password/reset',
 	usersValidator.validate(RESET_PASSWORD),
+	checkErrors,
 	usersController.resetPassword
 );
 
@@ -65,6 +66,7 @@ router.get(
 router.post(
 	'/password/update',
 	usersValidator.validate(UPDATE_PASSWORD),
+	checkErrors,
 	usersController.updatePassword
 );
 
@@ -73,7 +75,7 @@ router.post(
 // @access  Private
 router.delete(
 	'/',
-	(req: Request, res: Response, next: NextFunction) => auth(req, res, next),
+	auth({}),
 	usersController.deleteUser
 );
 
@@ -87,8 +89,9 @@ router.get('/activate/:activationKey', usersController.activateUser);
 // @access  Private
 router.put(
 	'/',
-	(req: Request, res: Response, next: NextFunction) => auth(req, res, next),
+	auth({}),
 	usersValidator.validate(UPDATE_USER),
+	checkErrors,
 	usersController.updateUserData
 );
 

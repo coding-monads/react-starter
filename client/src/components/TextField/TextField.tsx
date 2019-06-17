@@ -7,6 +7,7 @@ interface TextFieldMUITypes {
   label?: string;
   error?: boolean;
   outllined?: boolean;
+  id: string;
 }
 
 const TextFieldMUI: React.FC<FieldProps & TextFieldMUITypes> = ({
@@ -14,7 +15,8 @@ const TextFieldMUI: React.FC<FieldProps & TextFieldMUITypes> = ({
   error = false,
   field,
   outllined = false,
-  type = "text"
+  type = "text",
+  id
 }) => {
   const variantProps = outllined
     ? { variant: "outlined" as "outlined" }
@@ -27,6 +29,7 @@ const TextFieldMUI: React.FC<FieldProps & TextFieldMUITypes> = ({
       label={label}
       error={error}
       {...variantProps}
+      id={id}
     />
   );
 };

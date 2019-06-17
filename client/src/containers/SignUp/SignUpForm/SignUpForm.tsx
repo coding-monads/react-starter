@@ -35,7 +35,7 @@ const SignupSchema = Yup.object().shape({
 
 type ClientErrors = {
   errors: FormikErrors<Values>;
-}
+};
 
 const FormErrors: React.FC<ClientErrors> = ({ errors }) => {
   if (Object.keys(errors).length > 0) {
@@ -59,11 +59,11 @@ export type Values = {
   email: string;
   password: string;
   passwordRepeat: string;
-}
+};
 
 type Props = {
   onSubmit: (values: Values) => void;
-}
+};
 
 const SignUp: React.FC<Props> = ({ onSubmit }) => (
   <Formik
@@ -89,6 +89,7 @@ const SignUp: React.FC<Props> = ({ onSubmit }) => (
           label="First Name*"
           outllined
           component={TextField}
+          id="firstName"
         />
         <Field
           name="lastName"
@@ -96,6 +97,7 @@ const SignUp: React.FC<Props> = ({ onSubmit }) => (
           label="Last Name*"
           outllined
           component={TextField}
+          id="lastName"
         />
         <Field
           name="email"
@@ -103,6 +105,7 @@ const SignUp: React.FC<Props> = ({ onSubmit }) => (
           label="Email Address*"
           outllined
           component={TextField}
+          id="email"
         />
         <Field
           name="password"
@@ -111,6 +114,7 @@ const SignUp: React.FC<Props> = ({ onSubmit }) => (
           label="Password*"
           outllined
           component={TextField}
+          id="password"
         />
         <Field
           name="passwordRepeat"
@@ -119,6 +123,7 @@ const SignUp: React.FC<Props> = ({ onSubmit }) => (
           label="Repeat Password*"
           outllined
           component={TextField}
+          id="passwordRepeat"
         />
         <FormErrors errors={errors} />
         <Button type="submit" color="primary">
