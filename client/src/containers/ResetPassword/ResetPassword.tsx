@@ -79,9 +79,9 @@ const ResetPasswordFormWrapper = withFormik<
   handleSubmit: (values, bag) => {
     axios
       .post("/api/users/password/reset", values)
-      .then(x => {
+      .then(({ data }) => {
         bag.props.addAlert({
-          message: x.data.msg,
+          message: data.msg,
           variant: "success"
         });
       })
@@ -116,6 +116,6 @@ const ResetPassword: FC<CanAddAlert> = ({ addAlert }) => (
 );
 
 export default connect(
-  () => {},
+  null,
   { addAlert }
 )(ResetPassword);

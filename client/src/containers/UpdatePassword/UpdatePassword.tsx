@@ -99,9 +99,9 @@ const UpdatePasswordFormWrapper = withFormik<
   handleSubmit: (values, bag) => {
     axios
       .post("/api/users/password/update", values)
-      .then(x => {
+      .then(({ data }) => {
         bag.props.addAlert({
-          message: x.data.msg,
+          message: data.msg,
           variant: "success"
         });
       })
@@ -148,6 +148,6 @@ const UpdatePassword: FC<UpdatePasswordParams & CanAddAlert> = ({
 };
 
 export default connect(
-  () => {},
+  null,
   { addAlert }
 )(UpdatePassword);
