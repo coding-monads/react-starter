@@ -289,7 +289,11 @@ export const updateUserData = async (req: Request, res: Response) => {
           if (!req.user.admin) {
             user.activationKey = bcrypt.hashSync(email).replace(/\//g, "");
             user.emailVerified = false;
-            sendVerificationEmail(user);
+
+            sendMessageService.sendMessage({
+              email: user.email,
+              activationKey: user.activationKey
+            });
           }
         }
       }
