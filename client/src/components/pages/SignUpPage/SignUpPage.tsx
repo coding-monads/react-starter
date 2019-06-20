@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import SignUpForm, { Values } from "./SignUpForm/SignUpForm";
-import MadeWithLove from "../../components/MadeWithLove/MadeWithLove";
-import TextLink from "../../components/TextLink/TextLink";
-import Container from "../../components/Container/Container";
-import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
-import TextHeading from "../../components/TextHeading/TextHeading";
-import { registerUser } from "../../store/actions/authActions";
-import { Store } from "../../store/reducers";
+import SignUpForm, { Values } from "../../forms/SignUpForm/SignUpForm";
+import MadeWithLove from "../../atoms/MadeWithLove/MadeWithLove";
+import TextLink from "../../atoms/TextLink/TextLink";
+import Container from "../../atoms/Container/Container";
+import { IconAvatarLock } from "../../atoms/AvatarIcon/AvatarIcon";
+import TextHeading from "../../atoms/TextHeading/TextHeading";
+import { registerUser } from "../../../store/actions/authActions";
+import { Store } from "../../../store/reducers";
 
 const LinksWrapper = styled.div`
   width: 100%;
@@ -17,11 +17,11 @@ const LinksWrapper = styled.div`
   justify-content: space-between;
 `;
 
-interface SignUpProps {
+interface SignUpPageProps {
   registerUser: (registerData: Values) => void;
 }
 
-const SignUp: React.SFC<SignUpProps> = ({ registerUser }) => (
+const SignUpPage: React.SFC<SignUpPageProps> = ({ registerUser }) => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
     <TextHeading variant="h5">Sign Up</TextHeading>
@@ -40,4 +40,4 @@ const mapStateToProps = (state: Store) => ({
 export default connect(
   mapStateToProps,
   { registerUser }
-)(SignUp);
+)(SignUpPage);

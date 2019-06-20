@@ -13,18 +13,14 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { useStyles } from "./styles";
-import Menu from './menu';
+import Menu from '../../molecules/Menu/menu';
 
-const LandingPage: React.FC = props => {
+const LandingPage: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const toggleDrawer = () => {
+    setOpen(!open);
   };
   
   return (
@@ -39,7 +35,7 @@ const LandingPage: React.FC = props => {
             edge="start"
             color="inherit"
             aria-label="Open drawer"
-            onClick={handleDrawerOpen}
+            onClick={toggleDrawer}
             className={clsx(
               classes.menuButton,
               open && classes.menuButtonHidden
@@ -74,7 +70,7 @@ const LandingPage: React.FC = props => {
           <Typography variant="h5" color="textPrimary" align="left">
             Menu
           </Typography>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={toggleDrawer}>
             <ChevronLeftIcon />
           </IconButton>
         </div>

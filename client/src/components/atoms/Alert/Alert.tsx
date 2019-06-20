@@ -12,9 +12,9 @@ import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import WarningIcon from "@material-ui/icons/Warning";
 import { makeStyles, Theme } from "@material-ui/core/styles";
-import { clearAlert } from "../../store/actions/alertActions";
-import { Store } from "../../store/reducers";
-import { AlertState } from "../../store/interfaces/alertTypes";
+import { clearAlert } from "../../../store/actions/alertActions";
+import { Store } from "../../../store/reducers";
+import { AlertState } from "../../../store/interfaces/alertTypes";
 
 const variantIcon = {
   success: CheckCircleIcon,

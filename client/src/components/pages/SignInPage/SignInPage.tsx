@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import SignInForm from "./SignInForm/SignInForm";
-import MadeWithLove from "../../components/MadeWithLove/MadeWithLove";
-import TextLink from "../../components/TextLink/TextLink";
-import Container from "../../components/Container/Container";
-import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
-import TextHeading from "../../components/TextHeading/TextHeading";
-import { loginUser } from "../../store/actions/authActions";
-import { Store } from "../../store/reducers";
+import MadeWithLove from "../../atoms/MadeWithLove/MadeWithLove";
+import TextLink from "../../atoms/TextLink/TextLink";
+import Container from "../../atoms/Container/Container";
+import { IconAvatarLock } from "../../atoms/AvatarIcon/AvatarIcon";
+import TextHeading from "../../atoms/TextHeading/TextHeading";
+import { loginUser } from "../../../store/actions/authActions";
+import { Store } from "../../../store/reducers";
 
 const LinksWrapper = styled.div`
   width: 100%;
@@ -23,12 +23,12 @@ interface Values {
   remember: boolean;
 }
 
-interface SignInProps {
+interface SignInPageProps {
   loginUser: (loginData: Values) => void;
   errors: [{ msg: string }] | null;
 }
 
-const SignIn: React.SFC<SignInProps> = ({ loginUser, errors }) => (
+const SignInPage: React.SFC<SignInProps> = ({ loginUser, errors }) => (
   <Container maxWidth="xs">
     <IconAvatarLock color="pink" />
     <TextHeading variant="h5">Sign In</TextHeading>
@@ -48,4 +48,4 @@ const mapStateToProps = (state: Store) => ({
 export default connect(
   mapStateToProps,
   { loginUser }
-)(SignIn);
+)(SignInPage);
