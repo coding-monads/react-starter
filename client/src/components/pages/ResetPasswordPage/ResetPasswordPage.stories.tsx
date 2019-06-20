@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import ResetPassword from "./ResetPassword";
+import ResetPassword from "./ResetPasswordPage";
 import { MemoryRouter } from "react-router-dom";
 
 storiesOf("ResetPassword", module)

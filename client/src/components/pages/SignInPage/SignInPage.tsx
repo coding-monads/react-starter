@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import SignInForm from "./SignInForm/SignInForm";
-import MadeWithLove from "../../components/MadeWithLove/MadeWithLove";
-import TextLink from "../../components/TextLink/TextLink";
-import Container from "../../components/Container/Container";
-import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
-import TextHeading from "../../components/TextHeading/TextHeading";
-import { loginUser } from "../../store/actions/authActions";
-import { Store } from "../../store/reducers";
+import SignInForm from "../../forms/SignInForm/SignInForm";
+import MadeWithLove from "../../../components/atoms/MadeWithLove/MadeWithLove";
+import TextLink from "../../../components/atoms/TextLink/TextLink";
+import Container from "../../../components/atoms/Container/Container";
+import { IconAvatarLock } from "../../../components/atoms/AvatarIcon/AvatarIcon";
+import TextHeading from "../../../components/atoms/TextHeading/TextHeading";
+import { loginUser } from "../../../store/actions/authActions";
+import { Store } from "../../../store/reducers";
 
 const LinksWrapper = styled.div`
   width: 100%;

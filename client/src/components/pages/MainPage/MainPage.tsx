@@ -1,10 +1,10 @@
 import React from 'react';
 
-interface LayoutTypes {
+interface MainPageTypes {
   children: string | JSX.Element[] | JSX.Element;
 }
 
-const Layout: React.FC<LayoutTypes> = ({ children }) => (
+const MainPage: React.FC<MainPageTypes> = ({ children }) => (
   <>
     <nav />
     <main>{children}</main>
@@ -12,4 +12,4 @@ const Layout: React.FC<LayoutTypes> = ({ children }) => (
   </>
 );
 
-export default Layout;
+export default MainPage;

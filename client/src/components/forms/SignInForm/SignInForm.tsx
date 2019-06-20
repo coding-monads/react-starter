@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { Formik, Form, Field } from "formik";
-import TextHelper from "../../../components/TextHelper/TextHelper";
-import TextField from "../../../components/TextField/TextField";
-import Button from "../../../components/Button/Button";
-import Checkbox from "../../../components/Checkbox/Checkbox";
+import TextHelper from "../../atoms/TextHelper/TextHelper";
+import TextField from "../../atoms/TextField/TextField";
+import Button from "../../atoms/Button/Button";
+import Checkbox from "../../atoms/Checkbox/Checkbox";
 
 const StyledFormikForm = styled(Form)`
   display: grid;

@@ -1,6 +1,6 @@
 import React from "react";
 import { storiesOf } from "@storybook/react";
-import UpdatePassword from "./UpdatePassword";
+import UpdatePasswordPage from "./UpdatePasswordPage";
 import { MemoryRouter } from "react-router-dom";
 
 storiesOf("UpdatePassword", module)
@@ -13,5 +13,5 @@ storiesOf("UpdatePassword", module)
         token: "SomeToken"
       }
     };
-    return <UpdatePassword match={match} />;
+    return <UpdatePasswordPage match={match} />;
   });

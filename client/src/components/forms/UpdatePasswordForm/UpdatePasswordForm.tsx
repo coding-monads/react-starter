@@ -1,13 +1,13 @@
 import React from "react";
 import { Form, Field } from "formik";
 import axios from "axios";
-import Button from "../../components/Button/Button";
-import TextField from "../../components/TextField/TextField";
-import TextHelper from "../../components/TextHelper/TextHelper";
+import Button from "../../atoms/Button/Button";
+import TextField from "../../atoms/TextField/TextField";
+import TextHelper from "../../atoms/TextHelper/TextHelper";
 import styled from "styled-components";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { CanAddAlert } from "../../store/actions/alertActions";
+import { CanAddAlert } from "../../../store/actions/alertActions";
 
 const StyledFormikForm = styled(Form)`
   display: grid;

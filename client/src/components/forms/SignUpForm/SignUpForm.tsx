@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { Formik, Form, Field, FormikErrors } from "formik";
-import TextHelper from "../../../components/TextHelper/TextHelper";
-import TextField from "../../../components/TextField/TextField";
-import Button from "../../../components/Button/Button";
+import TextHelper from "../../atoms/TextHelper/TextHelper";
+import TextField from "../../atoms/TextField/TextField";
+import Button from "../../atoms/Button/Button";
 
 const StyledFormikForm = styled(Form)`
   display: grid;

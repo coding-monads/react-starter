@@ -1,18 +1,13 @@
 import React, { FC } from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
-import MadeWithLove from "../../components/MadeWithLove/MadeWithLove";
-import TextLink from "../../components/TextLink/TextLink";
-import Container from "../../components/Container/Container";
-import { IconAvatarLock } from "../../components/AvatarIcon/AvatarIcon";
-import TextHeading from "../../components/TextHeading/TextHeading";
-import { addAlert, CanAddAlert } from "../../store/actions/alertActions";
-import ResetPasswordForm from "./ResetPasswordForm";
-
-interface ResetPasswordFormProps {
-  email?: string;
-  message?: string;
-}
+import MadeWithLove from "../../atoms/MadeWithLove/MadeWithLove";
+import TextLink from "../../atoms/TextLink/TextLink";
+import Container from "../../atoms/Container/Container";
+import { IconAvatarLock } from "../../atoms/AvatarIcon/AvatarIcon";
+import TextHeading from "../../atoms/TextHeading/TextHeading";
+import { addAlert, CanAddAlert } from "../../../store/actions/alertActions";
+import ResetPasswordForm from "../../forms/ResetPasswordForm/ResetPasswordForm";
 
 const LinksWrapper = styled.div`
   width: 100%;
