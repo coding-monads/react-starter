@@ -1,4 +1,7 @@
 {
+  "server": {
+    "port": 5000
+  },
   "mongo": {
     "uri": {
       "host": "cluster0-eilzu.mongodb.net",

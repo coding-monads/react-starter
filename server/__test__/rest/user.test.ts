@@ -1,20 +1,20 @@
 import request, { Response } from 'supertest';
 import { app } from '../../app';
 import mongoose from 'mongoose';
-import { settings, dbURI } from '../../config/db';
+import { connectDB } from '../../config/db';
 import User from '../../models/User';
 import faker from 'faker';
 import { ITestUser } from '../types/user';
 
-describe('some initial tests for user', () => {
+describe('Initial tests for user', () => {
 	// global variables that we can use in all tests
-	let connection: typeof mongoose;
+	let connection: typeof mongoose | null;
 	let randomUser: ITestUser;
 	let registerResponse: Response;
 
 	beforeAll(async done => {
 		// waiting for connection with mongoDB database
-		connection = await mongoose.connect(dbURI, settings);
+		connection = await connectDB();
 		done();
 	});
 	test('should create new user', async () => {
@@ -79,7 +79,7 @@ describe('some initial tests for user', () => {
 		});
 	});
 	afterAll(async done => {
-		await connection.disconnect();
+		connection && await connection.disconnect();
 		done();
 	});
 });

@@ -7,7 +7,9 @@ import checkErrors from '../../middleware/checkErrors';
 import {
 	REGISTER_USER,
 	LOGIN_USER,
-	UPDATE_USER
+	UPDATE_USER,
+	RESET_PASSWORD,
+	UPDATE_PASSWORD,
 } from '../../controllers/users/methods';
 const router = express.Router();
 
@@ -38,6 +40,34 @@ router.post(
 	usersValidator.validate(LOGIN_USER),
 	checkErrors,
 	usersController.loginUser
+);
+
+// @route   POST api/users/password/reset
+// @desc    Reset user password
+// @access  Public
+router.post(
+	'/password/reset',
+	usersValidator.validate(RESET_PASSWORD),
+	checkErrors,
+	usersController.resetPassword
+);
+
+// @route   GET api/users/password/update
+// @desc    Verify user password reset token and return decoded values
+// @access  Public
+router.get(
+	'/password/update/:token',
+	usersController.updatePasswordVerifyToken
+);
+
+// @route   POST api/users/password/update
+// @desc    Update user password
+// @access  Public
+router.post(
+	'/password/update',
+	usersValidator.validate(UPDATE_PASSWORD),
+	checkErrors,
+	usersController.updatePassword
 );
 
 // @route   DELETE api/users

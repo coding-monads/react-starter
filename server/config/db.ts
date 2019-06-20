@@ -1,24 +1,27 @@
-import config from 'config';
-import mongoose from 'mongoose';
+import config from "config";
+import mongoose from "mongoose";
 
-const { host, resource, query, name } = config.get('mongo.uri');
-const dbCredentials = config.get('mongo.credentials');
+async function connectDB(): Promise<typeof mongoose | null> {
+  const { host, resource, query, name } = config.get("mongo.uri");
+  const dbCredentials = config.get("mongo.credentials");
 
-const settings: any = {
-	...dbCredentials,
-	useNewUrlParser: true,
-	useCreateIndex: true,
-	useFindAndModify: false
-};
+  const settings: any = {
+    ...dbCredentials,
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+  };
+  const dbURI = `${name}://${host}/${resource}${query}`;
+  console.log("Trying to connect to mongodb [URI] ", dbURI);
 
-const dbURI = `${name}://${host}/${resource}${query}`;
+  try {
+    const connection = await mongoose.connect(dbURI, settings);
+    console.log("MoongoDB Connected");
+    return connection;
+  } catch (err) {
+    console.log("MoongoDB not connected", err);
+  }
+  return null;
+}
 
-const connectDB = () =>
-	console.log('Trying to connect to mongodb [URI] ', dbURI);
-
-mongoose
-	.connect(dbURI, settings)
-	.then(() => console.log('MoongoDB Connected'))
-	.catch((err: any) => console.log('MoongoDB not connected', err));
-
-export { connectDB, settings, dbURI };
+export { connectDB };
