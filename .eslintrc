@@ -29,8 +29,9 @@
         }],
         "no-use-before-define": 0,
         
+        "no-duplicate-imports": 2,
         "comma-dangle": [2, "never"],
-        "no-console": 1,
+        "no-console": 0,
         "no-debugger":1,
         "no-alert":1,
         "no-constant-condition":1,
@@ -90,7 +91,9 @@
         "wrap-iife":[2, "any"],
         "yoda":2,
 
-        "indent":[2, 2],
+        "indent":[2, 2, {
+            "SwitchCase": 1
+        }],
         "brace-style": [2, "1tbs", {
             "allowSingleLine": true
         }],
@@ -114,6 +117,7 @@
         }],
         "no-nested-ternary":2,
         "no-new-object":2,
+        "object-shorthand": [2, "always"],
         "no-spaced-func":2,
         "no-trailing-spaces":2,
         "no-extra-parens":[2, "functions"],

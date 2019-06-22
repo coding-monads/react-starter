@@ -1,5 +1,5 @@
-import * as TYPES from "./types";
-import { AlertData, AlertActions } from "../interfaces/alertTypes";
+import * as TYPES from './types';
+import { AlertData, AlertActions } from '../interfaces/alertTypes';
 
 export interface CanAddAlert {
   addAlert(alert: AlertData): AlertActions;

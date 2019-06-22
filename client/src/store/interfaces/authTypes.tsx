@@ -13,15 +13,15 @@ export interface LoginData {
 }
 
 export interface LoginSuccessAction {
-  type: "LOGIN_SUCCESS";
+  type: 'LOGIN_SUCCESS';
   token: string;
 }
 export interface LoginErrorAction {
-  type: "LOGIN_ERROR";
+  type: 'LOGIN_ERROR';
   errors: [{ msg: string }];
 }
 export interface LoginLoadingAction {
-  type: "LOGIN_LOADING";
+  type: 'LOGIN_LOADING';
 }
 
 export type LoginActions =
@@ -38,15 +38,15 @@ export interface RegisterData {
 }
 
 export interface RegisterSuccessAction {
-  type: "REGISTER_SUCCESS";
+  type: 'REGISTER_SUCCESS';
   token: string;
 }
 export interface RegisterErrorAction {
-  type: "REGISTER_ERROR";
+  type: 'REGISTER_ERROR';
   errors: [{ msg: string }];
 }
 export interface RegisterLoadingAction {
-  type: "REGISTER_LOADING";
+  type: 'REGISTER_LOADING';
 }
 
 export type RegisterActions =
@@ -56,7 +56,7 @@ export type RegisterActions =
 
 
 export interface UserLoadedAction {
-  type: "USER_LOADED";
+  type: 'USER_LOADED';
   user: {
     emailVerified: boolean;
     roles: [string];
@@ -67,11 +67,11 @@ export interface UserLoadedAction {
   };
 }
 export interface UserLoadErrorAction {
-  type: "USER_LOAD_ERROR";
+  type: 'USER_LOAD_ERROR';
 }
 
 export type LoadUserActions = UserLoadedAction | UserLoadErrorAction;
 
 export interface LogoutAction {
-  type: "LOGOUT";
+  type: 'LOGOUT';
 }

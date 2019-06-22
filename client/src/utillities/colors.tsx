@@ -7,5 +7,5 @@ export default {
   primary: '#f06d5c',
   primaryLight: '#f4978a',
   primaryDark: '#ec4d37',
-  secondary: '#4286f4',
+  secondary: '#4286f4'
 };

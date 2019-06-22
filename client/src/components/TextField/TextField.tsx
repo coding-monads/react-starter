@@ -1,9 +1,9 @@
-import React from "react";
-import { FieldProps } from "formik";
-import TextField from "@material-ui/core/TextField";
+import React from 'react';
+import { FieldProps } from 'formik';
+import TextField from '@material-ui/core/TextField';
 
 interface TextFieldMUITypes {
-  type?: "text" | "password";
+  type?: 'text' | 'password';
   label?: string;
   error?: boolean;
   outllined?: boolean;
@@ -11,16 +11,16 @@ interface TextFieldMUITypes {
 }
 
 const TextFieldMUI: React.FC<FieldProps & TextFieldMUITypes> = ({
-  label = "",
+  label = '',
   error = false,
   field,
   outllined = false,
-  type = "text",
+  type = 'text',
   id
 }) => {
   const variantProps = outllined
-    ? { variant: "outlined" as "outlined" }
-    : { variant: "standard" as "standard" };
+    ? { variant: 'outlined' as 'outlined' }
+    : { variant: 'standard' as 'standard' };
 
   return (
     <TextField

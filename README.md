@@ -23,6 +23,10 @@
 
 npm run storybook
 
+### to run eslint for client
+
+eslint -c ".eslintrc" --ext ".tsx" "client/src/**/*"
+
 ### starter which contains
 
 - basic server setup in nodejs/express/mongoose (prepared to connect with mongoDB, at this point it won't connect because there is no mongoURI)
