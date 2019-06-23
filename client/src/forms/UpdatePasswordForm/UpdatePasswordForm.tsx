@@ -1,13 +1,11 @@
-import React from "react";
-import { Form, Field } from "formik";
-import axios from "axios";
-import Button from "../../components/Button/Button";
-import TextField from "../../components/TextField/TextField";
-import TextHelper from "../../components/TextHelper/TextHelper";
-import styled from "styled-components";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { CanAddAlert } from "../../store/actions/alertActions";
+import axios from 'axios';
+import { Field, Form, Formik } from 'formik';
+import React from 'react';
+import styled from 'styled-components';
+import * as Yup from 'yup';
+
+import { Button, TextField, TextHelper } from '../../components';
+import { CanAddAlert } from '../../store/actions/alertActions';
 
 const StyledFormikForm = styled(Form)`
   display: grid;
@@ -19,12 +17,12 @@ const StyledFormikForm = styled(Form)`
 
 const UpdatePasswordSchema = Yup.object().shape({
   password: Yup.string()
-    .min(6, "Password length must be at least 6 characters")
-    .required("Password is required"),
+    .min(6, 'Password length must be at least 6 characters')
+    .required('Password is required'),
   passwordConfirm: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .min(6, "Password repeat length must be at least 6 characters")
-    .required("Password repeat is required")
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .min(6, 'Password repeat length must be at least 6 characters')
+    .required('Password repeat is required')
 });
 
 interface Props {
@@ -38,21 +36,21 @@ const UpdatePasswordForm: React.FC<Props & CanAddAlert> = ({
   <Formik
     validateOnBlur={false}
     validateOnChange={false}
-    initialValues={{ token: token, password: "", passwordConfirm: "" }}
+    initialValues={{ token, password: '', passwordConfirm: '' }}
     onSubmit={values => {
       axios
-        .post("/api/users/password/update", values)
+        .post('/api/users/password/update', values)
         .then(({ data }) => {
           addAlert({
             message: data.msg,
-            variant: "info"
+            variant: 'info'
           });
         })
         .catch(({ response: { data } }) => {
           console.log(JSON.stringify(data));
           addAlert({
             message: data.errors[0].msg,
-            variant: "error"
+            variant: 'error'
           });
         });
     }}
@@ -61,31 +59,31 @@ const UpdatePasswordForm: React.FC<Props & CanAddAlert> = ({
     {({ errors }) => (
       <StyledFormikForm>
         <Field
-          name="password"
-          type="password"
+          name='password'
+          type='password'
           error={!!errors.password}
-          label="Password*"
+          label='Password*'
           outllined
           component={TextField}
         />
         <Field
-          name="passwordConfirm"
-          type="password"
+          name='passwordConfirm'
+          type='password'
           error={!!errors.passwordConfirm}
-          label="Password Confirm*"
+          label='Password Confirm*'
           outllined
           component={TextField}
         />
         {Object.keys(errors).length > 0 && (
-          <TextHelper error component="div">
+          <TextHelper error component='div'>
             {Object.values(errors).map((error, index) => (
-              <p key={index} style={{ marginBottom: "5px" }}>
+              <p key={index} style={{ marginBottom: '5px' }}>
                 - {error}
               </p>
             ))}
           </TextHelper>
         )}
-        <Button type="submit" color="primary">
+        <Button type='submit' color='primary'>
           Update password
         </Button>
       </StyledFormikForm>

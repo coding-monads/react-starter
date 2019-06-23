@@ -1,13 +1,13 @@
-import * as TYPES from "../actions/types";
-import { AlertState, AlertActions } from "../interfaces/alertTypes";
+import * as TYPES from '../actions/types';
+import { AlertState, AlertActions } from '../interfaces/alertTypes';
 
 const initState: AlertState = {
   open: false,
-  message: "",
-  variant: "info",
+  message: '',
+  variant: 'info',
   autoHideDuration: 3000,
-  vertical: "top",
-  horizontal: "center"
+  vertical: 'top',
+  horizontal: 'center'
 };
 
 export default (state = initState, action: AlertActions): AlertState => {
@@ -23,7 +23,7 @@ export default (state = initState, action: AlertActions): AlertState => {
       return {
         ...state,
         open: false,
-        message: ""
+        message: ''
       };
     default:
       return state;

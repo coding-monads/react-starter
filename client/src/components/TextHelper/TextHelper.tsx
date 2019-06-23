@@ -2,19 +2,19 @@ import React from 'react';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 const styles = {
-  margin: 0,
+  margin: 0
 };
 
 interface TextHelperTypes {
   children: string | JSX.Element[] | JSX.Element;
-  component?: "p" | "div";
+  component?: 'p' | 'div';
   error?: boolean;
 }
 
 const TextHelper: React.FC<TextHelperTypes> = ({
   children,
   component = 'p',
-  error = false,
+  error = false
 }) => (
   <FormHelperText error={error} component={component} style={styles}>
     {children}

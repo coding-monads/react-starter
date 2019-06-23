@@ -1,11 +1,11 @@
-import * as TYPES from "../actions/types";
+import * as TYPES from '../actions/types';
 import {
   AuthState,
   LoginActions,
   RegisterActions,
   LoadUserActions,
   LogoutAction
-} from "../interfaces/authTypes";
+} from '../interfaces/authTypes';
 
 const initState: AuthState = {
   isAuth: false,
@@ -51,7 +51,7 @@ export default (state = initState, action: AuthActions): AuthState => {
       return {
         ...state,
         isAuth: true,
-        token: localStorage.getItem("token"),
+        token: localStorage.getItem('token'),
         user: action.user
       };
     case TYPES.USER_LOAD_ERROR:

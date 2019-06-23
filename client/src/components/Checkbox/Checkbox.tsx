@@ -9,10 +9,10 @@ interface CheckboxMUITypes {
 
 const CheckboxMUI: React.FC<FieldProps & CheckboxMUITypes> = ({
   field,
-  label,
+  label
 }) => (
   <FormControlLabel
-    control={<Checkbox {...field} color="primary" />}
+    control={<Checkbox {...field} color='primary' />}
     label={label}
   />
 );

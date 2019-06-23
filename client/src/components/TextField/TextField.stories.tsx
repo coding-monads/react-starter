@@ -8,21 +8,21 @@ storiesOf('TextField', module)
   .add('default', () => (
     <Formik initialValues={{ hello: '' }} onSubmit={() => {}}>
       <Form>
-        <Field name="hello" label="Hello" component={TextField} />
+        <Field name='hello' label='Hello' component={TextField} />
       </Form>
     </Formik>
   ))
   .add('error', () => (
     <Formik initialValues={{ hello: '' }} onSubmit={() => {}}>
       <Form>
-        <Field name="hello" error label="Hello" component={TextField} />
+        <Field name='hello' error label='Hello' component={TextField} />
       </Form>
     </Formik>
   ))
   .add('outllined', () => (
     <Formik initialValues={{ hello: '' }} onSubmit={() => {}}>
       <Form>
-        <Field name="hello" label="Hello" outllined component={TextField} />
+        <Field name='hello' label='Hello' outllined component={TextField} />
       </Form>
     </Formik>
   ));

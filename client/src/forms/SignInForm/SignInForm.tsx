@@ -1,11 +1,9 @@
-import React from "react";
-import styled from "styled-components";
-import * as Yup from "yup";
-import { Formik, Form, Field } from "formik";
-import TextHelper from "../../../components/TextHelper/TextHelper";
-import TextField from "../../../components/TextField/TextField";
-import Button from "../../../components/Button/Button";
-import Checkbox from "../../../components/Checkbox/Checkbox";
+import { Formik, Form, Field } from 'formik';
+import React from 'react';
+import styled from 'styled-components';
+import * as Yup from 'yup';
+
+import { Button, Checkbox, TextField, TextHelper } from '../../components';
 
 const StyledFormikForm = styled(Form)`
   display: grid;
@@ -17,11 +15,11 @@ const StyledFormikForm = styled(Form)`
 
 const SigninSchema = Yup.object().shape({
   email: Yup.string()
-    .email("Invalid email")
-    .required("Email is required"),
+    .email('Invalid email')
+    .required('Email is required'),
   password: Yup.string()
-    .min(6, "Password length must be at least 6 characters")
-    .required("Password is required")
+    .min(6, 'Password length must be at least 6 characters')
+    .required('Password is required')
 });
 
 interface Values {
@@ -35,12 +33,12 @@ interface Props {
   errors: [{ msg: string }] | null;
 }
 
-const SignIn: React.FC<Props> = ({ onSubmit, errors }) => (
+const SignIn: React.FC<Props> = ({ onSubmit }) => (
   <Formik
     validateOnBlur={false}
     validateOnChange={false}
-    initialValues={{ email: "", password: "", remember: false }}
-    onSubmit={(values, actions) => {
+    initialValues={{ email: '', password: '', remember: false }}
+    onSubmit={(values) => {
       onSubmit(values);
     }}
     validationSchema={SigninSchema}
@@ -48,36 +46,36 @@ const SignIn: React.FC<Props> = ({ onSubmit, errors }) => (
     {({ errors }) => (
       <StyledFormikForm>
         <Field
-          name="email"
+          name='email'
           error={!!errors.email}
-          label="Email Address*"
+          label='Email Address*'
           outllined
           component={TextField}
         />
         <Field
-          name="password"
-          type="password"
+          name='password'
+          type='password'
           error={!!errors.password}
-          label="Password *"
+          label='Password *'
           outllined
           component={TextField}
         />
         <Field
-          type="checkbox"
-          name="remember"
-          label="Remember me"
+          type='checkbox'
+          name='remember'
+          label='Remember me'
           component={Checkbox}
         />
         {Object.keys(errors).length > 0 && (
-          <TextHelper error component="div">
+          <TextHelper error component='div'>
             {Object.values(errors).map((error, index) => (
-              <p key={index} style={{ marginBottom: "5px" }}>
+              <p key={index} style={{ marginBottom: '5px' }}>
                 - {error}
               </p>
             ))}
           </TextHelper>
         )}
-        <Button type="submit" color="primary">
+        <Button type='submit' color='primary'>
           Sign in
         </Button>
       </StyledFormikForm>
