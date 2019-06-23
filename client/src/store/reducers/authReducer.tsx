@@ -15,11 +15,7 @@ const initState: AuthState = {
   errors: null
 };
 
-type AuthActions =
-  | LoginActions
-  | RegisterActions
-  | LoadUserActions
-  | LogoutAction;
+type AuthActions = LoginActions | RegisterActions | LoadUserActions | LogoutAction;
 
 export default (state = initState, action: AuthActions): AuthState => {
   switch (action.type) {

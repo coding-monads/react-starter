@@ -18,9 +18,7 @@ interface AvatarTypes {
   color?: string;
 }
 
-const AvatarIcon: React.FC<AvatarTypes> = ({
-  color = 'default'
-}) => {
+const AvatarIcon: React.FC<AvatarTypes> = ({ color = 'default' }) => {
   const classes: any = useStyles();
   return (
     <Avatar className={classes[color]}>

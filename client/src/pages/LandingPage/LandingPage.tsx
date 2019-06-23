@@ -27,48 +27,36 @@ const LandingPage: React.FC = () => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar
-        position='absolute'
-        className={clsx(classes.appBar, open && classes.appBarShift)}
-      >
+      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
           <IconButton
-            edge='start'
-            color='inherit'
-            aria-label='Open drawer'
+            edge="start"
+            color="inherit"
+            aria-label="Open drawer"
             onClick={toggleDrawer}
-            className={clsx(
-              classes.menuButton,
-              open && classes.menuButtonHidden
-            )}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            component='h1'
-            variant='h6'
-            color='inherit'
-            noWrap
-            className={classes.title}
-          >
-           Na Tripa
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            Na Tripa
           </Typography>
-          <IconButton color='inherit'>
-            <Badge badgeContent={0} color='secondary'>
+          <IconButton color="inherit">
+            <Badge badgeContent={0} color="secondary">
               <NotificationsIcon />
             </Badge>
           </IconButton>
         </Toolbar>
       </AppBar>
       <Drawer
-        variant='permanent'
+        variant="permanent"
         classes={{
           paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose)
         }}
         open={open}
       >
         <div className={classes.toolbarIcon}>
-          <Typography variant='h5' color='textPrimary' align='left'>
+          <Typography variant="h5" color="textPrimary" align="left">
             Menu
           </Typography>
           <IconButton onClick={toggleDrawer}>

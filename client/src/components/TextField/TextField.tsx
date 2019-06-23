@@ -22,16 +22,7 @@ const TextFieldMUI: React.FC<FieldProps & TextFieldMUITypes> = ({
     ? { variant: 'outlined' as 'outlined' }
     : { variant: 'standard' as 'standard' };
 
-  return (
-    <TextField
-      {...field}
-      type={type}
-      label={label}
-      error={error}
-      {...variantProps}
-      id={id}
-    />
-  );
+  return <TextField {...field} type={type} label={label} error={error} {...variantProps} id={id} />;
 };
 
 export default TextFieldMUI;

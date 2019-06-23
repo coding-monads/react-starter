@@ -16,9 +16,7 @@ test('correctly completed form do not produce any errors', async() => {
   const pass = faker.internet.password();
   const handleSubmit = jest.fn();
 
-  const { getByLabelText, getByText, queryByText } = render(
-    <SingUp onSubmit={handleSubmit} />
-  );
+  const { getByLabelText, getByText, queryByText } = render(<SingUp onSubmit={handleSubmit} />);
   fireEvent.change(getByLabelText(/first./i), {
     target: { value: firstName }
   });
@@ -50,9 +48,7 @@ test('correctly completed form do not produce any errors', async() => {
 
 test('not completed form produce errors', async() => {
   const handleSubmit = jest.fn();
-  const { getByText, queryAllByText } = render(
-    <SingUp onSubmit={handleSubmit} />
-  );
+  const { getByText, queryAllByText } = render(<SingUp onSubmit={handleSubmit} />);
 
   fireEvent.click(getByText(/sign up/i).parentElement!);
   await wait();

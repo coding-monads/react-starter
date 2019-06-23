@@ -5,7 +5,5 @@ import { MemoryRouter } from 'react-router-dom';
 import ResetPasswordPage from './ResetPasswordPage';
 
 storiesOf('ResetPassword', module)
-  .addDecorator(story => (
-    <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>
-  ))
+  .addDecorator(story => <MemoryRouter initialEntries={['/']}>{story()}</MemoryRouter>)
   .add('default', () => <ResetPasswordPage />);

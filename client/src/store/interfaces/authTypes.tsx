@@ -24,10 +24,7 @@ export interface LoginLoadingAction {
   type: 'LOGIN_LOADING';
 }
 
-export type LoginActions =
-  | LoginSuccessAction
-  | LoginErrorAction
-  | LoginLoadingAction;
+export type LoginActions = LoginSuccessAction | LoginErrorAction | LoginLoadingAction;
 
 export interface RegisterData {
   firstName: string;
@@ -49,11 +46,7 @@ export interface RegisterLoadingAction {
   type: 'REGISTER_LOADING';
 }
 
-export type RegisterActions =
-  | RegisterSuccessAction
-  | RegisterErrorAction
-  | RegisterLoadingAction;
-
+export type RegisterActions = RegisterSuccessAction | RegisterErrorAction | RegisterLoadingAction;
 
 export interface UserLoadedAction {
   type: 'USER_LOADED';

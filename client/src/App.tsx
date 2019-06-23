@@ -7,7 +7,14 @@ import theme from './utillities/theme';
 
 import { checkAuth } from './store/actions/authActions';
 import { Alert } from './components';
-import { MainPage, LandingPage, SignInPage, SignUpPage, ResetPasswordPage, UpdatePasswordPage } from './pages';
+import {
+  MainPage,
+  LandingPage,
+  SignInPage,
+  SignUpPage,
+  ResetPasswordPage,
+  UpdatePasswordPage
+} from './pages';
 
 interface Props {
   dispatch: (callback: any) => void;
@@ -26,15 +33,11 @@ const App: React.FC<Props> = ({ dispatch }) => {
           <GlobalStyle />
           <MainPage>
             <Switch>
-              <Route path='/' exact component={LandingPage} />
-              <Route path='/login' exact component={SignInPage} />
-              <Route path='/register' exact component={SignUpPage} />
-              <Route path='/password/reset' exact component={ResetPasswordPage} />
-              <Route
-                path='/password/update/:token'
-                exact
-                component={UpdatePasswordPage}
-              />
+              <Route path="/" exact component={LandingPage} />
+              <Route path="/login" exact component={SignInPage} />
+              <Route path="/register" exact component={SignUpPage} />
+              <Route path="/password/reset" exact component={ResetPasswordPage} />
+              <Route path="/password/update/:token" exact component={UpdatePasswordPage} />
             </Switch>
           </MainPage>
         </>

@@ -2,13 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import {
-  MadeWithLove,
-  TextLink,
-  Container,
-  AvatarIcon,
-  TextHeading
-} from '../../components';
+import { MadeWithLove, TextLink, Container, AvatarIcon, TextHeading } from '../../components';
 import SignUpForm, { Values } from '../../forms/SignUpForm/SignUpForm';
 import { registerUser } from '../../store/actions/authActions';
 import { Store } from '../../store/reducers';
@@ -25,12 +19,12 @@ interface SignUpPageProps {
 }
 
 const SignUpPage: React.SFC<SignUpPageProps> = ({ registerUser }) => (
-  <Container maxWidth='xs'>
-    <AvatarIcon color='pink' />
-    <TextHeading variant='h5'>Sign Up</TextHeading>
-    <SignUpForm onSubmit={ registerUser } />
+  <Container maxWidth="xs">
+    <AvatarIcon color="pink" />
+    <TextHeading variant="h5">Sign Up</TextHeading>
+    <SignUpForm onSubmit={registerUser} />
     <LinksWrapper>
-      <TextLink to='/login'>Already have an account? Sign In</TextLink>
+      <TextLink to="/login">Already have an account? Sign In</TextLink>
     </LinksWrapper>
     <MadeWithLove />
   </Container>
@@ -42,5 +36,5 @@ const mapStateToProps = (state: Store) => ({
 
 export default connect(
   mapStateToProps,
-  { registerUser }
+  { registerUser },
 )(SignUpPage);

@@ -11,11 +11,7 @@ interface TextHelperTypes {
   error?: boolean;
 }
 
-const TextHelper: React.FC<TextHelperTypes> = ({
-  children,
-  component = 'p',
-  error = false
-}) => (
+const TextHelper: React.FC<TextHelperTypes> = ({ children, component = 'p', error = false }) => (
   <FormHelperText error={error} component={component} style={styles}>
     {children}
   </FormHelperText>

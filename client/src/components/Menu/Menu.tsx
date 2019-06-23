@@ -10,23 +10,23 @@ import { Link } from 'react-router-dom';
 const Menu: React.FC = () => {
   return (
     <div>
-      <ListItem button component={Link} to='/'>
+      <ListItem button component={Link} to="/">
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary='LandingPage' />
+        <ListItemText primary="LandingPage" />
       </ListItem>
-      <ListItem button component={Link} to='/login'>
+      <ListItem button component={Link} to="/login">
         <ListItemIcon>
           <Fingerprint />
         </ListItemIcon>
-        <ListItemText primary='Login' />
+        <ListItemText primary="Login" />
       </ListItem>
-      <ListItem button component={Link} to='/register'>
+      <ListItem button component={Link} to="/register">
         <ListItemIcon>
           <Rowing />
         </ListItemIcon>
-        <ListItemText primary='Register' />
+        <ListItemText primary="Register" />
       </ListItem>
     </div>
   );

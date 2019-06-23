@@ -2,13 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 
-import {
-  MadeWithLove,
-  TextLink,
-  Container,
-  AvatarIcon,
-  TextHeading
-} from '../../components';
+import { MadeWithLove, TextLink, Container, AvatarIcon, TextHeading } from '../../components';
 import { SignInForm } from '../../forms';
 import { loginUser } from '../../store/actions/authActions';
 import { Store } from '../../store/reducers';
@@ -32,13 +26,13 @@ interface SignInPageProps {
 }
 
 const SignInPage: React.SFC<SignInPageProps> = ({ loginUser, errors }) => (
-  <Container maxWidth='xs'>
-    <AvatarIcon color='pink' />
-    <TextHeading variant='h5'>Sign In</TextHeading>
+  <Container maxWidth="xs">
+    <AvatarIcon color="pink" />
+    <TextHeading variant="h5">Sign In</TextHeading>
     <SignInForm errors={errors} onSubmit={loginData => loginUser(loginData)} />
     <LinksWrapper>
-      <TextLink to='/password/reset'>Forgot password?</TextLink>
-      <TextLink to='/register'>Don&apos;t have an account? Sign Up</TextLink>
+      <TextLink to="/password/reset">Forgot password?</TextLink>
+      <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
     </LinksWrapper>
     <MadeWithLove />
   </Container>
@@ -50,5 +44,5 @@ const mapStateToProps = (state: Store) => ({
 
 export default connect(
   mapStateToProps,
-  { loginUser }
+  { loginUser },
 )(SignInPage);

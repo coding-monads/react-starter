@@ -73,7 +73,7 @@ const Alert: React.FC<AlertProps> = ({
     >
       <SnackbarContent
         className={classes[variant]}
-        aria-describedby='client-snackbar'
+        aria-describedby="client-snackbar"
         message={
           <span className={classes.message}>
             <Icon className={clsx(classes.icon, classes.iconVariant)} />
@@ -81,12 +81,7 @@ const Alert: React.FC<AlertProps> = ({
           </span>
         }
         action={[
-          <IconButton
-            key='close'
-            aria-label='Close'
-            color='inherit'
-            onClick={clearAlert}
-          >
+          <IconButton key="close" aria-label="Close" color="inherit" onClick={clearAlert}>
             <CloseIcon className={classes.icon} />
           </IconButton>
         ]}
@@ -101,5 +96,5 @@ const mapStateToProps = (state: Store) => ({
 
 export default connect(
   mapStateToProps,
-  { clearAlert }
+  { clearAlert },
 )(Alert);

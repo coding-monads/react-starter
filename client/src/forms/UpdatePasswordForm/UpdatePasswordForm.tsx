@@ -29,10 +29,7 @@ interface Props {
   token: string;
 }
 
-const UpdatePasswordForm: React.FC<Props & CanAddAlert> = ({
-  token,
-  addAlert
-}) => (
+const UpdatePasswordForm: React.FC<Props & CanAddAlert> = ({ token, addAlert }) => (
   <Formik
     validateOnBlur={false}
     validateOnChange={false}
@@ -59,23 +56,23 @@ const UpdatePasswordForm: React.FC<Props & CanAddAlert> = ({
     {({ errors }) => (
       <StyledFormikForm>
         <Field
-          name='password'
-          type='password'
+          name="password"
+          type="password"
           error={!!errors.password}
-          label='Password*'
+          label="Password*"
           outllined
           component={TextField}
         />
         <Field
-          name='passwordConfirm'
-          type='password'
+          name="passwordConfirm"
+          type="password"
           error={!!errors.passwordConfirm}
-          label='Password Confirm*'
+          label="Password Confirm*"
           outllined
           component={TextField}
         />
         {Object.keys(errors).length > 0 && (
-          <TextHelper error component='div'>
+          <TextHelper error component="div">
             {Object.values(errors).map((error, index) => (
               <p key={index} style={{ marginBottom: '5px' }}>
                 - {error}
@@ -83,7 +80,7 @@ const UpdatePasswordForm: React.FC<Props & CanAddAlert> = ({
             ))}
           </TextHelper>
         )}
-        <Button type='submit' color='primary'>
+        <Button type="submit" color="primary">
           Update password
         </Button>
       </StyledFormikForm>
