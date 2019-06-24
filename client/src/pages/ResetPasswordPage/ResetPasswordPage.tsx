@@ -14,13 +14,13 @@ const LinksWrapper = styled.div`
 `;
 
 const ResetPasswordPage: FC<CanAddAlert> = ({ addAlert }) => (
-  <Container maxWidth='xs'>
-    <AvatarIcon color='pink' />
-    <TextHeading variant='h5'>Reset Password</TextHeading>
+  <Container maxWidth="xs">
+    <AvatarIcon color="pink" />
+    <TextHeading variant="h5">Reset Password</TextHeading>
     <ResetPasswordForm addAlert={addAlert} />
     <LinksWrapper>
-      <TextLink to='/login'>Already have an account? Sign In</TextLink>
-      <TextLink to='/register'>Don&apos;t have an account? Sign Up</TextLink>
+      <TextLink to="/login">Already have an account? Sign In</TextLink>
+      <TextLink to="/register">Don&apos;t have an account? Sign Up</TextLink>
     </LinksWrapper>
     <MadeWithLove />
   </Container>
@@ -28,5 +28,5 @@ const ResetPasswordPage: FC<CanAddAlert> = ({ addAlert }) => (
 
 export default connect(
   null,
-  { addAlert }
+  { addAlert },
 )(ResetPasswordPage);

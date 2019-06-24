@@ -20,7 +20,7 @@ type ErrorResponse = {
 };
 
 export const loginUser = (
-  loginData: LoginData
+  loginData: LoginData,
 ): ThunkAction<void, {}, ErrorResponse, LoginActions | AlertActions> => async dispatch => {
   dispatch({
     type: TYPES.LOGIN_LOADING
@@ -42,14 +42,12 @@ export const loginUser = (
       type: TYPES.LOGIN_ERROR,
       errors: data.errors
     });
-    dispatch(
-      addAlert({ message: data.errors[0].msg, variant: 'error' })
-    );
+    dispatch(addAlert({ message: data.errors[0].msg, variant: 'error' }));
   }
 };
 
 export const registerUser = (
-  registerData: RegisterData
+  registerData: RegisterData,
 ): ThunkAction<void, {}, ErrorResponse, RegisterActions | AlertActions> => dispatch => {
   dispatch({
     type: TYPES.REGISTER_LOADING
@@ -76,12 +74,7 @@ export const registerUser = (
     });
 };
 
-export const loadUser = (): ThunkAction<
-  void,
-  {},
-  {},
-  LoadUserActions
-> => async dispatch => {
+export const loadUser = (): ThunkAction<void, {}, {}, LoadUserActions> => async dispatch => {
   try {
     const { data } = await axios.get('/api/users');
     dispatch({
@@ -106,40 +99,30 @@ export const logoutUser = (): LogoutAction => {
   };
 };
 
-const setToken = (token: string) => (
-  dispatch: (arg: Function) => void
-) => {
-  const decoded: {exp: number} = jwtDecode(token);
+const setToken = (token: string) => (dispatch: (arg: Function) => void) => {
+  const decoded: { exp: number } = jwtDecode(token);
   const expTime = decoded.exp * 1000;
   localStorage.setItem('token', token);
 
   dispatch(checkAuthTimeout(expTime - new Date().getTime()));
 };
 
-const checkAuthTimeout = (expTime: number) => (
-  dispatch: (arg: LogoutAction) => void
-) => {
+const checkAuthTimeout = (expTime: number) => (dispatch: (arg: LogoutAction) => void) => {
   setTimeout(() => {
     dispatch(logoutUser());
   }, expTime);
 };
 
-export const checkAuth = () => (
-  dispatch: (arg: Function | LogoutAction) => void
-) => {
+export const checkAuth = () => (dispatch: (arg: Function | LogoutAction) => void) => {
   const token = localStorage.getItem('token');
 
   if (token) {
-    const decoded: {exp: number} = jwtDecode(token);
+    const decoded: { exp: number } = jwtDecode(token);
     const expTime = decoded.exp * 1000;
     if (new Date() < new Date(expTime)) {
       setAuthToken(token);
       dispatch(loadUser());
-      dispatch(
-        checkAuthTimeout(
-          expTime - new Date().getTime()
-        )
-      );
+      dispatch(checkAuthTimeout(expTime - new Date().getTime()));
     } else {
       dispatch(logoutUser());
     }

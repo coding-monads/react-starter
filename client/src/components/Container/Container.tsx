@@ -6,9 +6,8 @@ interface ContainerTypes {
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg';
 }
 
-const ContainerMUI: React.FC<ContainerTypes> = ({
-  children,
-  maxWidth = 'lg'
-}) => <Container maxWidth={maxWidth}>{children}</Container>;
+const ContainerMUI: React.FC<ContainerTypes> = ({ children, maxWidth = 'lg' }) => (
+  <Container maxWidth={maxWidth}>{children}</Container>
+);
 
 export default ContainerMUI;

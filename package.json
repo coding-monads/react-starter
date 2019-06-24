@@ -42,6 +42,8 @@
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-react-hooks": "^1.6.0",
     "eslint-plugin-standard": "^4.0.0",
+    "husky": "^2.4.1",
+    "lint-staged": "^8.2.1",
     "typescript": "^3.5.2"
   },
   "repository": {
@@ -50,5 +52,17 @@
   },
   "main": "index.js",
   "keywords": [],
-  "license": "ISC"
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.tsx": [
+      "prettier --config .prettierrc --write",
+      "npm run lint:client:fix",
+      "git add"
+    ]
+  }
 }

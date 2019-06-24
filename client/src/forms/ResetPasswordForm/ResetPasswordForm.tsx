@@ -48,18 +48,18 @@ const ResetPasswordForm: React.FC<CanAddAlert> = ({ addAlert }) => (
     {({ errors, touched }) => (
       <StyledFormikForm>
         <Field
-          name='email'
-          label='Email Address*'
+          name="email"
+          label="Email Address*"
           error={!!errors.email}
           outllined
           component={TextField}
         />
         {touched.email && errors.email && (
-          <TextHelper error component='div'>
+          <TextHelper error component="div">
             <p style={{ marginBottom: '5px' }}>- {errors.email}</p>
           </TextHelper>
         )}
-        <Button type='submit' color='primary'>
+        <Button type="submit" color="primary">
           Send verification email
         </Button>
       </StyledFormikForm>

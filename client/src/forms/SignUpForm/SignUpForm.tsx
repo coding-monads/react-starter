@@ -39,7 +39,7 @@ type ClientErrors = {
 const FormErrors: React.FC<ClientErrors> = ({ errors }) => {
   if (Object.keys(errors).length > 0) {
     return (
-      <TextHelper error component='div'>
+      <TextHelper error component="div">
         {Object.values(errors).map((error, index) => (
           <p key={index} style={{ marginBottom: '5px' }}>
             - {error}
@@ -82,49 +82,49 @@ const SignUp: React.FC<Props> = ({ onSubmit }) => (
     {({ errors }) => (
       <StyledFormikForm>
         <Field
-          name='firstName'
+          name="firstName"
           error={!!errors.firstName}
-          label='First Name*'
+          label="First Name*"
           outllined
           component={TextField}
-          id='firstName'
+          id="firstName"
         />
         <Field
-          name='lastName'
+          name="lastName"
           error={!!errors.lastName}
-          label='Last Name*'
+          label="Last Name*"
           outllined
           component={TextField}
-          id='lastName'
+          id="lastName"
         />
         <Field
-          name='email'
+          name="email"
           error={!!errors.email}
-          label='Email Address*'
+          label="Email Address*"
           outllined
           component={TextField}
-          id='email'
+          id="email"
         />
         <Field
-          name='password'
-          type='password'
+          name="password"
+          type="password"
           error={!!errors.password}
-          label='Password*'
+          label="Password*"
           outllined
           component={TextField}
-          id='password'
+          id="password"
         />
         <Field
-          name='passwordRepeat'
-          type='password'
+          name="passwordRepeat"
+          type="password"
           error={!!errors.passwordRepeat}
-          label='Repeat Password*'
+          label="Repeat Password*"
           outllined
           component={TextField}
-          id='passwordRepeat'
+          id="passwordRepeat"
         />
         <FormErrors errors={errors} />
-        <Button type='submit' color='primary'>
+        <Button type="submit" color="primary">
           Sign up
         </Button>
       </StyledFormikForm>

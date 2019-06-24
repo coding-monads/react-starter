@@ -38,7 +38,7 @@ const SignIn: React.FC<Props> = ({ onSubmit }) => (
     validateOnBlur={false}
     validateOnChange={false}
     initialValues={{ email: '', password: '', remember: false }}
-    onSubmit={(values) => {
+    onSubmit={values => {
       onSubmit(values);
     }}
     validationSchema={SigninSchema}
@@ -46,28 +46,23 @@ const SignIn: React.FC<Props> = ({ onSubmit }) => (
     {({ errors }) => (
       <StyledFormikForm>
         <Field
-          name='email'
+          name="email"
           error={!!errors.email}
-          label='Email Address*'
+          label="Email Address*"
           outllined
           component={TextField}
         />
         <Field
-          name='password'
-          type='password'
+          name="password"
+          type="password"
           error={!!errors.password}
-          label='Password *'
+          label="Password *"
           outllined
           component={TextField}
         />
-        <Field
-          type='checkbox'
-          name='remember'
-          label='Remember me'
-          component={Checkbox}
-        />
+        <Field type="checkbox" name="remember" label="Remember me" component={Checkbox} />
         {Object.keys(errors).length > 0 && (
-          <TextHelper error component='div'>
+          <TextHelper error component="div">
             {Object.values(errors).map((error, index) => (
               <p key={index} style={{ marginBottom: '5px' }}>
                 - {error}
@@ -75,7 +70,7 @@ const SignIn: React.FC<Props> = ({ onSubmit }) => (
             ))}
           </TextHelper>
         )}
-        <Button type='submit' color='primary'>
+        <Button type="submit" color="primary">
           Sign in
         </Button>
       </StyledFormikForm>

@@ -5,11 +5,4 @@ import SignUpPage from './SignUpPage/SignUpPage';
 import SignInPage from './SignInPage/SignInPage';
 import UpdatePasswordPage from './UpdatePasswordPage/UpdatePasswordPage';
 
-export {
-  LandingPage,
-  MainPage,
-  ResetPasswordPage,
-  SignUpPage,
-  SignInPage,
-  UpdatePasswordPage
-};
+export { LandingPage, MainPage, ResetPasswordPage, SignUpPage, SignInPage, UpdatePasswordPage };
